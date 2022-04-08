@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     app:flexDirection="column"
     android:layout_marginHorizontal="30dp"
-    android:layout_marginVertical="50dp"
+    app:justifyContent="center"
     tools:context=".SignUpActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Back!👋"
+        android:text="Create a New Account"
         android:fontFamily="@font/outfit"
         android:textColor="@color/primary_color"
         android:textSize="24dp"
@@ -24,7 +24,7 @@
         android:layout_height="47dp"
         android:fontFamily="@font/outfit"
         android:layout_marginVertical="10dp"
-        android:text="We are so happy to see you. Continue to login to manage your subscriptions." />
+        android:text="Create an account so you can manage your subscriptions" />
 
     <EditText
         android:layout_width="match_parent"
@@ -64,6 +64,16 @@
         android:textSize="15dp"
         android:hint="Password"/>
 
+    <EditText
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/border"
+        android:fontFamily="@font/outfit"
+        android:layout_marginVertical="10dp"
+        android:textSize="15dp"
+        android:hint="Confirm Password"/>
+
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -72,7 +82,7 @@
         android:fontFamily="@font/outfit_light"
         app:cornerRadius="12dp"
         android:layout_marginVertical="5dp"
-        android:text="SIGN IN"/>
+        android:text="SIGN UP"/>
 
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
@@ -83,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit"
-            android:text="Don't have an account?"/>
+            android:text="Already have an account?"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,7 +101,7 @@
             android:layout_marginLeft="5dp"
             android:fontFamily="@font/outfit_bold"
             android:textColor="@color/primary_color"
-            android:text="Sign up"/>
+            android:text="Sign in"/>
     </com.google.android.flexbox.FlexboxLayout>
 
 </com.google.android.flexbox.FlexboxLayout>
