@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:flexDirection="column"
+    android:layout_marginHorizontal="30dp"
+    android:layout_marginVertical="50dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back!👋"
+        android:fontFamily="@font/outfit"
+        android:textColor="@color/primary_color"
+        android:textSize="24dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="349dp"
+        android:layout_height="47dp"
+        android:fontFamily="@font/outfit"
+        android:layout_marginVertical="10dp"
+        android:text="We are so happy to see you. Continue to login to manage your subscriptions." />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/hello"
+        android:scaleType="fitCenter"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/border"
+        android:fontFamily="@font/outfit"
+        android:layout_marginVertical="10dp"
+        android:textSize="15dp"
+        android:hint="Email"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/border"
+        android:fontFamily="@font/outfit"
+        android:layout_marginVertical="10dp"
+        android:textSize="15dp"
+        android:hint="Password"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/primary_color"
+        android:textAlignment="center"
+        android:fontFamily="@font/outfit_light"
+        app:cornerRadius="12dp"
+        android:layout_marginVertical="5dp"
+        android:text="SIGN IN"/>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit"
+            android:text="Don't have an account?"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/outfit_bold"
+            android:textColor="@color/primary_color"
+            android:text="Sign up"/>
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+</com.google.android.flexbox.FlexboxLayout>
