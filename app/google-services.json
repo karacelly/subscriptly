@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "38668327357",
+    "project_id": "subscriptly-3ccfb",
+    "storage_bucket": "subscriptly-3ccfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38668327357:android:bd65863e7646167b059ad4",
+        "android_client_info": {
+          "package_name": "edu.bluejack21_2.subscriptly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38668327357-6b956r0aet7p65h7fan5qu7biunhkgng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpDmBoB5kVqKb4DCKmcj2lDOo3FiaOd2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38668327357-6b956r0aet7p65h7fan5qu7biunhkgng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
