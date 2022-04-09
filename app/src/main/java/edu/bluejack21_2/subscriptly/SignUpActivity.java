@@ -119,7 +119,7 @@ public class SignUpActivity extends AppCompatActivity implements QueryFinishList
         if(!flag)
         {
             UserRepository.insertUser(name, username, email, password);
-            Intent i = new Intent(SignUpActivity.this, HomePage.class);
+            Intent i = new Intent(SignUpActivity.this, Home.class);
             startActivity(i);
             finish();
         }
