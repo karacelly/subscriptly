@@ -1,7 +1,13 @@
 package edu.bluejack21_2.subscriptly.repositories;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -22,11 +28,22 @@ public class UserRepository {
 
     public static void insertUser(String name, String username, String email, String password) {
 
-        String key = userRef.getId();
-        User tempInsert = new User(key, name, username, email, Crypt.generateHash(password));
+        User tempInsert = new User("", name, username, email, Crypt.generateHash(password));
 
         Map<String, Object> userData = tempInsert.dataToMap();
-        userRef.add(userData);
+        db.collection("users").add(userData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d("Success", "document Snapshot added with ID: " + documentReference.getId());
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("Failed", "Error adding document", e);
+            }
+        });;
     }
 
     public static void authenticateLogin(String email, String password, QueryFinishListener<User> listener) {

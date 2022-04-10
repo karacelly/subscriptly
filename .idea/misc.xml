@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable-xxxhdpi/ic_list.xml" value="0.2145" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_home.xml" value="0.2145" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_notification.xml" value="0.314" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_main.xml" value="0.3109375" />
