@@ -12,4 +12,5 @@
     <color name="secondary_color">#00C2CB</color>
     <color name="tertiary_color">#38B6FF</color>
     <color name="divider">#ECECEC</color>
+    <color name="red_button">#FF5652</color>
 </resources>

@@ -34,6 +34,7 @@
 
     <EditText
         android:id="@+id/field_email"
+        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/border"
@@ -44,6 +45,7 @@
 
     <EditText
         android:id="@+id/field_password"
+        android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/border"

@@ -7,50 +7,60 @@
     app:flexDirection="column"
     tools:context=".Home">
 
-    <com.google.android.flexbox.FlexboxLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:alignItems="center"
-        app:justifyContent="space_between"
-        android:backgroundTint="#FFF"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="20dp"
-        >
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo_subscriptly"
-            android:scaleType="fitCenter"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.google.android.flexbox.FlexboxLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="0dp"
-            app:alignItems="center"
-            >
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_notification"
-                android:scaleType="fitCenter"/>
-            <androidx.cardview.widget.CardView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:cardCornerRadius="100dp"
-                android:layout_marginLeft="15dp"
-                >
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/iu_profile"
-                android:scaleType="centerCrop"/>
-            </androidx.cardview.widget.CardView>
-        </com.google.android.flexbox.FlexboxLayout>
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFF"
+                android:paddingVertical="20dp"
+                app:alignItems="center"
+                app:justifyContent="space_between">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo_subscriptly" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    app:alignItems="center">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_notification" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="15dp"
+                        app:cardCornerRadius="100dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/iu_profile" />
+                    </androidx.cardview.widget.CardView>
+                </com.google.android.flexbox.FlexboxLayout>
 
 
+            </com.google.android.flexbox.FlexboxLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    </com.google.android.flexbox.FlexboxLayout>
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
