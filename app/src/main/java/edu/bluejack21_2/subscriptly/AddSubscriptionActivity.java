@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -12,8 +13,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
@@ -53,7 +61,29 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                     if(data != null) {
                         Uri selectedImage = data.getData();
                         imageSubscription.setImageURI(selectedImage);
+                        Log.d("Image URI", selectedImage.toString());
 //                      doSomeOperations();
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference subscriptionStorageRef = storageRef.child("subscriptions/"+selectedImage.getLastPathSegment());
+                        UploadTask uploadTask;
+                        uploadTask = subscriptionStorageRef.putFile(selectedImage);
+
+// Register observers to listen for when the download is done or if it fails
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                Log.d("Upload", exception.toString());
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                // ...
+                                Log.d("Upload", taskSnapshot.getMetadata().toString());
+                            }
+                        });
                     }
                 }
             }
