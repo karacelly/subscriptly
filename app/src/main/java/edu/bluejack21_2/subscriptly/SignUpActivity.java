@@ -3,7 +3,6 @@ package edu.bluejack21_2.subscriptly;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -119,7 +118,7 @@ public class SignUpActivity extends AppCompatActivity implements QueryFinishList
         if(!flag)
         {
             UserRepository.insertUser(name, username, email, password);
-            Intent i = new Intent(SignUpActivity.this, Home.class);
+            Intent i = new Intent(SignUpActivity.this, HomeActivity.class);
             startActivity(i);
             finish();
         }

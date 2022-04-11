@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
             editor.putString("username", data.getUsername());
             editor.commit();
 
-            Intent i = new Intent(MainActivity.this, Home.class);
+            Intent i = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(i);
             finish();
         } else

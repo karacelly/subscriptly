@@ -5,61 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:flexDirection="column"
-    tools:context=".Home">
+    tools:context=".HomeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <fragment
+        android:id="@+id/fragment"
+        android:name="edu.bluejack21_2.subscriptly.TopNavBarFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FFF"
-                android:paddingVertical="20dp"
-                app:alignItems="center"
-                app:justifyContent="space_between">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/logo_subscriptly" />
-
-                <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    app:alignItems="center">
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_notification" />
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="15dp"
-                        app:cardCornerRadius="100dp">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/iu_profile" />
-                    </androidx.cardview.widget.CardView>
-                </com.google.android.flexbox.FlexboxLayout>
-
-
-            </com.google.android.flexbox.FlexboxLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_top_nav_bar" />
 
     <ScrollView
         android:layout_width="wrap_content"

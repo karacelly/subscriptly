@@ -5,7 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
-public class Home extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
