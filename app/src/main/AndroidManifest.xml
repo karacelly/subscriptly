@@ -4,24 +4,29 @@
 
     <application
         android:allowBackup="true"
-        android:label=""
         android:icon="@mipmap/ic_launcher"
+        android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Subscriptly">
         <activity
+            android:name=".AddFriendActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_friend" />
+        <activity
+            android:name=".searchActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddSubscriptionActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
-
-<!--        <activity-->
-<!--            android:name=".AddSubscriptionActivity"-->
-<!--            android:exported="false" />-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- <activity -->
+        <!-- android:name=".AddSubscriptionActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
@@ -31,15 +36,17 @@
         <activity
             android:name=".MainActivity"
             android:exported="false">
-            <!--        </activity><activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+            <!-- </activity><activity -->
+            <!-- android:name=".MainActivity" -->
+            <!-- android:exported="true"> -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+            <!-- </activity> -->
         </activity>
     </application>
 

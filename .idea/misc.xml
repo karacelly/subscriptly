@@ -3,24 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable-xxxhdpi/ic_list.xml" value="0.2145" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_home.xml" value="0.2145" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_notification.xml" value="0.314" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_add_subscription.xml" value="0.4" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_home.xml" value="0.33" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_main.xml" value="0.3109375" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_sign_up.xml" value="0.3109375" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_top_nav_bar.xml" value="0.22327898550724637" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border.xml" value="0.2085" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_bg_white.xml" value="0.183" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_bg_whiter.xml" value="0.183" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_radius.xml" value="0.2085" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/button.xml" value="0.205" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/button_error.xml" value="0.163" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/ic_add_foreground.xml" value="0.205" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/ic_home.xml" value="0.205" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/ic_remove.xml" value="0.183" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/ic_remove_red_foreground.xml" value="0.183" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/font/font_family.xml" value="0.28020833333333334" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/font/outfit.xml" value="0.2212962962962963" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_add_friend.xml" value="0.176" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_add_subscription.xml" value="0.264" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_search.xml" value="0.176" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
+        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/menu/actio_bar.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

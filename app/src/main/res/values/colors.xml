@@ -13,4 +13,5 @@
     <color name="tertiary_color">#38B6FF</color>
     <color name="divider">#ECECEC</color>
     <color name="red_button">#FF5652</color>
+    <color name="grey">#F8F8F8</color>
 </resources>
