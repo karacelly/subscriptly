@@ -8,12 +8,13 @@
     app:flexDirection="column"
     tools:context=".AddSubscriptionActivity">
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="edu.bluejack21_2.subscriptly.TopNavBarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_top_nav_bar" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/fragment"-->
+<!--        android:name="edu.bluejack21_2.subscriptly.TopNavBarFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout="@layout/fragment_top_nav_bar" />-->
 
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
