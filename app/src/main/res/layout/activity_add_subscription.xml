@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp"
     app:flexDirection="column"
     tools:context=".AddSubscriptionActivity">
 
@@ -14,176 +15,147 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_top_nav_bar" />
 
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        app:alignItems="center">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/action_pick_image"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            app:cardCornerRadius="350dp">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:alignItems="center"
+                app:justifyContent="center">
+
+                <ImageView
+                    android:id="@+id/image_subscription"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ellipse_7" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:flexDirection="column">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_bold"
+                android:text="Subscription Name"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/subs_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/border"
+                android:fontFamily="@font/outfit"
+                android:hint="ex. Netflix"
+                android:inputType="text"
+                android:textSize="15dp" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.flexbox.FlexboxLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="30dp"
-        >
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical">
 
-        <com.google.android.flexbox.FlexboxLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            app:alignItems="center">
+            android:fontFamily="@font/outfit_bold"
+            android:text="Subscription Bill"
+            android:textColor="@color/black" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/action_pick_image"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    app:cardCornerRadius="350dp">
-
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:justifyContent="center"
-                        app:alignItems="center">
-
-                    <ImageView
-                        android:id="@+id/image_subscription"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ellipse_7"/>
-                    </com.google.android.flexbox.FlexboxLayout>
-                </androidx.cardview.widget.CardView>
-<!--                <ImageButton-->
-<!--                    android:id="@+id/image_subscription"-->
-<!--                    android:layout_width="200dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_weight=".15"-->
-<!--                    android:layout_marginVertical="10dp"-->
-<!--                    android:layout_marginLeft="10dp"-->
-<!--                    android:backgroundTint="@color/white"-->
-<!--                    android:src="@drawable/ellipse_7"-->
-<!--                    android:scaleType="centerInside"/>-->
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                app:flexDirection="column"
-                android:layout_marginLeft="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/outfit_bold"
-                    android:text="Subscription Name"/>
-
-                <EditText
-                    android:id="@+id/subs_name"
-                    android:inputType="text"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/border"
-                    android:fontFamily="@font/outfit"
-                    android:layout_marginVertical="10dp"
-                    android:textSize="15dp"
-                    android:hint="ex. Netflix"/>
-
-            </com.google.android.flexbox.FlexboxLayout>
-        </com.google.android.flexbox.FlexboxLayout>
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/field_subscription_bill"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginVertical="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:fontFamily="@font/outfit_bold"
-                android:text="Subscription Price"/>
-
-            <EditText
-                android:id="@+id/subs_price"
-                android:inputType="text"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/border"
-                android:fontFamily="@font/outfit"
-                android:layout_marginVertical="10dp"
-                android:textSize="15dp"
-                android:hint="ex. 100000"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:fontFamily="@font/outfit_bold"
-                android:text="Add Friend"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <EditText
-                        android:id="@+id/subs_add_friend"
-                        android:inputType="text"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".80"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/outfit"
-                        android:layout_marginVertical="10dp"
-                        android:textSize="15sp"
-                        android:hint="add friend from your friend list"/>
-
-                    <ImageButton
-                        android:id="@+id/btn_add_friend"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".15"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/button"
-                        android:src="@drawable/ic_add_foreground"
-                        android:scaleType="centerCrop"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_create"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:backgroundTint="@color/primary_color"
-            android:textAlignment="center"
-            android:fontFamily="@font/outfit_light"
-            app:cornerRadius="12dp"
-            android:layout_marginVertical="5dp"
-            android:text="CREATE"/>
+            android:background="@drawable/border"
+            android:fontFamily="@font/outfit"
+            android:hint="ex. 100000"
+            android:inputType="text"
+            android:textSize="15dp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_bold"
+            android:text="Add Friend"
+            android:textColor="@color/black" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/field_name_friend_default"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:layout_weight=".80"
+                android:background="@drawable/border"
+                android:fontFamily="@font/outfit"
+                android:hint="add friend from your friend list"
+                android:inputType="text"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/action_add_friend"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight=".15"
+                android:background="@drawable/button"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_add_foreground" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/action_create_subscription"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginVertical="5dp"
+        android:backgroundTint="@color/primary_color"
+        android:fontFamily="@font/outfit_light"
+        android:text="CREATE"
+        android:textAlignment="center"
+        app:cornerRadius="12dp" />
 
 </com.google.android.flexbox.FlexboxLayout>
