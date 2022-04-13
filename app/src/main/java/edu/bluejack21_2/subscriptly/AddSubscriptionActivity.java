@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,8 +33,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.UUID;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
@@ -50,9 +54,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
     Context context;
 
-    Locale localeID = new Locale("in", "ID");
+    Locale localeID = new Locale("IND", "ID");
     NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-    private String current = "";
+
 
     private void initComponents() {
         imageToggle = findViewById(R.id.action_pick_image);
@@ -81,10 +85,16 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonAdd.setOnClickListener(v -> {
-            addView();
+            Intent i = new Intent(AddSubscriptionActivity.this, HomeActivity.class);
+            startActivity(i);
+//            addView();
         });
 
         subscriptionBill.addTextChangedListener(new TextWatcher() {
+            private String current = subscriptionBill.getText().toString().trim();
+
+//            private String current = "";
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -98,31 +108,31 @@ public class AddSubscriptionActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals(current)) {
                     subscriptionBill.removeTextChangedListener(this);
-
-                    String cleanString = s.toString().replaceAll("[Rp,.]", "");
-                    Log.d("Clean String", cleanString);
-                    Integer parsed = Integer.parseInt(cleanString);
-
-                    String formatted = formatRupiah.format(parsed);
-
-                    current = formatted;
-                    Log.d("Formatted String", formatted);
-                    subscriptionBill.setText(formatted);
-                    subscriptionBill.setSelection(formatted.length());
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty())
+                        current = formatToRupiah(Double.parseDouble(replace));
+                    else
+                        current = "";
+                    subscriptionBill.setText(current);
+                    subscriptionBill.setSelection(current.length());
                     subscriptionBill.addTextChangedListener(this);
                 }
-                if(!s.toString().matches("^\\$(\\d{1,3}(\\,\\d{3})*|(\\d+))(\\.\\d{2})?$"))
-                {
-                    String userInput= ""+s.toString().replaceAll("[^\\d]", "");
-                    if (userInput.length() > 0) {
-                        Integer in= Integer.parseInt(userInput);
-                        subscriptionBill.setText("Rp"+formatRupiah.format(in));
-                        subscriptionBill.setSelection(subscriptionBill.getText().length());
-                    }
-                }
+//                if (!s.toString().equals(current)) {
+//                    subscriptionBill.removeTextChangedListener(this);
+//
+//                    String cleanString = s.toString().replaceAll("[Rp. ]", "");
+//                    Log.d("Clean String", cleanString);
+//                    Double parsed = Double.parseDouble(cleanString);
+//
+//                    String formatted = formatRupiah.format(parsed);
+//
+//                    current = formatted;
+//                    Log.d("Formatted String", formatted);
+//                    subscriptionBill.setText(formatted);
+//                    subscriptionBill.setSelection(formatted.length());
+//                    subscriptionBill.addTextChangedListener(this);
+//                }
             }
-
-
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -166,27 +176,28 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                             imageSubscription.setImageURI(selectedImage);
                             Log.d("Image URI", selectedImage.toString());
 //                      doSomeOperations();
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageRef = storage.getReference();
-                            StorageReference subscriptionStorageRef = storageRef.child("subscriptions/" + selectedImage.getLastPathSegment());
-                            UploadTask uploadTask;
-                            uploadTask = subscriptionStorageRef.putFile(selectedImage);
+                            String extension = getMimeType(context, selectedImage);
+                            Log.d("Image Extension", extension);
+                            String uuid = UUID.randomUUID().toString();
+                            Log.d("Image UUID", uuid+"."+extension);
 
-// Register observers to listen for when the download is done or if it fails
-                            uploadTask.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle unsuccessful uploads
-                                    Log.d("Upload", exception.toString());
-                                }
-                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                                    // ...
-                                    Log.d("Upload", taskSnapshot.getMetadata().toString());
-                                }
-                            });
+//                            FirebaseStorage storage = FirebaseStorage.getInstance();
+//                            StorageReference storageRef = storage.getReference();
+//                            StorageReference subscriptionStorageRef = storageRef.child("subscriptions/" + selectedImage.getLastPathSegment());
+//                            UploadTask uploadTask;
+//                            uploadTask = subscriptionStorageRef.putFile(selectedImage);
+//
+//                            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception exception) {
+//                                    Log.d("Upload", exception.toString());
+//                                }
+//                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    Log.d("Upload", taskSnapshot.getMetadata().toString());
+//                                }
+//                            });
                         }
                     }
                 }
@@ -214,5 +225,30 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
     private void removeView(View v) {
         layoutFriendList.removeView(v);
+    }
+
+    private String formatToRupiah(Double number) {
+        String rupiah = formatRupiah.format(number);
+        String[] split = rupiah.split(",");
+        int length = split[0].length();
+        Log.d("splitted[0]", split[0].toString());
+        return split[0].substring(0, 2) + " " + split[0].substring(2, length);
+    }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+        }
+
+        return extension;
     }
 }

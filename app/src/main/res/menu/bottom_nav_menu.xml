@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--    <item-->
+    <!--        android:id="@+id/navigation_home"-->
+    <!--        android:icon="@drawable/ic_home_black_24dp"-->
+    <!--        android:title="@string/title_home" />-->
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
-    <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+    <!--    <item-->
+    <!--        android:id="@+id/navigation_dashboard"-->
+    <!--        android:icon="@drawable/ic_dashboard_black_24dp"-->
+    <!--        android:title="@string/title_subscriptions" />-->
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/navigation_subscriptions"
+        android:icon="@drawable/ic_list"
+        android:title="@string/title_subscriptions" />
+
+    <!--    <item-->
+    <!--        android:id="@+id/navigation_notifications"-->
+    <!--        android:icon="@drawable/ic_notifications_black_24dp"-->
+    <!--        android:title="@string/title_friends" />-->
+
+    <item
+        android:id="@+id/navigation_friends"
+        android:icon="@drawable/ic_friend"
+        android:title="@string/title_friends" />
+
+    <item
+        android:id="@+id/navigation_subscriptions_add"
+        android:icon="@mipmap/ic_add_round"
+        android:title="@string/title_add_subscription"/>
+
+    <!--    <ImageView-->
+    <!--        android:layout_width="35dp"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        android:src="@drawable/ic_home"-->
+    <!--        android:scaleType="fitCenter"/>-->
+
+    <!--    <ImageView-->
+    <!--        android:layout_width="35dp"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        android:src="@drawable/ic_list"-->
+    <!--        android:scaleType="fitCenter"/>-->
 
 </menu>
