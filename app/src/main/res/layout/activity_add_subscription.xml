@@ -14,11 +14,10 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_top_nav_bar" />
 
-    <com.google.android.flexbox.FlexboxLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:flexDirection="column"
-        app:alignItems="center"
+        android:orientation="vertical"
         android:layout_marginHorizontal="30dp"
         >
 
@@ -87,11 +86,11 @@
             </com.google.android.flexbox.FlexboxLayout>
         </com.google.android.flexbox.FlexboxLayout>
 
-        <com.google.android.flexbox.FlexboxLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            app:flexDirection="column">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -111,13 +110,13 @@
                 android:textSize="15dp"
                 android:hint="ex. 100000"/>
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </LinearLayout>
 
-        <com.google.android.flexbox.FlexboxLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            app:flexDirection="column">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -127,10 +126,10 @@
                 android:text="Add Friend"/>
 
 
-            <com.google.android.flexbox.FlexboxLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:flexDirection="column">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,6 +149,7 @@
                         android:hint="add friend from your friend list"/>
 
                     <ImageButton
+                        android:id="@+id/btn_add_friend"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_weight=".15"
@@ -161,36 +161,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
+                    android:orientation="vertical"></LinearLayout>
 
-                    <EditText
-                        android:id="@+id/subs_delete_friend"
-                        android:inputType="text"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".80"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/outfit"
-                        android:layout_marginVertical="10dp"
-                        android:textSize="15sp"/>
-
-                    <ImageButton
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".15"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/button_error"
-                        android:src="@drawable/ic_remove_foreground"
-                        android:scaleType="centerCrop"/>
-                </LinearLayout>
-            </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
 
 
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton
@@ -204,6 +184,6 @@
             android:layout_marginVertical="5dp"
             android:text="CREATE"/>
 
-    </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
 
 </com.google.android.flexbox.FlexboxLayout>

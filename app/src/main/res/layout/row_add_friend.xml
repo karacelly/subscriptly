@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_text_friend"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight=".80"
+        android:background="@drawable/border"
+        android:fontFamily="@font/outfit"
+        android:layout_marginVertical="10dp"
+        android:textSize="15sp"/>
+
+    <ImageButton
+        android:id="@+id/btn_delete_friend"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_weight=".15"
+        android:layout_marginVertical="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/button_error"
+        android:src="@drawable/ic_remove_foreground"
+        android:scaleType="centerCrop"/>
+
+</LinearLayout>

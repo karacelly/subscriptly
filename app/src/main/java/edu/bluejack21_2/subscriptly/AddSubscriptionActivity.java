@@ -10,12 +10,16 @@ import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,10 +31,21 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
     CardView imageToggle;
     ImageView imageSubscription;
+    LinearLayout layoutList;
+    ImageButton buttonAdd, buttonSubmitList;
 
     private void initComponents() {
         imageToggle = findViewById(R.id.action_pick_image);
         imageSubscription = findViewById(R.id.image_subscription);
+        layoutList = findViewById(R.id.layout_list);
+        buttonAdd = findViewById(R.id.btn_add_friend);
+
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addView();
+            }
+        });
     }
 
     @Override
@@ -88,4 +103,24 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 }
             }
     });
+
+    private void addView() {
+        final View friendView = getLayoutInflater().inflate(R.layout.activity_add_subscription, null, false);
+
+        EditText editText = (EditText) friendView.findViewById(R.id.edit_text_friend);
+        ImageButton imgBtn = (ImageButton) friendView.findViewById(R.id.btn_delete_friend);
+
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeView(friendView);
+            }
+        });
+
+        layoutList.addView(friendView);
+    }
+
+    private void removeView(View v) {
+        layoutList.removeView(v);
+    }
 }

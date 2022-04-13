@@ -10,17 +10,17 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import edu.bluejack21_2.subscriptly.databinding.ActivityAddFriendBinding;
+import edu.bluejack21_2.subscriptly.databinding.ActivityLayoutActivityyBinding;
 
-public class AddFriendActivity extends AppCompatActivity {
+public class LayoutActivityy extends AppCompatActivity {
 
-    private ActivityAddFriendBinding binding;
+    private ActivityLayoutActivityyBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityAddFriendBinding.inflate(getLayoutInflater());
+        binding = ActivityLayoutActivityyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -29,7 +29,7 @@ public class AddFriendActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_add_friend);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_layout_activityy);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
