@@ -7,15 +7,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Subscription {
-    private String name;
+    private String key, name;
     private Integer bill, duration;
     private ArrayList<User> members;
 
-    public Subscription(String name, Integer bill, Integer duration, ArrayList<User> members) {
+    public Subscription(String key, String name, Integer bill, Integer duration, ArrayList<User> members) {
+        this.key = key;
         this.name = name;
         this.bill = bill;
         this.duration = duration;
         this.members = members;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {
