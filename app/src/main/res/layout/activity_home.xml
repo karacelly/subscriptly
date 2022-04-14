@@ -6,13 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <FrameLayout
-        android:id="@+id/container_frame_layout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/container_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+    </ScrollView>
 
-
-    </FrameLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

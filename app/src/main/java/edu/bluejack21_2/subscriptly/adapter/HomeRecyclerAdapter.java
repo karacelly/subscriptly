@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -30,7 +32,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
             // Text View
             TextView subscriptionMonth;
-            LinearLayout subscriptionGroupItem;
+            CardView subscriptionGroupItem;
 //            ImageView shopImage;
 
             // parameterised constructor for View Holder class
@@ -73,6 +75,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
+//        holder.subscriptionMonth.setText(subscriptions.get(position).getDuration());
 //        Picasso.get().load(subscriptions.get(position).getImage()).into(holder.shopImage);
 //        holder.shopName.setText(subscriptions.get(position).getName());
 //        holder.shopLocation.setText(subscriptions.get(position).getLocation());
