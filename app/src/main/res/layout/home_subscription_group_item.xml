@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="10dp"
+            android:padding="20dp"
             app:flexDirection="column">
 
             <com.google.android.flexbox.FlexboxLayout
@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content">
 
                 <ListView
+                    android:id="@+id/list_subscription_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 </ListView>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
             // Text View
             TextView subscriptionMonth;
             CardView subscriptionGroupItem;
+            ListView subscriptionItems;
 //            ImageView shopImage;
 
             // parameterised constructor for View Holder class
@@ -42,6 +44,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
                 subscriptionMonth = view.findViewById(R.id.text_month_year_subscriptions);
                 subscriptionGroupItem = view.findViewById(R.id.container_subscription_group_item);
+                subscriptionItems = view.findViewById(R.id.list_subscription_item);
             }
         }
 
@@ -75,9 +78,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
-//        holder.subscriptionMonth.setText(subscriptions.get(position).getDuration());
-//        Picasso.get().load(subscriptions.get(position).getImage()).into(holder.shopImage);
+//        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
+        holder.subscriptionMonth.setText(subscriptions.get(position).getDuration().toString());
+        holder.subscriptionItems.setAdapter(new SubscriptionItemListAdapter(holder.subscriptionGroupItem.getContext(), subscriptions));
+        //        Picasso.get().load(subscriptions.get(position).getImage()).into(holder.shopImage);
 //        holder.shopName.setText(subscriptions.get(position).getName());
 //        holder.shopLocation.setText(subscriptions.get(position).getLocation());
 //        int shopID = subscriptions.get(position).getShopID();
