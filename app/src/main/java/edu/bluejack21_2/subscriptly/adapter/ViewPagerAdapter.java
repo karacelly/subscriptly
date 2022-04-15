@@ -14,7 +14,7 @@ import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    private final int NUM_PAGES = 3;
+    private final int NUM_PAGES = 4;
     private final ArrayList<Fragment> fragments = new ArrayList<>();
 
     public ViewPagerAdapter(FragmentActivity fragmentActivity) {

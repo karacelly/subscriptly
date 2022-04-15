@@ -1,83 +1,50 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
 
-import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.adapter.viewholder.HomeViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 
-public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder> {
+public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
+
+    private final Context context;
+    private final ArrayList<Subscription> subscriptions;
+    private final int template;
 
 
-        private Context context;
-        private ArrayList<Subscription> subscriptions;
-        private int template;
+    public HomeRecyclerAdapter(ArrayList<Subscription> subscriptions, Context context, int template) {
+        this.context = context;
+        this.subscriptions = subscriptions;
+        this.template = template;
+    }
 
-        // View Holder class which
-        // extends RecyclerView.ViewHolder
-        public class ViewHolder extends RecyclerView.ViewHolder {
+    // Override onCreateViewHolder which deals
+    // with the inflation of the card layout
+    // as an item for the RecyclerView.
+    @Override
+    public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            // Text View
-            TextView subscriptionMonth;
-            CardView subscriptionGroupItem;
-            ListView subscriptionItems;
-//            ImageView shopImage;
+        // Inflate item.xml using LayoutInflator
+        View itemView
+                = LayoutInflater
+                .from(parent.getContext())
+                .inflate(template,
+                        parent,
+                        false);
 
-            // parameterised constructor for View Holder class
-            // which takes the view as a parameter
-            public ViewHolder(View view) {
-                super(view);
-
-                subscriptionMonth = view.findViewById(R.id.text_month_year_subscriptions);
-                subscriptionGroupItem = view.findViewById(R.id.container_subscription_group_item);
-                subscriptionItems = view.findViewById(R.id.list_subscription_item);
-            }
-        }
-
-
-        // Constructor for HomeAdapter class
-        // which takes a subscriptions of String type
-        public HomeRecyclerAdapter(ArrayList<Subscription> subscriptions, Context context, int template)
-        {
-            this.context = context;
-            this.subscriptions = subscriptions;
-            this.template = template;
-        }
-
-        // Override onCreateViewHolder which deals
-        // with the inflation of the card layout
-        // as an item for the RecyclerView.
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-
-            // Inflate item.xml using LayoutInflator
-            View itemView
-                    = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(template,
-                            parent,
-                            false);
-
-            return new ViewHolder(itemView);
-        }
+        return new HomeViewHolder(itemView);
+    }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
 //        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
         holder.subscriptionMonth.setText(subscriptions.get(position).getDuration().toString());
         holder.subscriptionItems.setAdapter(new SubscriptionItemListAdapter(holder.subscriptionGroupItem.getContext(), subscriptions));
@@ -93,8 +60,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     }
 
     @Override
-        public int getItemCount()
-        {
-            return subscriptions.size();
-        }
+    public int getItemCount() {
+        return subscriptions.size();
+    }
 }
