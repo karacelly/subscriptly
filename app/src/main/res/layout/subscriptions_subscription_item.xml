@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_subscription"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_bg_white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            app:cardCornerRadius="100dp">
+
+            <ImageView
+                android:id="@+id/image_subscription"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo_spotify" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/text_subscription_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spotify"
+                android:fontFamily="@font/outfit_extra_bold"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/text_subscription_member_counts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 people"
+                android:fontFamily="@font/outfit"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/primary_color"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:padding="10dp"
+        android:gravity="bottom|right">
+        <TextView
+            android:id="@+id/text_subscription_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 15000 / month"
+            android:fontFamily="@font/outfit_extra_bold"
+            android:textColor="@color/primary_color"
+            android:textSize="17sp"/>
+    </LinearLayout>
+</LinearLayout>
