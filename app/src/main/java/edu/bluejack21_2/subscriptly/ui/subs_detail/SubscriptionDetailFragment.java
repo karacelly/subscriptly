@@ -7,26 +7,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
+import com.squareup.picasso.Picasso;
 
 public class SubscriptionDetailFragment extends Fragment {
     private Subscription subscription;
     private ImageButton button;
+    private ImageView subsPhoto;
+    private TextView subsName;
 
-    public SubscriptionDetailFragment() {
-    }
+    public SubscriptionDetailFragment() { }
 
     public SubscriptionDetailFragment(Subscription subscription) {
         this.subscription = subscription;
@@ -42,7 +48,17 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setDataOnView(view);
         createMenu(view);
+        setFragment();
+    }
+
+    public void setDataOnView(View v){
+        subsPhoto = v.findViewById(R.id.subs_photo);
+        subsName = v.findViewById(R.id.subs_name);
+
+//        Picasso.get().load(subscription.get)
+        subsName.setText(subscription.getName());
     }
 
     public void createMenu(View v){
@@ -61,4 +77,11 @@ public class SubscriptionDetailFragment extends Fragment {
             }
         });
     }
+
+    public void setFragment(){
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.replace(R.id.subs_detail_fragment_placeholder, new SubscriptionDetailMemberFragment(subscription.getMembers()));
+        ft.commit();
+    }
+
 }

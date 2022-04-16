@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Subscription {
-    private String key, name;
+    private String id, key, name;
     private Integer bill, duration;
     private ArrayList<User> members;
 

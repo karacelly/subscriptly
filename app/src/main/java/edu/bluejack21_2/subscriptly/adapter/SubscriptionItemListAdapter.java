@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.utils.Currency;
 
@@ -50,11 +52,12 @@ public class SubscriptionItemListAdapter extends BaseAdapter {
         Subscription s = subscriptions.get(position);
         subscriptionName.setText(s.getName());
         subscriptionBill.setText(Currency.formatToRupiah(Double.parseDouble(s.getBill().toString())));
-//        convertView.setOnClickListener(v->{
-//            Intent detail = new Intent(ctx, DetailActivity.class);
-//            detail.putExtra("shopID", shopID);
-//            ctx.startActivity(detail);
-//        });
+
+        convertView.setOnClickListener(v->{
+            Intent detail = new Intent(ctx, SubscriptionDetail.class);
+            detail.putExtra("subscriptionID", subscriptions.get(position).getKey());
+            ctx.startActivity(detail);
+        });
 
         return convertView;
     }

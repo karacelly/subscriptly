@@ -47,27 +47,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:gravity="center_vertical|end">
 
             <Button
                 android:id="@+id/action_add_friend"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight=".15"
-                android:background="#8044FF00"
-                android:backgroundTint="#8044FF00"
+                android:padding="0dp"
+                android:background="@drawable/button"
                 android:fontFamily="@font/outfit_bold"
                 android:textColor="@color/white"
+                android:text="Add Friend"
                 android:textSize="10sp" />
 
             <Button
                 android:id="@+id/action_accept_friend"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight=".15"
-                android:background="#8044FF00"
-                android:backgroundTint="#8044FF00"
+                android:padding="0dp"
+                android:background="@drawable/button"
                 android:fontFamily="@font/outfit_bold"
                 android:text="Accept Friend"
                 android:textColor="@color/white"
@@ -76,10 +77,10 @@
             <Button
                 android:id="@+id/action_reject_friend"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight=".15"
-                android:background="@color/red_button"
-                android:backgroundTint="@color/red_button"
+                android:padding="0dp"
+                android:background="@drawable/button_error"
                 android:fontFamily="@font/outfit_bold"
                 android:text="Reject Friend"
                 android:textColor="@color/white"
