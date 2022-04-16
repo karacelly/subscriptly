@@ -1,7 +1,5 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.utils.Currency;
@@ -43,9 +40,12 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
 //        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
-        holder.subscriptionName.setText(subscriptions.get(position).getName());
-        holder.subscriptionPrice.setText(Currency.formatToRupiah(subscriptions.get(position).getBill().doubleValue()));
-        //        Picasso.get().load(subscriptions.get(position).getImage()).into(holder.shopImage);
+        Subscription s = subscriptions.get(position);
+        Integer memberCount = s.getMembers().size();
+        holder.subscriptionName.setText(s.getName());
+        holder.subscriptionPrice.setText(Currency.formatToRupiah(s.getBill().doubleValue()/memberCount));
+        holder.subscriptionMemberCounts.setText(memberCount + " people");
+        //        Picasso.get().load(s.getImage()).into(holder.shopImage);
 //        int shopID = subscriptions.get(position).getShopID();
 //        holder.subscriptionContainer.setOnClickListener(v -> {
 //            Intent detail = new Intent(context, DetailActivity.class);

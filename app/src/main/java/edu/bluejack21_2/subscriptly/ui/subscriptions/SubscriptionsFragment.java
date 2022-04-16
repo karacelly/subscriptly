@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.ui.subscriptions;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -76,14 +80,15 @@ public class SubscriptionsFragment extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         ArrayList<User> members = new ArrayList<>();
+                        Subscription s = new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), members);
                         SubscriptlyDB.getDB().collection("members").whereEqualTo("subscription_id", document.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        ArrayList<String> userRefs = (ArrayList<String>) document.get("users");
-                                        for (String userRef : userRefs) {
-                                            SubscriptlyDB.getDB().document(userRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        List<DocumentReference> userRefs = (List<DocumentReference>) document.get("users");
+                                        for (DocumentReference userRef : userRefs) {
+                                            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
@@ -93,7 +98,10 @@ public class SubscriptionsFragment extends Fragment {
                                                         String username = document.getString("username");
                                                         String email = document.getString("email");
                                                         String password = "";
+                                                        Log.d("MEMBER", name);
                                                         members.add(new User(key, name, username, email, password));
+                                                        s.setMembers(members);
+                                                        setRecyclerView(subscriptions, subscriptionRecycler);
                                                     }
                                                 }
                                             });
@@ -103,10 +111,9 @@ public class SubscriptionsFragment extends Fragment {
                                 }
                             }
                         });
-                        subscriptions.add(new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), members));
+                        subscriptions.add(s);
                     }
                 }
-                setRecyclerView(subscriptions, subscriptionRecycler);
             }
         });
     }
