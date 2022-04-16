@@ -14,23 +14,23 @@
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_main.xml" value="0.3109375" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_search.xml" value="0.1625" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_sign_up.xml" value="0.3109375" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_subscription_detail.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_bottom__navigation.xml" value="0.17291666666666666" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_dashboard.xml" value="0.20052083333333334" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_friends.xml" value="0.11578947368421053" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscription_detail.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscriptions.xml" value="0.264" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_top_nav_bar.xml" value="0.22327898550724637" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/friend_item.xml" value="0.10566037735849057" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/friend_item.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_group_item.xml" value="0.23024054982817868" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_item.xml" value="0.1953125" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_item_inner.xml" value="0.1953125" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/row_add_friend.xml" value="0.20052083333333334" />
-<<<<<<< Updated upstream
-=======
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/subscriptions_subscription_item.xml" value="0.33796296296296297" />
->>>>>>> Stashed changes
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17291666666666666" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/menu/subs_detail_menu.xml" value="0.1" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border.xml" value="0.2085" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_radius.xml" value="0.2085" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/font/font_family.xml" value="0.28020833333333334" />

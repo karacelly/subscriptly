@@ -11,12 +11,8 @@
         android:theme="@style/Theme.Subscriptly">
         <activity
             android:name=".SubscriptionDetail"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LayoutActivityy"
@@ -28,7 +24,11 @@
         <activity
             android:name=".HomeActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".SignUpActivity"
