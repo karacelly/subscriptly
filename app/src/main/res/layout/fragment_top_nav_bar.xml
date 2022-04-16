@@ -18,7 +18,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".TopNavBarFragment">
+    tools:context=".fragments.TopNavBarFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"

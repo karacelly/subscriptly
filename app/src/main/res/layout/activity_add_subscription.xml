@@ -11,7 +11,7 @@
 
 <!--    <fragment-->
 <!--        android:id="@+id/fragment"-->
-<!--        android:name="edu.bluejack21_2.subscriptly.TopNavBarFragment"-->
+<!--        android:name="edu.bluejack21_2.subscriptly.fragments.TopNavBarFragment"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        tools:layout="@layout/fragment_top_nav_bar" />-->

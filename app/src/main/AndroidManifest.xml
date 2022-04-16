@@ -10,19 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Subscriptly">
         <activity
+            android:name=".SubscriptionDetail"
+            android:exported="false" />
+        <activity
             android:name=".LayoutActivityy"
             android:exported="false"
             android:label="@string/title_activity_layout_activityy" />
         <activity
             android:name=".AddSubscriptionActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,7 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
