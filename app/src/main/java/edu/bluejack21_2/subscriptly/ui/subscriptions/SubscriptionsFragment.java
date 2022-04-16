@@ -87,7 +87,7 @@ public class SubscriptionsFragment extends Fragment {
 //                                Log.d("Members", document.get("members").getClass().toString());
                                 subscriptions.add(new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>()));
                             }
-                            setRecyclerView(subscriptions, subscriptionGroupRecycler);
+//                            setRecyclerView(subscriptions, subscriptionGroupRecycler);
                         } else {
 
                         }
