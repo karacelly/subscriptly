@@ -25,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:flexDirection="column"
+        android:background="@color/grey"
         tools:context=".ui.home.HomeFragment"
         android:orientation="vertical">
 
@@ -34,14 +35,6 @@
         <!--        android:layout_width="match_parent"-->
         <!--        android:layout_height="wrap_content"-->
         <!--        tools:layout="@layout/fragment_top_nav_bar" />-->
-
-        <com.google.android.flexbox.FlexboxLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/grey"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp"
-            app:flexDirection="column">
 
 <!--            <com.google.android.flexbox.FlexboxLayout-->
 <!--                android:layout_width="match_parent"-->
@@ -132,17 +125,16 @@
 
 <!--            </com.google.android.flexbox.FlexboxLayout>-->
 
-        </com.google.android.flexbox.FlexboxLayout>
 
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_subscription_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/soft_grey" />
         </ScrollView>
 

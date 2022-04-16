@@ -4,17 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/container_subscription_group_item"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="30dp"-->
+<!--        app:cardPreventCornerOverlap="false"-->
+<!--        app:cardCornerRadius="15dp"-->
+<!--        app:cardElevation="10dp"-->
+<!--        android:elevation="10dp"-->
+<!--        android:outlineSpotShadowColor="#FF0000"-->
+<!--        android:outlineAmbientShadowColor="#FF0000">-->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/container_subscription_group_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="30dp"
         app:cardPreventCornerOverlap="false"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="20dp"
-        android:elevation="20dp"
-        android:outlineSpotShadowColor="#A30500"
-        android:outlineAmbientShadowColor="#A10500">
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:elevation="10dp"
+        android:outlineSpotShadowColor="#80000000"
+        android:outlineAmbientShadowColor="#80000000">
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
@@ -34,6 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="April, 2022"
+                    android:fontFamily="@font/outfit"
                     android:textColor="@color/primary_color" />
 
             </com.google.android.flexbox.FlexboxLayout>
