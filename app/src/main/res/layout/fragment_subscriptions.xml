@@ -5,11 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f8f8f8"
     tools:context=".ui.subscriptions.SubscriptionsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginVertical="20dp"
         android:layout_marginHorizontal="20dp"
         android:orientation="vertical">
 
