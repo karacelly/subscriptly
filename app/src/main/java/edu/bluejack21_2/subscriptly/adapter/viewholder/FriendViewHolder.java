@@ -1,5 +1,6 @@
 package edu.bluejack21_2.subscriptly.adapter.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
 //        super(view);
         super(binding.getRoot());
         View view = binding.getRoot();
+        Log.d("VIEWFRIEND", view+"");
         this.binding = binding;
         friendName = view.findViewById(R.id.text_friend_name);
         friendProfilePicture = view.findViewById(R.id.image_friend);

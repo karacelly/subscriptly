@@ -1,14 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.subscriptions.SubscriptionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_extra_bold"
+            android:text="Your Subscriptions"
+            android:textColor="@color/primary_color"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/field_search_friend"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="15dp"
+                android:background="@drawable/border_bg_white" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="A-Z"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="Z-A"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="Highest Price"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="Lowest Price"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_subscriptions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

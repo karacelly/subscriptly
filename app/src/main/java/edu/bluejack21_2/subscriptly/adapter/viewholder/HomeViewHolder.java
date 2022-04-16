@@ -1,5 +1,6 @@
 package edu.bluejack21_2.subscriptly.adapter.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     // which takes the view as a parameter
     public HomeViewHolder(View view) {
         super(view);
-
+        Log.d("VIEWHOME", view+"");
         subscriptionMonth = view.findViewById(R.id.text_month_year_subscriptions);
         subscriptionGroupItem = view.findViewById(R.id.container_subscription_group_item);
         subscriptionItems = view.findViewById(R.id.list_subscription_item);

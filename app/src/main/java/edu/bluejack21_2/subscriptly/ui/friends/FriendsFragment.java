@@ -61,6 +61,8 @@ public class FriendsFragment extends Fragment {
 
         mBinding = FragmentFriendsBinding.inflate(
                 inflater, container, false);
+        Log.d("BINDINGFriendsFragment", mBinding+"");
+
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
 
         return rootView;
@@ -79,6 +81,12 @@ public class FriendsFragment extends Fragment {
         fieldSearchFriend = view.findViewById(R.id.field_search_friend);
         friendsRecycler = view.findViewById(R.id.recycler_friends);
 
+        if(fieldSearchFriend == null) {
+            Log.d("NULLVALUE", "fieldSearchFriend");
+        }
+        if(friendsRecycler == null) {
+            Log.d("NULLVALUE", "friendsRecycler");
+        }
         users = new ArrayList<>();
         SubscriptlyDB.getDB().collection("users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
