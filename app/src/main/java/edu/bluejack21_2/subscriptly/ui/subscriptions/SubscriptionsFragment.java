@@ -120,7 +120,7 @@ public class SubscriptionsFragment extends Fragment {
 
     private void setRecyclerView
             (ArrayList<Subscription> data, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(new SubscriptionRecyclerAdapter(data, R.layout.subscriptions_subscription_item));
     }
 }

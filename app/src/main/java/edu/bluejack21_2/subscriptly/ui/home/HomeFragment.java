@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     }
 
     private void setRecyclerView(ArrayList<Subscription> data, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(new HomeRecyclerAdapter(data, getActivity(), R.layout.home_subscription_group_item));
     }
 

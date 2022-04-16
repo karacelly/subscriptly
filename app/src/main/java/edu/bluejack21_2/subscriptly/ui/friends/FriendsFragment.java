@@ -81,12 +81,6 @@ public class FriendsFragment extends Fragment {
         fieldSearchFriend = view.findViewById(R.id.field_search_friend);
         friendsRecycler = view.findViewById(R.id.recycler_friends);
 
-        if(fieldSearchFriend == null) {
-            Log.d("NULLVALUE", "fieldSearchFriend");
-        }
-        if(friendsRecycler == null) {
-            Log.d("NULLVALUE", "friendsRecycler");
-        }
         users = new ArrayList<>();
         SubscriptlyDB.getDB().collection("users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -108,8 +102,8 @@ public class FriendsFragment extends Fragment {
                                         document.getString("email"),
                                         ""));
                                 Log.d("UserData", document.getString("name"));
+                                setRecyclerView(users, friendsRecycler);
                             }
-                            setRecyclerView(users, friendsRecycler);
                         } else {
 
                         }
@@ -147,7 +141,7 @@ public class FriendsFragment extends Fragment {
 
         final List<User> filteredModelList = new ArrayList<>();
         for (User model : users) {
-            final String text = model.getName().toLowerCase();
+            final String text = model.getUsername().toLowerCase();
             if (text.contains(lowerCaseQuery)) {
                 filteredModelList.add(model);
             }
@@ -158,14 +152,14 @@ public class FriendsFragment extends Fragment {
     private void setRecyclerView(ArrayList<User> data, RecyclerView recyclerView) {
         Log.d("FLOW", "setRecyclerView");
         mAdapter = new FriendRecyclerAdapter(data, ALPHABETICAL_COMPARATOR, getActivity(), R.layout.friend_item);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);
         mAdapter.add(data);
     }
     private static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
         @Override
         public int compare(User a, User b) {
-            return a.getName().compareTo(b.getName());
+            return a.getUsername().compareTo(b.getUsername());
         }
     };
 

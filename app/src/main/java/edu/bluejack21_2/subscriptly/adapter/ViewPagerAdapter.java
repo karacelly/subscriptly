@@ -1,5 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -24,12 +26,14 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Log.d("ViewPager Position", position+"");
         if(position == 0)
             return HomeFragment.newInstance();
         else if (position == 1)
             return SubscriptionsFragment.newInstance();
-        else if (position == 2)
+        else if (position == 3 || position == 2)
             return FriendsFragment.newInstance();
+        Log.d("ViewPager CreateFragment", "RETURNING NULL");
         return null;
     }
 

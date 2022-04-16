@@ -2,6 +2,7 @@ package edu.bluejack21_2.subscriptly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -36,14 +37,18 @@ public class HomeActivity extends AppCompatActivity {
         initComponents();
 
         mBottomNavigation.setOnItemSelectedListener(item -> {
+            Log.d("ViewPager BottomNavigation", item.toString());
+            Log.d("ViewPager BottomNavigation ItemID", item.getItemId()+"");
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     viewPager.setCurrentItem(0);
                     break;
                 case R.id.navigation_subscriptions:
+                    Log.d("ViewPager Setting Item", "Subscription: 1");
                     viewPager.setCurrentItem(1);
                     break;
                 case R.id.navigation_friends:
+                    Log.d("ViewPager Setting Item", "Friend: 2");
                     viewPager.setCurrentItem(2);
                     break;
                 case R.id.navigation_subscriptions_add:

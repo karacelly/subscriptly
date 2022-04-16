@@ -19,6 +19,7 @@ import edu.bluejack21_2.subscriptly.models.User;
 
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
+    private FriendViewHolder friendViewHolder;
     private final LayoutInflater mInflater;
     private final Comparator<User> mComparator;
     private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
@@ -58,10 +59,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         }
     });
 
-//    public FriendRecyclerAdapter(Context context, Comparator<User> comparator) {
-//        mInflater = LayoutInflater.from(context);
-//        mComparator = comparator;
-//    }
     private final Context context;
     private final ArrayList<User> users;
     private final int template;
@@ -75,29 +72,34 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         this.template = template;
         mInflater = LayoutInflater.from(context);
         mComparator = comparator;
+        if(users != null) {
+            mSortedList.addAll(users);
+        }
     }
 
     @Override
     public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("FLOW", "onCreateViewHolder");
         final FriendItemBinding binding = FriendItemBinding.inflate(mInflater, parent, false);
-        if (binding == null) {
-            Log.d("NULL", "FriendItemBinding");
-        }
-        View itemView
-                = LayoutInflater
-                .from(parent.getContext())
-                .inflate(template,
-                        parent,
-                        false);
-        return new FriendViewHolder(binding);
+//        if (binding == null) {
+//            Log.d("NULL", "FriendItemBinding");
+//        }
+//        View itemView
+//                = LayoutInflater
+//                .from(parent.getContext())
+//                .inflate(template,
+//                        parent,
+//                        false);
+        friendViewHolder = new FriendViewHolder(binding);
+        return friendViewHolder;
     }
 
     @Override
     public void onBindViewHolder(FriendViewHolder holder, int position) {
-        Log.d("FLOW", "onBindViewHolder");
-        holder.friendName.setText(users.get(position).getName());
+        Log.d("FLOW", "onBindViewHolder (position: " + position + " )");
+        Log.d("COUNT", "Size mSortedList: " + mSortedList.size());
         final User model = mSortedList.get(position);
+//        holder.friendName.setText(users.get(position).getName());
         holder.bind(model);
     }
 
@@ -107,29 +109,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         Log.d("COUNT", mSortedList.size() + "");
         return mSortedList.size();
     }
-
-    // Override onCreateViewHolder which deals
-    // with the inflation of the card layout
-    // as an item for the RecyclerView.
-//        @Override
-//        public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-//        {
-//
-//            // Inflate item.xml using LayoutInflator
-//            View itemView
-//                    = LayoutInflater
-//                    .from(parent.getContext())
-//                    .inflate(template,
-//                            parent,
-//                            false);
-//
-//            return new FriendViewHolder(itemView);
-//        }
-
-//    @Override
-//    public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-//        holder.friendName.setText(users.get(position).getName());
-//    }
 
 //    @Override
 //    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -145,12 +124,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 ////            context.startActivity(detail);
 ////        });
 //    }
-
-//    @Override
-//        public int getItemCount()
-//        {
-//            return users.size();
-//        }
 
     public void replaceAll(List<User> models) {
         mSortedList.beginBatchedUpdates();
@@ -175,6 +148,8 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
     public void add(List<User> models) {
         Log.d("FLOW", "AddMSortedList");
         mSortedList.addAll(models);
+        Log.d("SortedList Size: ", mSortedList.size()+"");
+//        friendViewHolder.bind(mSortedList);
     }
 
     public void remove(List<User> models) {
