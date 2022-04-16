@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(2);
                     break;
                 case R.id.navigation_subscriptions_add:
-                    Intent i = new Intent(HomeActivity.this, AddSubscriptionActivity.class);
+                    Intent i = new Intent(this, AddSubscriptionActivity.class);
                     startActivity(i);
                     break;
             }

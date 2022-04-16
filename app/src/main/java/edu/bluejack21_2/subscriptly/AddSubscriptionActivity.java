@@ -1,7 +1,8 @@
 package edu.bluejack21_2.subscriptly;
 
+import static edu.bluejack21_2.subscriptly.utils.Currency.formatToRupiah;
+
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,21 +22,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.util.UUID;
+import edu.bluejack21_2.subscriptly.utils.Image;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
@@ -53,10 +44,50 @@ public class AddSubscriptionActivity extends AppCompatActivity {
     MaterialButton buttonCreateSubscription;
 
     Context context;
+    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+//                if(result.getResultCode() == 3) {
+//
+//                }
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
 
-    Locale localeID = new Locale("IND", "ID");
-    NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            imageSubscription.setImageURI(selectedImage);
+                            Log.d("Image URI", selectedImage.toString());
+//                          doSomeOperations();
+//                          String extension = getMimeType(context, selectedImage);
+//                            Log.d("Image Extension", extension);
+//                            String uuid = UUID.randomUUID().toString();
+//                            Log.d("Image UUID", uuid+"."+extension);
+                            String fileName = Image.getImageFileName(context, selectedImage);
 
+//                            FirebaseStorage storage = FirebaseStorage.getInstance();
+//                            StorageReference storageRef = storage.getReference();
+//                            StorageReference subscriptionStorageRef = storageRef.child("subscriptions/" + selectedImage.getLastPathSegment());
+//                            UploadTask uploadTask;
+//                            uploadTask = subscriptionStorageRef.putFile(selectedImage);
+//
+//                            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception exception) {
+//                                    Log.d("Upload", exception.toString());
+//                                }
+//                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    Log.d("Upload", taskSnapshot.getMetadata().toString());
+//                                }
+//                            });
+                        }
+                    }
+                }
+            });
 
     private void initComponents() {
         imageToggle = findViewById(R.id.action_pick_image);
@@ -159,51 +190,6 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
     }
 
-    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-//                if(result.getResultCode() == 3) {
-//
-//                }
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            imageSubscription.setImageURI(selectedImage);
-                            Log.d("Image URI", selectedImage.toString());
-//                      doSomeOperations();
-                            String extension = getMimeType(context, selectedImage);
-                            Log.d("Image Extension", extension);
-                            String uuid = UUID.randomUUID().toString();
-                            Log.d("Image UUID", uuid+"."+extension);
-
-//                            FirebaseStorage storage = FirebaseStorage.getInstance();
-//                            StorageReference storageRef = storage.getReference();
-//                            StorageReference subscriptionStorageRef = storageRef.child("subscriptions/" + selectedImage.getLastPathSegment());
-//                            UploadTask uploadTask;
-//                            uploadTask = subscriptionStorageRef.putFile(selectedImage);
-//
-//                            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception exception) {
-//                                    Log.d("Upload", exception.toString());
-//                                }
-//                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                                    Log.d("Upload", taskSnapshot.getMetadata().toString());
-//                                }
-//                            });
-                        }
-                    }
-                }
-            });
-
-
     private void addView() {
         String friendNameContent = friendName.getText().toString().trim();
         if (friendNameContent.length() > 0) {
@@ -227,28 +213,5 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         layoutFriendList.removeView(v);
     }
 
-    private String formatToRupiah(Double number) {
-        String rupiah = formatRupiah.format(number);
-        String[] split = rupiah.split(",");
-        int length = split[0].length();
-        Log.d("splitted[0]", split[0].toString());
-        return split[0].substring(0, 2) + " " + split[0].substring(2, length);
-    }
 
-    public static String getMimeType(Context context, Uri uri) {
-        String extension;
-
-        //Check uri format to avoid null
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            //If scheme is a content
-            final MimeTypeMap mime = MimeTypeMap.getSingleton();
-            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
-        } else {
-            //If scheme is a File
-            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
-            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
-        }
-
-        return extension;
-    }
 }

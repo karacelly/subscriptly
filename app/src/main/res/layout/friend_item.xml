@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+<data>
+
+    <variable
+        name="model"
+        type="edu.bluejack21_2.subscriptly.models.User" />
+</data>
+
+<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <com.google.android.flexbox.FlexboxLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:layoutDirection="ltr">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            app:cardCornerRadius="100dp">
+
+            <ImageView
+                android:id="@+id/image_friend"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iu_profile" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/text_friend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight=".15"
+            android:fontFamily="@font/outfit_bold"
+            android:text="@{model.username}"
+            android:textSize="20sp" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+</layout>

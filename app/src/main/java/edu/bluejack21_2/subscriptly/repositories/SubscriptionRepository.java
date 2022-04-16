@@ -5,12 +5,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
+
 public class SubscriptionRepository {
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static CollectionReference userRef = db.collection("subscriptions");
+    private static CollectionReference userRef = SubscriptlyDB.getDB().collection("subscriptions");
+    private static StorageReference subscriptionStorageRef = SubscriptlyDB.getStorageDB().child("subscriptions");
 
-    private static FirebaseStorage storage = FirebaseStorage.getInstance();
-    private static StorageReference storageRef = storage.getReference();
+    private static void insertSubscription(String name) {
 
-    StorageReference subscriptionStorageRef = storageRef.child("subscriptions");
+    }
+
 }
