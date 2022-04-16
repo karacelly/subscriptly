@@ -26,6 +26,10 @@
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_item.xml" value="0.1953125" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_item_inner.xml" value="0.1953125" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/row_add_friend.xml" value="0.20052083333333334" />
+<<<<<<< Updated upstream
+=======
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/subscriptions_subscription_item.xml" value="0.33796296296296297" />
+>>>>>>> Stashed changes
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17291666666666666" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border.xml" value="0.2085" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_radius.xml" value="0.2085" />
