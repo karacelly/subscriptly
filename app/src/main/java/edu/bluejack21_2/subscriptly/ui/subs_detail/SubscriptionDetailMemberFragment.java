@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import edu.bluejack21_2.subscriptly.adapter.MemberItemAdapter;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class SubscriptionDetailMemberFragment extends Fragment {
-    private ArrayList<User> members = new ArrayList<>();
+    private ArrayList<User> members;
 
     public SubscriptionDetailMemberFragment(ArrayList<User> members) {
         this.members = members;
@@ -40,6 +41,7 @@ public class SubscriptionDetailMemberFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d("SubscriptionDetailMemberFragment", "onViewCreated: Member Count:"+members.size());
         MemberItemAdapter adapter = new MemberItemAdapter(getActivity(), members);
         ListView list = getView().findViewById(R.id.subsMemberList);
         list.setAdapter(adapter);

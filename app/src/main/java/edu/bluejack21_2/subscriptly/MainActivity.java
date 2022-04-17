@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
@@ -18,7 +20,7 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 public class MainActivity extends AppCompatActivity implements QueryFinishListener<User> {
 
     private EditText fieldEmail, fieldPassword;
-    private Button btnSignIn;
+    private MaterialButton btnSignIn;
     private TextView redirectSignUp;
 
     private void initComponents() {
@@ -59,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("userID", data.getUserID());
-            editor.putString("email", data.getEmail());
-            editor.putString("name", data.getName());
-            editor.putString("username", data.getUsername());
+//            editor.putString("email", data.getEmail());
+//            editor.putString("name", data.getName());
+//            editor.putString("username", data.getUsername());
             editor.commit();
 
             Intent i = new Intent(MainActivity.this, HomeActivity.class);

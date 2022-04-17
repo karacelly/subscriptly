@@ -52,39 +52,50 @@
 
             <Button
                 android:id="@+id/action_add_friend"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:layout_weight=".15"
-                android:padding="0dp"
+                android:layout_marginHorizontal="5dp"
                 android:background="@drawable/button"
                 android:fontFamily="@font/outfit_bold"
+                android:text="Add"
                 android:textColor="@color/white"
-                android:text="Add Friend"
                 android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/action_remove_friend"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/button_error"
+                android:fontFamily="@font/outfit_bold"
+                android:text="Remove"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/action_accept_friend"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:layout_weight=".15"
-                android:padding="0dp"
+                android:layout_marginHorizontal="5dp"
                 android:background="@drawable/button"
                 android:fontFamily="@font/outfit_bold"
-                android:text="Accept Friend"
+                android:text="Accept"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/action_reject_friend"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:layout_weight=".15"
-                android:padding="0dp"
+                android:layout_marginHorizontal="5dp"
                 android:background="@drawable/button_error"
                 android:fontFamily="@font/outfit_bold"
-                android:text="Reject Friend"
+                android:text="Reject"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

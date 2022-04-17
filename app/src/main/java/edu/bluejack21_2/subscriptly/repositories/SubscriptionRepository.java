@@ -18,6 +18,7 @@ import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class SubscriptionRepository {
+    public static Subscription ACTIVE_SUBSCRIPTION = null;
     private static CollectionReference userRef = SubscriptlyDB.getDB().collection("subscriptions");
     private static StorageReference subscriptionStorageRef = SubscriptlyDB.getStorageDB().child("subscriptions");
 

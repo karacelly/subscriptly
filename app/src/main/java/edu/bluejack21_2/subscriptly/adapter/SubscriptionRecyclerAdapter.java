@@ -1,5 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.Currency;
 
 public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {
@@ -47,11 +51,13 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         holder.subscriptionMemberCounts.setText(memberCount + " people");
         //        Picasso.get().load(s.getImage()).into(holder.shopImage);
 //        int shopID = subscriptions.get(position).getShopID();
-//        holder.subscriptionContainer.setOnClickListener(v -> {
-//            Intent detail = new Intent(context, DetailActivity.class);
-//            detail.putExtra("shopID", shopID);
-//            context.startActivity(detail);
-//        });
+        holder.subscriptionContainer.setOnClickListener(v -> {
+            Context c =  v.getContext();
+            Intent detail = new Intent(c, SubscriptionDetail.class);
+            SubscriptionRepository.ACTIVE_SUBSCRIPTION = new Subscription(s.getKey(), s.getName(), s.getBill(), s.getDuration(), s.getMembers());
+            detail.putExtra("subscriptionID", s.getKey());
+            c.startActivity(detail);
+        });
     }
 
     @Override

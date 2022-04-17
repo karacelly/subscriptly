@@ -1,11 +1,13 @@
 package edu.bluejack21_2.subscriptly.ui.subs_detail;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,13 +26,14 @@ import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
-import com.squareup.picasso.Picasso;
 
 public class SubscriptionDetailFragment extends Fragment {
     private Subscription subscription;
     private ImageButton button;
     private ImageView subsPhoto;
-    private TextView subsName;
+    private TextView subsName, menuMembers, menuHistory, menuMedia;
+
+    private Typeface outfitMedium, outfitSemiBold, outfitBold;
 
     public SubscriptionDetailFragment() { }
 
@@ -48,17 +51,54 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initFonts(view);
+        initComponents(view);
         setDataOnView(view);
         createMenu(view);
-        setFragment();
+        setFragment(new SubscriptionDetailMemberFragment(subscription.getMembers()));
     }
 
-    public void setDataOnView(View v){
+    private void initFonts(View v) {
+        outfitMedium = ResourcesCompat.getFont(v.getContext(), R.font.outfit_medium);
+        outfitSemiBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_semi_bold);
+        outfitBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_bold);
+    }
+
+    public void initComponents(View v) {
         subsPhoto = v.findViewById(R.id.subs_photo);
         subsName = v.findViewById(R.id.subs_name);
 
+        menuMembers = v.findViewById(R.id.text_menu_members);
+        menuHistory = v.findViewById(R.id.text_menu_history);
+        menuMedia = v.findViewById(R.id.text_menu_media);
+    }
+
+    private void resetTypeFace(Typeface tf) {
+        menuMembers.setTypeface(tf);
+        menuHistory.setTypeface(tf);
+        menuMedia.setTypeface(tf);
+    }
+
+    public void setDataOnView(View v){
+        menuMembers.setTypeface(outfitBold);
 //        Picasso.get().load(subscription.get)
         subsName.setText(subscription.getName());
+
+        menuMembers.setOnClickListener(view -> {
+            resetTypeFace(outfitMedium);
+            menuMembers.setTypeface(outfitBold);
+            setFragment(new SubscriptionDetailMemberFragment(subscription.getMembers()));
+        });
+
+        menuHistory.setOnClickListener(view -> {
+            resetTypeFace(outfitMedium);
+            menuHistory.setTypeface(outfitBold);
+        });
+
+        menuMedia.setOnClickListener(view -> {
+            resetTypeFace(outfitMedium);
+            menuMedia.setTypeface(outfitBold);
+        });
     }
 
     public void createMenu(View v){
@@ -78,9 +118,9 @@ public class SubscriptionDetailFragment extends Fragment {
         });
     }
 
-    public void setFragment(){
+    public void setFragment(Fragment f){
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.subs_detail_fragment_placeholder, new SubscriptionDetailMemberFragment(subscription.getMembers()));
+        ft.replace(R.id.subs_detail_fragment_placeholder, f);
         ft.commit();
     }
 

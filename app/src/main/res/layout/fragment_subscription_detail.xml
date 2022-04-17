@@ -8,14 +8,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="30dp"
+        android:layout_marginHorizontal="30dp"
         android:orientation="vertical">
 
         <com.google.android.flexbox.FlexboxLayout
-            android:layout_width="350dp"
-            android:layout_height="350dp"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="20dp"
             android:padding="10dp"
             app:flexDirection="column"
             app:justifyContent="space_between"
@@ -94,13 +95,14 @@
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="15dp"
             app:alignItems="center"
             android:padding="10dp"
             android:background="@drawable/rounded_light_grey"
             app:justifyContent="space_around">
 
             <TextView
+                android:id="@+id/text_menu_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="15dp"
@@ -109,6 +111,7 @@
                 android:text="Members"/>
 
             <TextView
+                android:id="@+id/text_menu_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="15dp"
@@ -117,6 +120,7 @@
                 android:text="History"/>
 
             <TextView
+                android:id="@+id/text_menu_media"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="15dp"
@@ -126,10 +130,19 @@
 
         </com.google.android.flexbox.FlexboxLayout>
 
-        <FrameLayout
-            android:id="@+id/subs_detail_fragment_placeholder"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+            android:layout_height="match_parent">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <FrameLayout
+                    android:id="@+id/subs_detail_fragment_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </ScrollView>
+        </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>
