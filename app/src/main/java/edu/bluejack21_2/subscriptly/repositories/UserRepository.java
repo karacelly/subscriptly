@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -112,28 +113,7 @@ public class UserRepository {
         });
     }
 
-    public static void addFriend(String senderId, String receiverId, QueryFinishListener<Boolean> listener) {
-//        Query findUserUsername = userRef.whereEqualTo("username", receiverUsername).limit(1);
-//
-//        findUserUsername.get().addOnCompleteListener(task -> {
-//            if(task.isSuccessful()) {
-//                QuerySnapshot receiverQS = task.getResult();
-//                DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
-//                DocumentReference sender = SubscriptlyDB.getDB().document(senderId);
-//                DocumentReference receiver = receiverDS.getDocumentReference(receiverDS.getId());
-//                Map<String, Object> friendRequestMap = new HashMap<>();
-//                friendRequestMap.put("sender", sender);
-//                friendRequestMap.put("receiver", receiver);
-//                friendRequestRef.add(friendRequestMap)
-//                        .addOnSuccessListener(documentReference -> Log.d("Success", "Friend Request document Snapshot added with ID: " + documentReference.getId()))
-//                        .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
-//            }
-//            listener.onFinish(false);
-//        }).addOnFailureListener(e -> {
-//           listener.onFinish(false);
-//        });
-        Log.d("ADDFRIEND", "sender: "+senderId);
-        Log.d("ADDFRIEND", "receiver: "+receiverId);
+    public static void sendFriendRequest(String senderId, String receiverId, QueryFinishListener<Boolean> listener) {
         DocumentReference sender = userRef.document(senderId);
         DocumentReference receiver = userRef.document(receiverId);
         Map<String, Object> friendRequestMap = new HashMap<>();
@@ -149,6 +129,176 @@ public class UserRepository {
                     listener.onFinish(false);
                 });
     }
+
+    public static void rejectFriendRequest(String senderId, String receiverId, QueryFinishListener<Boolean> listener) {
+        DocumentReference sender = userRef.document(senderId);
+        DocumentReference receiver = userRef.document(receiverId);
+        Query findRequest = friendRequestRef.whereEqualTo("sender", sender).whereEqualTo("receiver", receiver).limit(1);
+
+        findRequest.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                QuerySnapshot receiverQS = task.getResult();
+                if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
+                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+                    receiverDS.getDocumentReference(receiverDS.getId()).delete().addOnCompleteListener(task1 -> {
+                        listener.onFinish(true);
+                    }).addOnFailureListener(e -> {
+                        listener.onFinish(false);
+                    });
+
+                } else {
+                    listener.onFinish(false);
+                }
+            } else {
+                listener.onFinish(false);
+            }
+        }).addOnFailureListener(e -> {
+           listener.onFinish(false);
+        });
+    }
+
+    public static void acceptFriendRequest(String senderId, String receiverId, QueryFinishListener<Boolean> listener) {
+        DocumentReference sender = userRef.document(senderId);
+        DocumentReference receiver = userRef.document(receiverId);
+        Query findRequest = friendRequestRef.whereEqualTo("sender", sender).whereEqualTo("receiver", receiver).limit(1);
+
+        findRequest.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                QuerySnapshot receiverQS = task.getResult();
+                if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
+                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+                    receiverDS.getDocumentReference(receiverDS.getId()).delete().addOnCompleteListener(task1 -> {
+                        UserRepository.addFriend(senderId, receiverId, data -> {
+                           if(data) {
+                                listener.onFinish(true);
+                           } else {
+                                listener.onFinish(false);
+                           }
+                        });
+                    }).addOnFailureListener(e -> {
+                        listener.onFinish(false);
+                    });
+
+                } else {
+                    listener.onFinish(false);
+                }
+            } else {
+                listener.onFinish(false);
+            }
+        }).addOnFailureListener(e -> {
+           listener.onFinish(false);
+        });
+    }
+
+    public static void initializeFriend(String userId, QueryFinishListener<DocumentReference> listener) {
+        DocumentReference user = userRef.document(userId);
+        Map<String, Object> friendMap = new HashMap<>();
+        friendMap.put("user", user);
+        friendRef.add(friendMap)
+                .addOnSuccessListener(documentReference -> listener.onFinish(documentReference))
+                .addOnFailureListener(e -> listener.onFinish(null));
+    }
+
+    public static void makeConnection(String userId, String newFriendId, QueryFinishListener<Boolean> listener) {
+        DocumentReference mainUser = userRef.document(userId);
+        DocumentReference newFriend = userRef.document(newFriendId);
+        Query mainUserRow = friendRef.whereEqualTo("user", mainUser).limit(1);
+
+        mainUserRow.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                QuerySnapshot receiverQS = task.getResult();
+                if(receiverQS.isEmpty() || receiverQS.getDocuments().isEmpty()) {
+                    initializeFriend(userId, data -> {
+                        if(data != null) {
+                            data.update("friends", FieldValue.arrayUnion(newFriend));
+                        } else {
+                            listener.onFinish(false);
+                        }
+                    });
+
+                } else {
+                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+                    receiverDS.getDocumentReference(receiverDS.getId()).update("friends", FieldValue.arrayUnion(newFriend));
+                }
+            } else {
+                listener.onFinish(false);
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
+        });
+    }
+
+    public static void addFriend(String firstUserId, String secondUserId, QueryFinishListener<Boolean> listener) {
+        UserRepository.makeConnection(firstUserId, secondUserId, data -> {
+            if(!data) {
+                listener.onFinish(false);
+            }
+        });
+
+        UserRepository.makeConnection(secondUserId, firstUserId, data -> {
+            if(!data) {
+                listener.onFinish(false);
+            } else {
+                listener.onFinish(true);
+            }
+        });
+
+//        firstUserFriend.get().addOnCompleteListener(task -> {
+//            if(task.isSuccessful()) {
+//                QuerySnapshot receiverQS = task.getResult();
+//                if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
+//                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+//                    receiverDS.getDocumentReference(receiverDS.getId()).delete().addOnCompleteListener(task1 -> {
+//                        listener.onFinish(true);
+//                    }).addOnFailureListener(e -> {
+//                        listener.onFinish(false);
+//                    });
+//
+//                } else {
+//                    initializeFriend(firstUserId, data -> {
+//                        if(data != null) {
+//                            data.update("friends", FieldValue.arrayUnion(secondUser));
+//                        } else {
+//                            listener.onFinish(false);
+//                        }
+//                    });
+//                }
+//            } else {
+//                listener.onFinish(false);
+//            }
+//        }).addOnFailureListener(e -> {
+//           listener.onFinish(false);
+//        });
+//
+//        secondUserFriend.get().addOnCompleteListener(task -> {
+//            if(task.isSuccessful()) {
+//                QuerySnapshot receiverQS = task.getResult();
+//                if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
+//                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+//                    receiverDS.getDocumentReference(receiverDS.getId()).delete().addOnCompleteListener(task1 -> {
+//                        listener.onFinish(true);
+//                    }).addOnFailureListener(e -> {
+//                        listener.onFinish(false);
+//                    });
+//
+//                } else {
+//                    initializeFriend(secondUserId, data -> {
+//                        if(data != null) {
+//                            data.update("friends", FieldValue.arrayUnion(firstUser));
+//                        } else {
+//                            listener.onFinish(false);
+//                        }
+//                    });
+//                }
+//            } else {
+//                listener.onFinish(false);
+//            }
+//        }).addOnFailureListener(e -> {
+//           listener.onFinish(false);
+//        });
+    }
+
+
 
     public static void userCheck(String email, QueryFinishListener<User> listener) {
         Query findUserEmail = userRef.whereEqualTo("email", email);

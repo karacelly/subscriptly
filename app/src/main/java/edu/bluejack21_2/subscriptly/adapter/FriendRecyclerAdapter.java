@@ -16,7 +16,6 @@ import java.util.List;
 
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
-import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
@@ -105,7 +104,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 //        holder.friendName.setText(users.get(position).getName());
         holder.bind(model);
         holder.addFriend.setOnClickListener(v -> {
-            UserRepository.addFriend(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
+            UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
                 if(data) {
                     holder.addFriend.setVisibility(View.GONE);
                     Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
@@ -113,6 +112,10 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                     Toast.makeText(context, "Failed Add Friend", Toast.LENGTH_LONG);
                 }
             });
+        });
+
+        holder.removeFriend.setOnClickListener(v -> {
+
         });
     }
 
