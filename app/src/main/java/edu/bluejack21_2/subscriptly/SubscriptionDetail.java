@@ -41,11 +41,11 @@ public class SubscriptionDetail extends AppCompatActivity {
         });
     }
 
-    public void initComponents(){
+    public void initComponents() {
         toolbar = findViewById(R.id.toolbar);
     }
 
-    private void setFragment(){
+    private void setFragment() {
         Intent intent = getIntent();
 
         DocumentReference findSubscription = SubscriptlyDB.getDB().collection("subscriptions").document(intent.getStringExtra("subscriptionID"));

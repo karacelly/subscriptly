@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".adapter.HistoryItemAdapter">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:alignItems="center"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:id="@+id/text_month_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="MARCH, 2022"/>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            app:justifyContent="space_between">
+
+            <TextView
+                android:id="@+id/text_paid_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#004AAD"
+                android:text="3 PAID"/>
+
+            <TextView
+                android:id="@+id/text_unpaid_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:text="0 UNPAID"/>
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.flexbox.FlexboxLayout>
+
+</FrameLayout>

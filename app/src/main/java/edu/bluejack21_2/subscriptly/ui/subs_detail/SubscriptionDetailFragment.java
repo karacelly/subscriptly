@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -79,25 +80,42 @@ public class SubscriptionDetailFragment extends Fragment {
         menuMedia.setTypeface(tf);
     }
 
+    private void resetBackground(){
+        menuMembers.setBackgroundResource(0);
+        menuHistory.setBackgroundResource(0);
+        menuMedia.setBackgroundResource(0);
+    }
+
     public void setDataOnView(View v){
         menuMembers.setTypeface(outfitBold);
 //        Picasso.get().load(subscription.get)
         subsName.setText(subscription.getName());
 
+        menuMembers.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
+
         menuMembers.setOnClickListener(view -> {
             resetTypeFace(outfitMedium);
+            resetBackground();
             menuMembers.setTypeface(outfitBold);
+
+            menuMembers.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
             setFragment(new SubscriptionDetailMemberFragment(subscription.getMembers()));
         });
 
         menuHistory.setOnClickListener(view -> {
             resetTypeFace(outfitMedium);
+            resetBackground();
             menuHistory.setTypeface(outfitBold);
+
+            menuHistory.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
         });
 
         menuMedia.setOnClickListener(view -> {
             resetTypeFace(outfitMedium);
+            resetBackground();
             menuMedia.setTypeface(outfitBold);
+
+            menuMedia.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
         });
     }
 
