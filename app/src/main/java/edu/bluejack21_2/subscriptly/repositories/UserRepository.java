@@ -201,28 +201,67 @@ public class UserRepository {
 
     public static void makeConnection(String userId, String newFriendId, QueryFinishListener<Boolean> listener) {
         DocumentReference mainUser = userRef.document(userId);
-        DocumentReference newFriend = userRef.document(newFriendId);
-        Query mainUserRow = friendRef.whereEqualTo("user", mainUser).limit(1);
+        DocumentReference friend = userRef.document(newFriendId);
+//        Query mainUserRow = userRef.whereEqualTo("user", mainUser).limit(1);
 
-        mainUserRow.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                QuerySnapshot receiverQS = task.getResult();
-                if(receiverQS.isEmpty() || receiverQS.getDocuments().isEmpty()) {
-                    initializeFriend(userId, data -> {
-                        if(data != null) {
-                            data.update("friends", FieldValue.arrayUnion(newFriend));
-                        } else {
-                            listener.onFinish(false);
-                        }
-                    });
+//        mainUserRow.get().addOnCompleteListener(task -> {
+//            if(task.isSuccessful()) {
+//                QuerySnapshot receiverQS = task.getResult();
+//                if(receiverQS.isEmpty() || receiverQS.getDocuments().isEmpty()) {
+//                    initializeFriend(userId, data -> {
+//                        if(data != null) {
+//                            data.update("friends", FieldValue.arrayUnion(newFriend));
+//                        } else {
+//                            listener.onFinish(false);
+//                        }
+//                    });
+//
+//                } else {
+//                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+//                    receiverDS.getDocumentReference(receiverDS.getId()).update("friends", FieldValue.arrayUnion(newFriend));
+//                }
+//            } else {
+//                listener.onFinish(false);
+//            }
+//        }).addOnFailureListener(e -> {
+//            listener.onFinish(false);
+//        });
+        mainUser.update("friends", FieldValue.arrayUnion(friend)).addOnSuccessListener(task -> {
+            listener.onFinish(true);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
+        });
+    }
 
-                } else {
-                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
-                    receiverDS.getDocumentReference(receiverDS.getId()).update("friends", FieldValue.arrayUnion(newFriend));
-                }
-            } else {
-                listener.onFinish(false);
-            }
+    public static void removeConnection(String userId, String friendId, QueryFinishListener<Boolean> listener) {
+        DocumentReference mainUser = userRef.document(userId);
+        DocumentReference friend = userRef.document(friendId);
+//        Query mainUserRow = friendRef.whereEqualTo("user", mainUser).limit(1);
+
+//        mainUserRow.get().addOnCompleteListener(task -> {
+//            if(task.isSuccessful()) {
+//                QuerySnapshot receiverQS = task.getResult();
+//                if(receiverQS.isEmpty() || receiverQS.getDocuments().isEmpty()) {
+//                    initializeFriend(userId, data -> {
+//                        if(data != null) {
+//                            data.update("friends", FieldValue.arrayUnion(friend));
+//                        } else {
+//                            listener.onFinish(false);
+//                        }
+//                    });
+//
+//                } else {
+//                    DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
+//                    receiverDS.getDocumentReference(receiverDS.getId()).update("friends", FieldValue.arrayUnion(friend));
+//                }
+//            } else {
+//                listener.onFinish(false);
+//            }
+//        }).addOnFailureListener(e -> {
+//            listener.onFinish(false);
+//        });
+        mainUser.update("friends", FieldValue.arrayRemove(friend)).addOnSuccessListener(task -> {
+            listener.onFinish(true);
         }).addOnFailureListener(e -> {
             listener.onFinish(false);
         });
