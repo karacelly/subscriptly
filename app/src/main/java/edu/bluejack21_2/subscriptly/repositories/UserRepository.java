@@ -167,18 +167,20 @@ public class UserRepository {
                 QuerySnapshot receiverQS = task.getResult();
                 if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
                     DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
-                    receiverDS.getDocumentReference(receiverDS.getId()).delete().addOnCompleteListener(task1 -> {
-                        UserRepository.addFriend(senderId, receiverId, data -> {
-                           if(data) {
-                                listener.onFinish(true);
-                           } else {
-                                listener.onFinish(false);
-                           }
+                    if(receiverDS != null) {
+                        Log.d("REQUEST receiverDS", receiverDS.getId());
+                        receiverDS.getReference().delete().addOnCompleteListener(task1 -> {
+                            UserRepository.addFriend(senderId, receiverId, data -> {
+                                if(data) {
+                                    listener.onFinish(true);
+                                } else {
+                                    listener.onFinish(false);
+                                }
+                            });
+                        }).addOnFailureListener(e -> {
+                            listener.onFinish(false);
                         });
-                    }).addOnFailureListener(e -> {
-                        listener.onFinish(false);
-                    });
-
+                    }
                 } else {
                     listener.onFinish(false);
                 }

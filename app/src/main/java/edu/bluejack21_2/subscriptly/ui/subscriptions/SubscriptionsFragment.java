@@ -88,21 +88,18 @@ public class SubscriptionsFragment extends Fragment {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         List<DocumentReference> userRefs = (List<DocumentReference>) document.get("users");
                                         for (DocumentReference userRef : userRefs) {
-                                            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot document = task.getResult();
-                                                        String key = document.getId();
-                                                        String name = document.getString("name");
-                                                        String username = document.getString("username");
-                                                        String email = document.getString("email");
-                                                        String password = "";
-                                                        Log.d("MEMBER", name);
-                                                        members.add(new User(key, name, username, email, password));
-                                                        s.setMembers(members);
-                                                        setRecyclerView(subscriptions, subscriptionRecycler);
-                                                    }
+                                            userRef.get().addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    DocumentSnapshot document1 = task1.getResult();
+                                                    String key = document1.getId();
+                                                    String name = document1.getString("name");
+                                                    String username = document1.getString("username");
+                                                    String email = document1.getString("email");
+                                                    String password = "";
+                                                    Log.d("MEMBER", name);
+                                                    members.add(new User(key, name, username, email, password));
+                                                    s.setMembers(members);
+                                                    setRecyclerView(subscriptions, subscriptionRecycler);
                                                 }
                                             });
                                         }

@@ -16,8 +16,10 @@ import java.util.List;
 
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
+import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.utils.Friend;
 
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
@@ -63,14 +65,16 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
     private final Context context;
     private final ArrayList<User> users;
+    private final ArrayList<FriendRequest> requests;
     private final int template;
 
     // Constructor for HomeAdapter class
     // which takes a users of String type
-    public FriendRecyclerAdapter(ArrayList<User> users, Comparator<User> comparator, Context context, int template) {
+    public FriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Comparator<User> comparator, Context context, int template) {
         Log.d("FLOW", "FriendRecyclerAdapter");
         this.context = context;
         this.users = users;
+        this.requests = requests;
         this.template = template;
         mInflater = LayoutInflater.from(context);
         mComparator = comparator;
@@ -103,6 +107,61 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         final User model = mSortedList.get(position);
 //        holder.friendName.setText(users.get(position).getName());
         holder.bind(model);
+        /*
+            Current Logged In User (Sender | Receiver)
+            if Sender:
+                'Cancel Friend Request'
+            else if Receiver
+                'Accept Friend Request'
+                'Reject Friend Request'
+
+         */
+        Log.d("REQUEST", requests.size()+"");
+
+        FriendRequest request = null;
+        if(UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
+            request = Friend.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
+
+
+        if(request != null) {
+
+            Log.d("REQUEST Receiver", request.getReceiver());
+            Log.d("REQUEST Sender", request.getSender());
+            Log.d("REQUEST CurrentUserID", UserRepository.LOGGED_IN_USER.getUserID());
+            Log.d("REQUEST UserID", model.getUserID());
+
+            holder.addFriend.setVisibility(View.GONE);
+            if(request.getSender().equals(model.getUserID())) {
+
+            } else {
+                holder.acceptFriend.setVisibility(View.VISIBLE);
+                FriendRequest finalRequest = request;
+                holder.acceptFriend.setOnClickListener(v -> {
+                    UserRepository.acceptFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
+                        if(data) {
+                            Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
+                            holder.acceptFriend.setVisibility(View.GONE);
+                            holder.rejectFriend.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
+                        }
+                    });
+                });
+
+                holder.rejectFriend.setVisibility(View.VISIBLE);
+                holder.rejectFriend.setOnClickListener(v -> {
+                    UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
+                        if(data) {
+                            holder.rejectFriend.setVisibility(View.GONE);
+                            holder.acceptFriend.setVisibility(View.GONE);
+                            Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
+                        } else {
+                            Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
+                        }
+                    });
+                });
+            }
+        }
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
                 if(data) {

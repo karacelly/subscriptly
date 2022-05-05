@@ -1,26 +1,26 @@
 package edu.bluejack21_2.subscriptly.models;
 
 public class FriendRequest {
-    private User receiver, sender;
+    private String receiverId, senderId;
 
-    public FriendRequest(User receiver, User sender) {
-        this.receiver = receiver;
-        this.sender = sender;
+    public FriendRequest(String receiverId, String senderId) {
+        this.receiverId = receiverId;
+        this.senderId = senderId;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public String getReceiver() {
+        return receiverId;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceiver(String receiverId) {
+        this.receiverId = receiverId;
     }
 
-    public User getSender() {
-        return sender;
+    public String getSender() {
+        return senderId;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSender(String senderId) {
+        this.senderId = senderId;
     }
 }
