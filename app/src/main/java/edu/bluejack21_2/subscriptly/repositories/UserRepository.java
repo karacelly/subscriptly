@@ -26,9 +26,9 @@ import edu.bluejack21_2.subscriptly.utils.Crypt;
 public class UserRepository {
 
     public static User LOGGED_IN_USER = null;
-    private static final CollectionReference userRef = SubscriptlyDB.getDB().collection("users");
-    private static final CollectionReference friendRequestRef = SubscriptlyDB.getDB().collection("friend_requests");
-    private static final CollectionReference friendRef = SubscriptlyDB.getDB().collection("friends");
+    public static final CollectionReference userRef = SubscriptlyDB.getDB().collection("users");
+    public static final CollectionReference friendRequestRef = SubscriptlyDB.getDB().collection("friend_requests");
+    public static final CollectionReference friendRef = SubscriptlyDB.getDB().collection("friends");
 
     public static void insertUser(String name, String username, String email, String password) {
 

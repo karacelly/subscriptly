@@ -1,12 +1,22 @@
 package edu.bluejack21_2.subscriptly.models;
 
-import androidx.recyclerview.widget.SortedList;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
     private String userID, name, username, email, password;
+    private ArrayList<String> friends = new ArrayList<>();
+
+
+    public User(String userID, String name, String username, String email, String password, ArrayList<String> friends) {
+        this.userID = userID;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.friends = friends;
+    }
 
     public User(String userID, String name, String username, String email, String password) {
         this.userID = userID;
@@ -14,6 +24,14 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
     }
 
     public String getName() {

@@ -28,6 +28,8 @@ import edu.bluejack21_2.subscriptly.adapter.FriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.databinding.FragmentFriendsBinding;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 
 public class FriendsFragment extends Fragment {
@@ -96,7 +98,8 @@ public class FriendsFragment extends Fragment {
         friendsRecycler = view.findViewById(R.id.recycler_friends);
 
         users = new ArrayList<>();
-        SubscriptlyDB.getDB().collection("users").get()
+
+        UserRepository.userRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -112,7 +115,8 @@ public class FriendsFragment extends Fragment {
                                     document.getString("name"),
                                     document.getString("username"),
                                     document.getString("email"),
-                                    ""));
+                                    "",
+                                    (ArrayList<String>) document.get("friends")));
                             Log.d("UserData", document.getString("name"));
                             setRecyclerView(users, friendsRecycler);
                         }
