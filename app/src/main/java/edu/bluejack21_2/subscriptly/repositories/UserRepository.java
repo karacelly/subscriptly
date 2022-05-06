@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,13 +53,22 @@ public class UserRepository {
                     String key = userDocument.getId();
                     String name = userDocument.getString("name");
                     String username = userDocument.getString("username");
-                    LOGGED_IN_USER = new User(key, name, username, email, password);
+                    ArrayList<String> friends = new ArrayList<>();
+                    for (DocumentReference ref:
+                            (ArrayList<DocumentReference>) userDocument.get("friends")) {
+                        friends.add(ref.getId());
+                    }
+                    LOGGED_IN_USER = new User(key, name, username, email, password, friends);
                     listener.onFinish(LOGGED_IN_USER);
                 } else
                     listener.onFinish(null);
             } else
                 listener.onFinish(null);
         });
+    }
+
+    public static void logout(QueryFinishListener<Boolean> listener) {
+
     }
 
     public static void emailUniqueCheck(String email, QueryFinishListener<Boolean> listener) {
@@ -251,6 +261,17 @@ public class UserRepository {
     }
 
 
+    public static Boolean checkFriend(User user, String friendUserId) {
+//        if (user.getFriends().contains(friendUserId)) return true;
+//        else return false;
+
+        Log.d("CHECK FRIEND ID COMPARED", friendUserId);
+        for (String id:
+             user.getFriends()) {
+            Log.d("CHECK FRIEND ID", id);
+        }
+        return user.getFriends().contains(friendUserId) ? true : false;
+    }
 
     public static void userCheck(String email, QueryFinishListener<User> listener) {
         Query findUserEmail = userRef.whereEqualTo("email", email);

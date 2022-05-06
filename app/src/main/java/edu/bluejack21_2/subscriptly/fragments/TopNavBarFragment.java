@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.ui.subs_detail.SubscriptionDetailMemberFragment;
 
 public class TopNavBarFragment extends Fragment {
@@ -47,6 +48,9 @@ public class TopNavBarFragment extends Fragment {
                 PopupMenu popupMenu = new PopupMenu(getActivity(), profileIcon);
 
                 popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
+                popupMenu.getMenu().getItem(R.id.menu_logout).setOnMenuItemClickListener(menuItem -> {
+                    UserRepository.
+                });
                 popupMenu.show();
             }
         });
