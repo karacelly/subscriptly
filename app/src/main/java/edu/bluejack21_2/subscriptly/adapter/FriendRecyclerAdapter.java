@@ -23,7 +23,6 @@ import edu.bluejack21_2.subscriptly.utils.Friend;
 
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
-    private FriendViewHolder friendViewHolder;
     private final LayoutInflater mInflater;
     private final Comparator<User> mComparator;
     private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
@@ -62,11 +61,11 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             return item1.getUserID() == item2.getUserID();
         }
     });
-
     private final Context context;
     private final ArrayList<User> users;
     private final ArrayList<FriendRequest> requests;
     private final int template;
+    private FriendViewHolder friendViewHolder;
 
     // Constructor for HomeAdapter class
     // which takes a users of String type
@@ -78,7 +77,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         this.template = template;
         mInflater = LayoutInflater.from(context);
         mComparator = comparator;
-        if(users != null) {
+        if (users != null) {
             mSortedList.addAll(users);
         }
     }
@@ -116,14 +115,14 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 'Reject Friend Request'
 
          */
-        Log.d("REQUEST", requests.size()+"");
+        Log.d("REQUEST", requests.size() + "");
 
         FriendRequest request = null;
-        if(UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
+        if (UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
             request = Friend.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
 
 
-        if(request != null) {
+        if (request != null) {
             FriendRequest finalRequest = request;
 
             Log.d("REQUEST Receiver", request.getReceiver());
@@ -132,11 +131,11 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             Log.d("REQUEST UserID", model.getUserID());
 
             holder.addFriend.setVisibility(View.GONE);
-            if(request.getSender().equals(UserRepository.LOGGED_IN_USER.getUserID())) {
+            if (request.getSender().equals(UserRepository.LOGGED_IN_USER.getUserID())) {
                 holder.cancelFriend.setVisibility(View.VISIBLE);
                 holder.cancelFriend.setOnClickListener(v -> {
                     UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), listener -> {
-                        if(listener) {
+                        if (listener) {
                             holder.addFriend.setVisibility(View.VISIBLE);
                             holder.cancelFriend.setVisibility(View.GONE);
                         } else {
@@ -150,10 +149,11 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
                 holder.acceptFriend.setOnClickListener(v -> {
                     UserRepository.acceptFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
-                        if(data) {
+                        if (data) {
                             Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
                             holder.acceptFriend.setVisibility(View.GONE);
                             holder.rejectFriend.setVisibility(View.GONE);
+                            holder.removeFriend.setVisibility(View.VISIBLE);
                         } else {
                             Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
                         }
@@ -163,7 +163,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 holder.rejectFriend.setVisibility(View.VISIBLE);
                 holder.rejectFriend.setOnClickListener(v -> {
                     UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
-                        if(data) {
+                        if (data) {
                             holder.rejectFriend.setVisibility(View.GONE);
                             holder.acceptFriend.setVisibility(View.GONE);
                             holder.addFriend.setVisibility(View.VISIBLE);
@@ -174,10 +174,12 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                     });
                 });
             }
+        } else {
+            holder.addFriend.setVisibility(View.VISIBLE);
         }
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
-                if(data) {
+                if (data) {
                     holder.addFriend.setVisibility(View.GONE);
                     holder.cancelFriend.setVisibility(View.VISIBLE);
                     Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
@@ -187,8 +189,22 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-        holder.removeFriend.setOnClickListener(v -> {
 
+        Log.d("CHECK FRIEND SIZE", users.size()+"");
+//        Log.d("CHECK FRIEND", UserRepository.checkFriend(users, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID()).toString());
+        if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, model.getUserID())) {
+            holder.addFriend.setVisibility(View.GONE);
+            holder.removeFriend.setVisibility(View.VISIBLE);
+        }
+        holder.removeFriend.setOnClickListener(v -> {
+            UserRepository.removeFriend(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), listener -> {
+                if (listener) {
+                    holder.removeFriend.setVisibility(View.GONE);
+                    holder.addFriend.setVisibility(View.VISIBLE);
+                } else {
+
+                }
+            });
         });
     }
 
@@ -237,7 +253,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
     public void add(List<User> models) {
         Log.d("FLOW", "AddMSortedList");
         mSortedList.addAll(models);
-        Log.d("SortedList Size: ", mSortedList.size()+"");
+        Log.d("SortedList Size: ", mSortedList.size() + "");
 //        friendViewHolder.bind(mSortedList);
     }
 
