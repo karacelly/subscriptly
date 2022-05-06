@@ -174,6 +174,8 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                     });
                 });
             }
+        } else {
+            holder.addFriend.setVisibility(View.VISIBLE);
         }
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
@@ -193,8 +195,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, model.getUserID())) {
             holder.addFriend.setVisibility(View.GONE);
             holder.removeFriend.setVisibility(View.VISIBLE);
-        } else {
-            holder.addFriend.setVisibility(View.VISIBLE);
         }
         holder.removeFriend.setOnClickListener(v -> {
             UserRepository.removeFriend(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), listener -> {

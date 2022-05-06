@@ -1,8 +1,13 @@
 package edu.bluejack21_2.subscriptly.repositories;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.bluejack21_2.subscriptly.HomeActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
@@ -41,6 +47,22 @@ public class UserRepository {
                 .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
     }
 
+    public static User documentToUser(DocumentSnapshot userDoc) {
+        String key = userDoc.getId();
+        String name = userDoc.getString("name");
+        String email = userDoc.getString("email");
+        String password = userDoc.getString("password");
+        String username = userDoc.getString("username");
+        ArrayList<String> friends = new ArrayList<>();
+        if(userDoc.contains("friends")) {
+            for (DocumentReference ref:
+            (ArrayList<DocumentReference>) userDoc.get("friends")) {
+                friends.add(ref.getId());
+            }
+        }
+        return new User(key, name, username, email, password, friends);
+    }
+
     public static void authenticateLogin(String email, String password, QueryFinishListener<User> listener) {
         Query findUserEmail = userRef.whereEqualTo("email", email);
 
@@ -50,25 +72,13 @@ public class UserRepository {
 
                 String databaseUserPassword = userDocument.getString("password");
                 if (Crypt.verifyHash(password, databaseUserPassword)) {
-                    String key = userDocument.getId();
-                    String name = userDocument.getString("name");
-                    String username = userDocument.getString("username");
-                    ArrayList<String> friends = new ArrayList<>();
-                    for (DocumentReference ref:
-                            (ArrayList<DocumentReference>) userDocument.get("friends")) {
-                        friends.add(ref.getId());
-                    }
-                    LOGGED_IN_USER = new User(key, name, username, email, password, friends);
+                    LOGGED_IN_USER = documentToUser(userDocument);
                     listener.onFinish(LOGGED_IN_USER);
                 } else
                     listener.onFinish(null);
             } else
                 listener.onFinish(null);
         });
-    }
-
-    public static void logout(QueryFinishListener<Boolean> listener) {
-
     }
 
     public static void emailUniqueCheck(String email, QueryFinishListener<Boolean> listener) {
@@ -91,7 +101,6 @@ public class UserRepository {
         findUserUsername.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot documentSnapshots) {
-//                DocumentSnapshot userDocument = documentSnapshots.getDocuments().get(0);
 
                 if (!documentSnapshots.isEmpty()) {
                     listener.onFinish(false);
@@ -104,21 +113,13 @@ public class UserRepository {
     public static void getUser(String id, QueryFinishListener<User> listener) {
         DocumentReference findUser = userRef.document(id);
 
-        findUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot userDocument = task.getResult();
-                    if (userDocument.exists()) {
-                        String databaseUserPassword = userDocument.getString("password");
-                        String key = userDocument.getId();
-                        String name = userDocument.getString("name");
-                        String email = userDocument.getString("email");
-                        String username = userDocument.getString("username");
-                        listener.onFinish(new User(key, name, username, email, databaseUserPassword));
-                    } else
-                        listener.onFinish(null);
-                }
+        findUser.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot userDocument = task.getResult();
+                if (userDocument.exists()) {
+                    listener.onFinish(documentToUser(userDocument));
+                } else
+                    listener.onFinish(null);
             }
         });
     }
@@ -273,24 +274,17 @@ public class UserRepository {
         return user.getFriends().contains(friendUserId) ? true : false;
     }
 
-    public static void userCheck(String email, QueryFinishListener<User> listener) {
-        Query findUserEmail = userRef.whereEqualTo("email", email);
+    public static void userCheck(String userId, QueryFinishListener<User> listener) {
+        DocumentReference user = userRef.document(userId);
 
-        findUserEmail.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-
-                if (!documentSnapshots.isEmpty()) {
-                    DocumentSnapshot userDocument = documentSnapshots.getDocuments().get(0);
-                    String databaseUserPassword = userDocument.getString("password");
-                    String key = userDocument.getId();
-                    String name = userDocument.getString("name");
-                    String username = userDocument.getString("username");
-                    LOGGED_IN_USER = new User(key, name, username, email, databaseUserPassword);
-                    listener.onFinish(LOGGED_IN_USER);
-                } else
-                    listener.onFinish(null);
-            }
+        user.get().addOnSuccessListener(userDocument -> {
+            if (userDocument.exists()) {
+                listener.onFinish(documentToUser(userDocument));
+            } else
+                listener.onFinish(null);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(null);
         });
+
     }
 }

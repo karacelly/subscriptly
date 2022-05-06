@@ -33,11 +33,32 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
 //        loginManager = LoginManager.getInstance();
     }
 
+    private void checkUserSession() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (prefs.contains("userID")) {
+
+            UserRepository.userCheck(prefs.getString("userID", null), (data) -> {
+                if (data != null) {
+                    UserRepository.LOGGED_IN_USER = data;
+                    Intent i = new Intent(this, HomeActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear();
+                    editor.commit();
+                }
+            });
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        checkUserSession();
         initComponents();
 
         redirectSignUp.setOnClickListener(v -> {

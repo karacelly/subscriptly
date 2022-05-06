@@ -136,26 +136,16 @@ public class FriendsFragment extends Fragment {
 //                                ArrayList<User> members = (ArrayList<User>)document.get("members");
 //                                Log.d("Members", document.get("members").getClass().toString());
                             if(!UserRepository.LOGGED_IN_USER.getUserID().equals(document.getId())) {
-                                users.add(new User(
-                                        document.getId(),
-                                        document.getString("name"),
-                                        document.getString("username"),
-                                        document.getString("email"),
-                                        "",
-                                        (ArrayList<String>) document.get("friends")));
-                                Log.d("UserData", document.getString("name"));
+                                users.add(UserRepository.documentToUser(document));
                                 setRecyclerView(users, requests, friendsRecycler);
                             }
                         }
                     } else {}
-                    Log.d("FLOW", "beforefieldSearchFriend");
                     fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
                         @Override
                         public boolean onQueryTextSubmit(String query) {
                             return false;
                         }
-
                         @Override
                         public boolean onQueryTextChange(String query) {
                             final List<User> filteredModelList = filter(users, query);
