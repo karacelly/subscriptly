@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
+import edu.bluejack21_2.subscriptly.fragments.TopNavBarFragment;
 import edu.bluejack21_2.subscriptly.ui.home.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);
         initComponents();
+        loadFragment(new TopNavBarFragment(), R.id.top_bar);
 
         mBottomNavigation.setOnItemSelectedListener(item -> {
             Log.d("ViewPager BottomNavigation", item.toString());
@@ -59,13 +61,14 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
 
-        loadFragment(new HomeFragment());
+//        loadFragment(new HomeFragment(), R.id.container_frame_layout);
+        viewPager.setCurrentItem(0);
     }
 
-    private boolean loadFragment(Fragment fragment) {
+    private boolean loadFragment(Fragment fragment, int destination) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_frame_layout, fragment);
+            ft.replace(destination, fragment);
             ft.commit();
             return true;
         }
