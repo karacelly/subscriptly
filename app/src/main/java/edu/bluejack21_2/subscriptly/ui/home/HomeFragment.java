@@ -1,7 +1,6 @@
 package edu.bluejack21_2.subscriptly.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +25,14 @@ import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
-import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 
 public class HomeFragment extends Fragment implements QueryFinishListener<User> {
 
+    private static HomeFragment fragment;
     private RecyclerView subscriptionGroupRecycler;
     private ArrayList<Subscription> subscriptions;
-    private static HomeFragment fragment;
+
     //    private FragmentHomeBinding binding;
     public HomeFragment() {
         // Required empty public constructor
@@ -82,24 +82,18 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
     private void fetchData() {
         SubscriptlyDB.getDB().collection("subscriptions").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                ArrayList<String> memberIDs = (ArrayList<String>)document.get("members");
-//                                for (String id:
-//                                     memberIDs) {
-//                                    UserRepository.getUser(id, fragment);
-//                                }
-//                                ArrayList<User> members = (ArrayList<User>)document.get("members");
-//                                Log.d("Members", document.get("members").getClass().toString());
-                                subscriptions.add(new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>()));
-                            }
-                            setRecyclerView(subscriptions, subscriptionGroupRecycler);
-                        } else {
-
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            SubscriptionRepository.documentToSubscription(document, data -> {
+                                if (data != null) {
+                                    subscriptions.add(data);
+                                    setRecyclerView(subscriptions, subscriptionGroupRecycler);
+                                }
+                            });
                         }
+                    } else {
+
                     }
                 });
     }
