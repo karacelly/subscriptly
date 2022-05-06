@@ -58,7 +58,7 @@ public class SubscriptionDetail extends AppCompatActivity {
                     if (document.exists()) {
 
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        Subscription s = new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>());
+//                        Subscription s = new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>());
                         ft.replace(R.id.subsDetailFragmentPlaceholder, new SubscriptionDetailFragment(SubscriptionRepository.ACTIVE_SUBSCRIPTION));
 //                        ft.replace(R.id.subsDetailFragmentPlaceholder, new SubscriptionDetailFragment(s));
                         ft.commit();

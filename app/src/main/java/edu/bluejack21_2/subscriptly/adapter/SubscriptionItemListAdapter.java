@@ -2,6 +2,7 @@ package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.Currency;
 
 public class SubscriptionItemListAdapter extends BaseAdapter {
@@ -23,6 +25,7 @@ public class SubscriptionItemListAdapter extends BaseAdapter {
     public SubscriptionItemListAdapter(Context ctx, ArrayList<Subscription> subs){
         this.ctx = ctx;
         this.subscriptions = subs;
+        Log.d("SUBSCRIPTION SIZE", subscriptions.size()+"");
     }
 
     @Override
@@ -54,6 +57,7 @@ public class SubscriptionItemListAdapter extends BaseAdapter {
         subscriptionBill.setText(Currency.formatToRupiah(Double.parseDouble(s.getBill().toString())));
 
         convertView.setOnClickListener(v->{
+            SubscriptionRepository.ACTIVE_SUBSCRIPTION = s;
             Intent detail = new Intent(ctx, SubscriptionDetail.class);
             detail.putExtra("subscriptionID", subscriptions.get(position).getKey());
             ctx.startActivity(detail);
