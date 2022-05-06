@@ -22,10 +22,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 
 import edu.bluejack21_2.subscriptly.utils.Image;
@@ -101,9 +103,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         buttonAdd = findViewById(R.id.action_add_friend);
         friendName = findViewById(R.id.field_name_friend_default);
         buttonCreateSubscription = findViewById(R.id.action_create_subscription);
-
         toolbar = findViewById(R.id.toolbar);
         toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,9 +129,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonAdd.setOnClickListener(v -> {
-            Intent i = new Intent(AddSubscriptionActivity.this, HomeActivity.class);
-            startActivity(i);
-//            addView();
+//            Intent i = new Intent(AddSubscriptionActivity.this, HomeActivity.class);
+//            startActivity(i);
+            addView();
         });
 
         subscriptionBill.addTextChangedListener(new TextWatcher() {
