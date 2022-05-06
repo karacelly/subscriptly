@@ -153,10 +153,14 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginVertical="5dp"
+        android:textAppearance="@font/outfit_light"
+        android:textColor="@color/white"
         android:backgroundTint="@color/primary_color"
         android:fontFamily="@font/outfit_light"
         android:text="CREATE"
+        android:textSize="15sp"
         android:textAlignment="center"
+        android:gravity="center"
         app:cornerRadius="12dp" />
 
 </com.google.android.flexbox.FlexboxLayout>

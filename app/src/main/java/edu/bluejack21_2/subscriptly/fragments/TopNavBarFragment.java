@@ -54,6 +54,7 @@ public class TopNavBarFragment extends Fragment {
 
                 popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
 //                popupMenu.getMenu().getItem(R.id.menu_logout).setOnMenuItemClickListener(menuItem -> {
+
                 popupMenu.getMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
                     Intent i = new Intent(getActivity(), ProfileActivity.class);
                     startActivity(i);
