@@ -30,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void initComponents() {
         toolbar = findViewById(R.id.toolbar);
+        toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
 
         nameTxt = findViewById(R.id.profile_name_txt);
         usernameTxt = findViewById(R.id.profile_uname_txt);

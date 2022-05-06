@@ -11,8 +11,7 @@
         android:theme="@style/Theme.Subscriptly">
         <activity
             android:name=".ProfileActivity"
-            android:exported="false"
-            android:parentActivityName=".HomeActivity"/>
+            android:exported="false" />
         <activity
             android:name=".SubscriptionDetail"
             android:exported="false"></activity>

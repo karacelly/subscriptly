@@ -13,13 +13,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
         tools:context=".fragments.TopNavBarFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            android:layout_height="wrap_content"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:titleTextColor="@color/primary_color"
+            app:title="My Profile"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

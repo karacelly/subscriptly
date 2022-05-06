@@ -23,6 +23,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.button.MaterialButton;
@@ -31,6 +32,7 @@ import edu.bluejack21_2.subscriptly.utils.Image;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
     // Subscription Image
     CardView imageToggle;
     ImageView imageSubscription;
@@ -99,6 +101,15 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         buttonAdd = findViewById(R.id.action_add_friend);
         friendName = findViewById(R.id.field_name_friend_default);
         buttonCreateSubscription = findViewById(R.id.action_create_subscription);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
