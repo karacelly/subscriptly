@@ -124,6 +124,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
 
         if(request != null) {
+            FriendRequest finalRequest = request;
 
             Log.d("REQUEST Receiver", request.getReceiver());
             Log.d("REQUEST Sender", request.getSender());
@@ -131,11 +132,22 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             Log.d("REQUEST UserID", model.getUserID());
 
             holder.addFriend.setVisibility(View.GONE);
-            if(request.getSender().equals(model.getUserID())) {
+            if(request.getSender().equals(UserRepository.LOGGED_IN_USER.getUserID())) {
+                holder.cancelFriend.setVisibility(View.VISIBLE);
+                holder.cancelFriend.setOnClickListener(v -> {
+                    UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), listener -> {
+                        if(listener) {
+                            holder.addFriend.setVisibility(View.VISIBLE);
+                            holder.cancelFriend.setVisibility(View.GONE);
+                        } else {
+
+                        }
+                    });
+                });
 
             } else {
                 holder.acceptFriend.setVisibility(View.VISIBLE);
-                FriendRequest finalRequest = request;
+
                 holder.acceptFriend.setOnClickListener(v -> {
                     UserRepository.acceptFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
                         if(data) {
@@ -154,6 +166,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                         if(data) {
                             holder.rejectFriend.setVisibility(View.GONE);
                             holder.acceptFriend.setVisibility(View.GONE);
+                            holder.addFriend.setVisibility(View.VISIBLE);
                             Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
                         } else {
                             Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
@@ -166,6 +179,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
                 if(data) {
                     holder.addFriend.setVisibility(View.GONE);
+                    holder.cancelFriend.setVisibility(View.VISIBLE);
                     Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
                 } else {
                     Toast.makeText(context, "Failed Add Friend", Toast.LENGTH_LONG);

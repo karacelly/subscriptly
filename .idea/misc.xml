@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_layout_activityy.xml" value="0.3484708063021316" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_main.xml" value="0.2674772036474164" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_friends.xml" value="0.182370820668693" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_home.xml" value="0.175" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_top_nav_bar.xml" value="0.2674772036474164" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/friend_item.xml" value="0.22826086956521738" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border.xml" value="0.2085" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/drawable/border_bg_white.xml" value="0.183" />

@@ -16,7 +16,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
 
     public TextView friendName;
     public ImageView friendProfilePicture;
-    public Button addFriend, removeFriend, acceptFriend, rejectFriend;
+    public Button addFriend, cancelFriend, removeFriend, acceptFriend, rejectFriend;
     private final FriendItemBinding binding;
 
     public FriendViewHolder(FriendItemBinding binding) {
@@ -28,6 +28,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
         friendName = view.findViewById(R.id.text_friend_name);
         friendProfilePicture = view.findViewById(R.id.image_friend);
         addFriend = view.findViewById(R.id.action_add_friend);
+        cancelFriend = view.findViewById(R.id.action_cancel_friend);
         removeFriend = view.findViewById(R.id.action_remove_friend);
         acceptFriend = view.findViewById(R.id.action_accept_friend);
         rejectFriend = view.findViewById(R.id.action_reject_friend);
