@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import edu.bluejack21_2.subscriptly.MainActivity;
+import edu.bluejack21_2.subscriptly.ProfileActivity;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.ui.subs_detail.SubscriptionDetailMemberFragment;
@@ -53,6 +54,12 @@ public class TopNavBarFragment extends Fragment {
 
                 popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
 //                popupMenu.getMenu().getItem(R.id.menu_logout).setOnMenuItemClickListener(menuItem -> {
+                popupMenu.getMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
+                    Intent i = new Intent(getActivity(), ProfileActivity.class);
+                    startActivity(i);
+                    return true;
+                });
+
                 popupMenu.getMenu().getItem(2).setOnMenuItemClickListener(menuItem -> {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = prefs.edit();
@@ -63,6 +70,8 @@ public class TopNavBarFragment extends Fragment {
                     getActivity().finish();
                     return true;
                 });
+
+
                 popupMenu.show();
             }
         });
