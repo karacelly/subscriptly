@@ -10,11 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Subscriptly">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".SubscriptionDetail"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".LayoutActivityy"
             android:exported="false"
@@ -24,7 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
