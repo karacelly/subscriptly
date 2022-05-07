@@ -1,18 +1,7 @@
 package edu.bluejack21_2.subscriptly.repositories;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.bluejack21_2.subscriptly.HomeActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
@@ -32,10 +20,10 @@ import edu.bluejack21_2.subscriptly.utils.Crypt;
 
 public class UserRepository {
 
-    public static User LOGGED_IN_USER = null;
     public static final CollectionReference userRef = SubscriptlyDB.getDB().collection("users");
     public static final CollectionReference friendRequestRef = SubscriptlyDB.getDB().collection("friend_requests");
     public static final CollectionReference friendRef = SubscriptlyDB.getDB().collection("friends");
+    public static User LOGGED_IN_USER = null;
 
     public static void insertUser(String name, String username, String email, String password) {
 
@@ -47,6 +35,19 @@ public class UserRepository {
                 .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
     }
 
+    public static void updateUserData(String userId, String name, String username, String email, QueryFinishListener<Boolean> listener) {
+        DocumentReference user = userRef.document(userId);
+
+        user.update(
+                "name", name,
+                "username", username,
+                "email", email).addOnSuccessListener(task -> {
+            listener.onFinish(true);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
+        });
+    }
+
     public static User documentToUser(DocumentSnapshot userDoc) {
         String key = userDoc.getId();
         String name = userDoc.getString("name");
@@ -54,9 +55,9 @@ public class UserRepository {
         String password = userDoc.getString("password");
         String username = userDoc.getString("username");
         ArrayList<String> friends = new ArrayList<>();
-        if(userDoc.contains("friends")) {
-            for (DocumentReference ref:
-            (ArrayList<DocumentReference>) userDoc.get("friends")) {
+        if (userDoc.contains("friends")) {
+            for (DocumentReference ref :
+                    (ArrayList<DocumentReference>) userDoc.get("friends")) {
                 friends.add(ref.getId());
             }
         }
@@ -81,11 +82,10 @@ public class UserRepository {
         });
     }
 
-    public static void emailUniqueCheck(String email, QueryFinishListener<Boolean> listener) {
+    public static void emailIsUnique(String email, QueryFinishListener<Boolean> listener) {
         Query findUserEmail = userRef.whereEqualTo("email", email);
 
         findUserEmail.get().addOnSuccessListener(documentSnapshots -> {
-//                DocumentSnapshot userDocument = documentSnapshots.getDocuments().get(0);
             if (documentSnapshots.isEmpty()) {
                 listener.onFinish(true);
             } else
@@ -95,18 +95,16 @@ public class UserRepository {
         });
     }
 
-    public static void usernameUniqueCheck(String username, QueryFinishListener<Boolean> listener) {
+    public static void usernameIsUnique(String username, QueryFinishListener<Boolean> listener) {
         Query findUserUsername = userRef.whereEqualTo("username", username);
 
-        findUserUsername.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-
-                if (!documentSnapshots.isEmpty()) {
-                    listener.onFinish(false);
-                } else
-                    listener.onFinish(true);
-            }
+        findUserUsername.get().addOnSuccessListener(documentSnapshots -> {
+            if (documentSnapshots.isEmpty()) {
+                listener.onFinish(true);
+            } else
+                listener.onFinish(false);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
         });
     }
 
@@ -147,7 +145,7 @@ public class UserRepository {
         Query findRequest = friendRequestRef.whereEqualTo("sender", sender).whereEqualTo("receiver", receiver).limit(1);
 
         findRequest.get().addOnSuccessListener(task -> {
-            if(!task.isEmpty() && !task.getDocuments().isEmpty()) {
+            if (!task.isEmpty() && !task.getDocuments().isEmpty()) {
                 DocumentSnapshot receiverDS = task.getDocuments().get(0);
                 receiverDS.getReference().delete().addOnSuccessListener(task1 -> {
                     listener.onFinish(true);
@@ -159,7 +157,7 @@ public class UserRepository {
                 listener.onFinish(false);
             }
         }).addOnFailureListener(e -> {
-           listener.onFinish(false);
+            listener.onFinish(false);
         });
     }
 
@@ -169,15 +167,15 @@ public class UserRepository {
         Query findRequest = friendRequestRef.whereEqualTo("sender", sender).whereEqualTo("receiver", receiver).limit(1);
 
         findRequest.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
+            if (task.isSuccessful()) {
                 QuerySnapshot receiverQS = task.getResult();
-                if(!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
+                if (!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
                     DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
-                    if(receiverDS != null) {
+                    if (receiverDS != null) {
                         Log.d("REQUEST receiverDS", receiverDS.getId());
                         receiverDS.getReference().delete().addOnCompleteListener(task1 -> {
                             UserRepository.addFriend(senderId, receiverId, data -> {
-                                if(data) {
+                                if (data) {
                                     listener.onFinish(true);
                                 } else {
                                     listener.onFinish(false);
@@ -194,7 +192,7 @@ public class UserRepository {
                 listener.onFinish(false);
             }
         }).addOnFailureListener(e -> {
-           listener.onFinish(false);
+            listener.onFinish(false);
         });
     }
 
@@ -231,13 +229,13 @@ public class UserRepository {
 
     public static void addFriend(String firstUserId, String secondUserId, QueryFinishListener<Boolean> listener) {
         UserRepository.makeConnection(firstUserId, secondUserId, data -> {
-            if(!data) {
+            if (!data) {
                 listener.onFinish(false);
             }
         });
 
         UserRepository.makeConnection(secondUserId, firstUserId, data -> {
-            if(!data) {
+            if (!data) {
                 listener.onFinish(false);
             } else {
                 listener.onFinish(true);
@@ -247,13 +245,13 @@ public class UserRepository {
 
     public static void removeFriend(String firstUserId, String secondUserId, QueryFinishListener<Boolean> listener) {
         UserRepository.removeConnection(firstUserId, secondUserId, data -> {
-            if(!data) {
+            if (!data) {
                 listener.onFinish(false);
             }
         });
 
         UserRepository.removeConnection(secondUserId, firstUserId, data -> {
-            if(!data) {
+            if (!data) {
                 listener.onFinish(false);
             } else {
                 listener.onFinish(true);
@@ -263,15 +261,7 @@ public class UserRepository {
 
 
     public static Boolean checkFriend(User user, String friendUserId) {
-//        if (user.getFriends().contains(friendUserId)) return true;
-//        else return false;
-
-        Log.d("CHECK FRIEND ID COMPARED", friendUserId);
-        for (String id:
-             user.getFriends()) {
-            Log.d("CHECK FRIEND ID", id);
-        }
-        return user.getFriends().contains(friendUserId) ? true : false;
+        return user.getFriends().contains(friendUserId);
     }
 
     public static void userCheck(String userId, QueryFinishListener<User> listener) {

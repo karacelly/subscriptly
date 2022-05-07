@@ -31,8 +31,18 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        User user = UserRepository.LOGGED_IN_USER;
+        nameTxt.setText(user.getName());
+        usernameTxt.setText(user.getUsername());
+        emailTxt.setText(user.getEmail());
+    }
+
     public void initComponents() {
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
 
         nameTxt = findViewById(R.id.profile_name_txt);

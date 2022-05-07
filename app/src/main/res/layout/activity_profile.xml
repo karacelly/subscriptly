@@ -42,10 +42,11 @@
             <Button
                 android:id="@+id/profile_edit_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
+                android:layout_height="35dp"
+                android:paddingHorizontal="10dp"
                 android:background="@drawable/border_blue_rounded"
                 android:textColor="#38B6FF"
+                android:textSize="12sp"
                 android:text="Edit Profile"/>
         </com.google.android.flexbox.FlexboxLayout>
 

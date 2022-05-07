@@ -48,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity implements QueryFinishList
             String email;
             email = fieldEmail.getText().toString();
 
-            UserRepository.emailUniqueCheck(email, this);
+            UserRepository.emailIsUnique(email, this);
 
         });
     }
