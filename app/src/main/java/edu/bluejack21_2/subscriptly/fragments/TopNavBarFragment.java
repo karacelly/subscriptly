@@ -11,16 +11,22 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import edu.bluejack21_2.subscriptly.MainActivity;
 import edu.bluejack21_2.subscriptly.ProfileActivity;
 import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.ui.subs_detail.SubscriptionDetailMemberFragment;
 
 public class TopNavBarFragment extends Fragment {
     CardView profileIcon;
+    private ImageView profilePicture;
 
     public TopNavBarFragment() {
         // Required empty public constructor
@@ -75,6 +81,13 @@ public class TopNavBarFragment extends Fragment {
 
                 popupMenu.show();
             }
+        });
+
+        profilePicture = v.findViewById(R.id.profile_picture);
+        ImageRepository.storageRef.child(UserRepository.LOGGED_IN_USER.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(v.getContext()).load(uri.toString()).into(profilePicture);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(v.getContext(), "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
         });
     }
 }

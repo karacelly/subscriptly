@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +20,7 @@ import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Friend;
 
@@ -104,6 +107,12 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         Log.d("FLOW", "onBindViewHolder (position: " + position + " )");
         Log.d("COUNT", "Size mSortedList: " + mSortedList.size());
         final User model = mSortedList.get(position);
+
+        ImageRepository.storageRef.child(model.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(context).load(uri.toString()).into(holder.friendProfilePicture);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(context, "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
+        });
 //        holder.friendName.setText(users.get(position).getName());
         holder.bind(model);
         /*

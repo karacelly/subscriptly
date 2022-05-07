@@ -35,13 +35,14 @@ public class UserRepository {
                 .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
     }
 
-    public static void updateUserData(String userId, String name, String username, String email, QueryFinishListener<Boolean> listener) {
+    public static void updateUserData(String userId, String name, String username, String email, String fileName, QueryFinishListener<Boolean> listener) {
         DocumentReference user = userRef.document(userId);
 
         user.update(
                 "name", name,
                 "username", username,
-                "email", email).addOnSuccessListener(task -> {
+                "email", email,
+                "image", fileName).addOnSuccessListener(task -> {
             listener.onFinish(true);
         }).addOnFailureListener(e -> {
             listener.onFinish(false);
@@ -54,6 +55,7 @@ public class UserRepository {
         String email = userDoc.getString("email");
         String password = userDoc.getString("password");
         String username = userDoc.getString("username");
+        String image = userDoc.getString("image");
         ArrayList<String> friends = new ArrayList<>();
         if (userDoc.contains("friends")) {
             for (DocumentReference ref :
@@ -61,7 +63,7 @@ public class UserRepository {
                 friends.add(ref.getId());
             }
         }
-        return new User(key, name, username, email, password, friends);
+        return new User(key, name, username, email, password, image, friends);
     }
 
     public static void authenticateLogin(String email, String password, QueryFinishListener<User> listener) {

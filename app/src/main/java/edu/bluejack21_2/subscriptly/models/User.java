@@ -5,16 +5,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-    private String userID, name, username, email, password;
+    private String userID, name, username, email, password, image;
     private ArrayList<String> friends = new ArrayList<>();
 
+    public String getImage() {
+        if(image == null) {
+            return "profile/DefaultProfile.jpg";
+        }
+        return "profile/"+image;
+    }
 
-    public User(String userID, String name, String username, String email, String password, ArrayList<String> friends) {
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public User(String userID, String name, String username, String email, String password, String image, ArrayList<String> friends) {
         this.userID = userID;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.image = image;
         this.friends = friends;
     }
 
