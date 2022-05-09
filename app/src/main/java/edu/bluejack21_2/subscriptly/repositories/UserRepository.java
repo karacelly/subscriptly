@@ -49,6 +49,17 @@ public class UserRepository {
         });
     }
 
+    public static void updateUserPassword(String userId, String password, QueryFinishListener<Boolean> listener) {
+        DocumentReference user = userRef.document(userId);
+
+        user.update(
+                "password", Crypt.generateHash(password)).addOnSuccessListener(task -> {
+            listener.onFinish(true);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
+        });
+    }
+
     public static User documentToUser(DocumentSnapshot userDoc) {
         String key = userDoc.getId();
         String name = userDoc.getString("name");
