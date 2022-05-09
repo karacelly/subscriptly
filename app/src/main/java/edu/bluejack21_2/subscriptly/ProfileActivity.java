@@ -20,7 +20,7 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView nameTxt, usernameTxt, emailTxt;
-    private Button editProfileBtn;
+    private Button editProfileBtn, changePasswordBtn;
     private ImageView profilePicture;
 
     @Override
@@ -72,6 +72,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
+        changePasswordBtn = findViewById(R.id.change_pass_btn);
+        changePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
                 startActivity(i);
             }
         });
