@@ -50,6 +50,19 @@
             android:layout_marginVertical="15dp"
             android:orientation="vertical">
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_users_chosen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </HorizontalScrollView>
+
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/field_search_friend"
                 android:layout_width="match_parent"
