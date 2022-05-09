@@ -22,40 +22,34 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 
 import edu.bluejack21_2.subscriptly.utils.Image;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     // Subscription Image
     CardView imageToggle;
     ImageView imageSubscription;
-
     EditText subscriptionBill;
-
     // Friend List
     LinearLayout layoutFriendList;
     ImageButton buttonAdd;
     EditText friendName;
     MaterialButton buttonCreateSubscription;
-
     Context context;
     ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-//                if(result.getResultCode() == 3) {
+//                    if(result.getResultCode() == 3) {
 //
-//                }
+//                    }
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // There are no request codes
                         Intent data = result.getData();
@@ -63,35 +57,12 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                         if (data != null) {
                             Uri selectedImage = data.getData();
                             imageSubscription.setImageURI(selectedImage);
-                            Log.d("Image URI", selectedImage.toString());
-//                          doSomeOperations();
-//                          String extension = getMimeType(context, selectedImage);
-//                            Log.d("Image Extension", extension);
-//                            String uuid = UUID.randomUUID().toString();
-//                            Log.d("Image UUID", uuid+"."+extension);
                             String fileName = Image.getImageFileName(context, selectedImage);
-
-//                            FirebaseStorage storage = FirebaseStorage.getInstance();
-//                            StorageReference storageRef = storage.getReference();
-//                            StorageReference subscriptionStorageRef = storageRef.child("subscriptions/" + selectedImage.getLastPathSegment());
-//                            UploadTask uploadTask;
-//                            uploadTask = subscriptionStorageRef.putFile(selectedImage);
-//
-//                            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception exception) {
-//                                    Log.d("Upload", exception.toString());
-//                                }
-//                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                                    Log.d("Upload", taskSnapshot.getMetadata().toString());
-//                                }
-//                            });
                         }
                     }
                 }
             });
+    private Toolbar toolbar;
 
     private void initComponents() {
         imageToggle = findViewById(R.id.action_pick_image);
@@ -129,9 +100,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonAdd.setOnClickListener(v -> {
-//            Intent i = new Intent(AddSubscriptionActivity.this, HomeActivity.class);
-//            startActivity(i);
-            addView();
+            Intent i = new Intent(this, ChooseFriendActivity.class);
+            startActivity(i);
+//            addView();
         });
 
         subscriptionBill.addTextChangedListener(new TextWatcher() {
@@ -161,21 +132,6 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                     subscriptionBill.setSelection(current.length());
                     subscriptionBill.addTextChangedListener(this);
                 }
-//                if (!s.toString().equals(current)) {
-//                    subscriptionBill.removeTextChangedListener(this);
-//
-//                    String cleanString = s.toString().replaceAll("[Rp. ]", "");
-//                    Log.d("Clean String", cleanString);
-//                    Double parsed = Double.parseDouble(cleanString);
-//
-//                    String formatted = formatRupiah.format(parsed);
-//
-//                    current = formatted;
-//                    Log.d("Formatted String", formatted);
-//                    subscriptionBill.setText(formatted);
-//                    subscriptionBill.setSelection(formatted.length());
-//                    subscriptionBill.addTextChangedListener(this);
-//                }
             }
 
             @Override
@@ -185,20 +141,25 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonCreateSubscription.setOnClickListener(v -> {
-            for (int i = 0; i < layoutFriendList.getChildCount(); i++) {
-                if (layoutFriendList.getChildAt(i) instanceof LinearLayout) {
-                    LinearLayout row = (LinearLayout) layoutFriendList.getChildAt(i);
-                    for (int j = 0; j < row.getChildCount(); j++) {
-                        if (row.getChildAt(j) instanceof EditText) {
-                            EditText friendName = (EditText) row.getChildAt(j);
-                            if (friendName.getId() == R.id.field_name_friend) {
-                                Toast.makeText(context, "" + friendName.getText().toString(), Toast.LENGTH_SHORT);
-                            }
-                            Log.d("FRIEND NAME", friendName.getText().toString());
-                        }
-                    }
-                }
-            }
+            /*
+            Get All Usernames
+             */
+//            for (int i = 0; i < layoutFriendList.getChildCount(); i++) {
+//                if (layoutFriendList.getChildAt(i) instanceof LinearLayout) {
+//                    LinearLayout row = (LinearLayout) layoutFriendList.getChildAt(i);
+//                    for (int j = 0; j < row.getChildCount(); j++) {
+//                        if (row.getChildAt(j) instanceof EditText) {
+//                            EditText friendName = (EditText) row.getChildAt(j);
+//                            if (friendName.getId() == R.id.field_name_friend) {
+//                                Toast.makeText(context, "" + friendName.getText().toString(), Toast.LENGTH_SHORT);
+//                            }
+//                            Log.d("FRIEND NAME", friendName.getText().toString());
+//                        }
+//                    }
+//                }
+//            }
+
+
         });
 
     }

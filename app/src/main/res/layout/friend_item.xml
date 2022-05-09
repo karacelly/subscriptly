@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -9,7 +10,8 @@
     </data>
 
     <!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
+        android:id="@+id/container_friend_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -59,7 +61,8 @@
                 android:fontFamily="@font/outfit_bold"
                 android:text="Add"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/action_cancel_friend"
@@ -108,6 +111,20 @@
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/action_choose_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|end"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleX="1.4"
+                android:scaleY="1.4"
+                android:button="@drawable/custom_round_checkbox"
+                android:visibility="gone"
+                />
+
 
         </LinearLayout>
 
