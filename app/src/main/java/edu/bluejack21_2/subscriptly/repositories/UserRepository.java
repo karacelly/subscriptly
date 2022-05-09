@@ -174,7 +174,6 @@ public class UserRepository {
                 if (!receiverQS.isEmpty() && !receiverQS.getDocuments().isEmpty()) {
                     DocumentSnapshot receiverDS = receiverQS.getDocuments().get(0);
                     if (receiverDS != null) {
-                        Log.d("REQUEST receiverDS", receiverDS.getId());
                         receiverDS.getReference().delete().addOnCompleteListener(task1 -> {
                             UserRepository.addFriend(senderId, receiverId, data -> {
                                 if (data) {
@@ -263,6 +262,7 @@ public class UserRepository {
 
 
     public static Boolean checkFriend(User user, String friendUserId) {
+        if(user.getFriends() == null) return false;
         return user.getFriends().contains(friendUserId);
     }
 

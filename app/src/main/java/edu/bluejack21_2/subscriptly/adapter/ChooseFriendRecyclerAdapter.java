@@ -64,20 +64,11 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
         }
     });
     private final Context context;
-    private final ArrayList<User> users;
-    private final ArrayList<FriendRequest> requests;
-    private final int template;
 
-    public ChooseFriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Comparator<User> comparator, Context context, int template) {
+    public ChooseFriendRecyclerAdapter(Comparator<User> comparator, Context context) {
         this.context = context;
-        this.users = users;
-        this.requests = requests;
-        this.template = template;
         mInflater = LayoutInflater.from(context);
         mComparator = comparator;
-        if (users != null) {
-            mSortedList.addAll(users);
-        }
     }
 
     @Override
@@ -114,6 +105,7 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
 
     @Override
     public int getItemCount() {
+        Log.d("SIZE FRIEND", mSortedList.size()+"");
         return mSortedList.size();
     }
 
