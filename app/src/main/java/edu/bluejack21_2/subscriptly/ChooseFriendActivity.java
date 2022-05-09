@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -29,13 +30,11 @@ public class ChooseFriendActivity extends AppCompatActivity {
         }
     };
     private ArrayList<User> users;
-    private ArrayList<FriendRequest> requests;
-
+    private TextView doneChooseFriend;
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler;
 
     private ChooseFriendRecyclerAdapter mAdapter;
-    private FragmentFriendsBinding mBinding;
 
     private static List<User> filter(List<User> users, String query) {
         Log.d("FLOW", "filter");
@@ -54,15 +53,20 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private void initComponents() {
         fieldSearchFriend = findViewById(R.id.field_search_friend);
         friendsRecycler = findViewById(R.id.recycler_friends);
+        doneChooseFriend = findViewById(R.id.action_done_choose_friend);
+
+        doneChooseFriend.setOnClickListener(view -> {
+            onBackPressed();
+        });
 
         users = new ArrayList<>();
         UserRepository.userRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(!UserRepository.LOGGED_IN_USER.getUserID().equals(document.getId())) {
+                            if(UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
-                                setRecyclerView(users, requests, friendsRecycler);
+                                setRecyclerView(users, friendsRecycler);
                             }
                         }
                     } else {}
@@ -75,26 +79,28 @@ public class ChooseFriendActivity extends AppCompatActivity {
                         public boolean onQueryTextChange(String query) {
                             final List<User> filteredModelList = filter(users, query);
                             mAdapter.replaceAll(filteredModelList);
-                            mBinding.recyclerFriends.scrollToPosition(0);
+                            friendsRecycler.scrollToPosition(0);
                             return true;
                         }
                     });
                 });
     }
 
-    private void setRecyclerView(ArrayList<User> users, ArrayList<FriendRequest> requests, RecyclerView recyclerView) {
-        mAdapter = new ChooseFriendRecyclerAdapter(users, requests, ALPHABETICAL_COMPARATOR, this, R.layout.friend_item);
+    private void setRecyclerView(ArrayList<User> users, RecyclerView recyclerView) {
+        mAdapter = new ChooseFriendRecyclerAdapter(ALPHABETICAL_COMPARATOR, this);
+        mAdapter.add(users);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);
-        mAdapter.add(users);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_choose_friend);
 
         initComponents();
+
     }
 
 }
