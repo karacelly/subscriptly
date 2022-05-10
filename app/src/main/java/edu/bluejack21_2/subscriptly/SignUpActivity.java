@@ -55,62 +55,58 @@ public class SignUpActivity extends AppCompatActivity {
             passwordConfirm = fieldPasswordConfirm.getText().toString();
 
             boolean flag = false;
-            if(name.isEmpty())
-            {
+            if(name.isEmpty()) {
                 fieldName.setError("Name cannot be empty!");
                 flag = true;
-            }
-            else if(name.length() < 3)
-            {
+            } else if(name.length() < 3) {
                 fieldName.setError("Name must be at least 3 characters long");
                 flag = true;
             }
-            if(username.isEmpty())
-            {
+
+            if(username.isEmpty()) {
                 fieldUsername.setError("Username cannot be empty!");
                 flag = true;
-            }
-            else if(username.length() < 3)
-            {
+            } else if(username.length() < 3) {
                 fieldUsername.setError("Username must be at least 3 characters long");
                 flag = true;
             }
-            if(email.isEmpty())
-            {
+
+            if(email.isEmpty()) {
                 fieldEmail.setError("Email cannot be empty!");
                 flag = true;
-            }
-            else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-            {
+            } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 fieldEmail.setError("Email must be in a correct format!");
                 flag = true;
             }
-            if(password.isEmpty())
-            {
+
+            if(password.isEmpty()) {
                 fieldPassword.setError("Password cannot be empty");
                 flag = true;
             }
-            else if(password.length() < 8 || password.length() > 30)
-            {
+            else if(password.length() < 8 || password.length() > 30) {
                 fieldPassword.setError("Your password must be between 8 and 30 characters");
                 flag = true;
             }
 
-            if(!password.equals(passwordConfirm))
-            {
+            if(!password.equals(passwordConfirm)) {
                 fieldPasswordConfirm.setError("Password didn't match!");
                 flag = true;
             }
 
             //IF VALID
-            if(!flag)
-            {
-                UserRepository.emailIsUnique(email, listener -> {
-                    if(listener) {
-                        UserRepository.insertUser(name, username, email, password);
-                        Intent i = new Intent(SignUpActivity.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
+            if(!flag) {
+                UserRepository.emailIsUnique(email, emailListener -> {
+                    if(emailListener) {
+                        UserRepository.usernameIsUnique(username, usernameListener -> {
+                            if(usernameListener) {
+                                UserRepository.insertUser(name, username, email, password);
+                                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                fieldUsername.setError("Username has been taken!");
+                            }
+                        });
                     }else{
                         fieldEmail.setError("Email has been taken!");
                     }
