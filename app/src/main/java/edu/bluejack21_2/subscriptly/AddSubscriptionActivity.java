@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,13 +32,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
+import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
 import edu.bluejack21_2.subscriptly.utils.Image;
 
@@ -113,6 +119,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH,month);
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                myCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                myCalendar.set(Calendar.MINUTE, 0);
+                myCalendar.set(Calendar.SECOND, 0);
                 updateLabel();
             }
         };
@@ -124,7 +133,7 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
+        toolbar.getNavigationIcon().mutate().setTint(getColor(R.color.primary_color));
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,15 +212,66 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonCreateSubscription.setOnClickListener(v -> {
+            Boolean flag = true;
             String name = Field.getContent(subscriptionName.getText());
             String bill = Field.getContent(subscriptionBill.getText());
+            String duration = Field.getContent(timeRange.getText());
+            String date = Field.getContent(subscriptionStartDate.getText());
             bill = bill.replaceAll("[Rp. ]", "");
+
             if(name.isEmpty()) {
-                subscriptionName.setError("Must not be empty");
+                subscriptionName.setError(getString(R.string.error_empty_fields));
+                flag = false;
             }
+
+            Long billLong = Long.valueOf(0);
             if(bill.isEmpty()) {
-                subscriptionBill.setError("Must not be empty");
+                subscriptionBill.setError(getString(R.string.error_empty_fields));
+                flag = false;
+            } else {
+                billLong = Long.parseLong(bill);
+                if(billLong < 0) {
+                    subscriptionBill.setError(getString(R.string.error_negative_number));
+                    flag = false;
+                }
             }
+
+            Integer durationInt = 0;
+            if(duration.isEmpty()) {
+                timeRange.setError(getString(R.string.error_empty_fields));
+                flag = false;
+            } else {
+                durationInt = Integer.parseInt(duration);
+                if(durationInt <= 0) {
+                    timeRange.setError(getString(R.string.error_zero_or_lower));
+                    flag = false;
+                }
+            }
+
+            if(date.isEmpty()) {
+                subscriptionStartDate.setError(getString(R.string.error_empty_fields));
+                flag = false;
+            }
+
+//            Date startDate = new Date(2022, 5, 2, 0, 0, 0);
+
+            if(flag) {
+                Timestamp timestamp = new Timestamp(myCalendar.getTime());
+                Log.d("SUBSCRIPTION CONCLUSION", name);
+                Log.d("SUBSCRIPTION CONCLUSION", billLong.toString());
+                Log.d("SUBSCRIPTION CONCLUSION", durationInt.toString());
+                Log.d("SUBSCRIPTION CONCLUSION", date);
+                Log.d("SUBSCRIPTION CONCLUSION", timestamp.toString());
+                Log.d("SUBSCRIPTION CONCLUSION", timestamp.toDate().toString());
+
+                for (User u:
+                        SubscriptionRepository.chosenFriends) {
+                    Log.d("SUBSCRIPTION CONCLUSION USER", u.getUsername());
+                }
+
+                Subscription subscription = new Subscription("", name, billLong, durationInt, SubscriptionRepository.chosenFriends);
+            }
+
         });
 
     }

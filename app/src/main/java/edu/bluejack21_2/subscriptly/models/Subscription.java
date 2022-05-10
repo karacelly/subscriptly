@@ -8,10 +8,11 @@ import java.util.Map;
 
 public class Subscription {
     private String id, key, name;
-    private Integer bill, duration;
+    private Long bill;
+    private Integer duration;
     private ArrayList<User> members;
 
-    public Subscription(String key, String name, Integer bill, Integer duration, ArrayList<User> members) {
+    public Subscription(String key, String name, Long bill, Integer duration, ArrayList<User> members) {
         this.key = key;
         this.name = name;
         this.bill = bill;
@@ -35,11 +36,11 @@ public class Subscription {
         this.name = name;
     }
 
-    public Integer getBill() {
+    public Long getBill() {
         return bill;
     }
 
-    public void setBill(Integer bill) {
+    public void setBill(Long bill) {
         this.bill = bill;
     }
 

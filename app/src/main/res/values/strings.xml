@@ -75,4 +75,7 @@
     <string name="paid_number_label">PAID</string>
     <string name="unpaid_number_label">UNPAID</string>
 
+    <string name="error_empty_fields">Must not be empty</string>
+    <string name="error_negative_number">Value must be positive</string>
+    <string name="error_zero_or_lower">Value must be bigger than 0</string>
 </resources>

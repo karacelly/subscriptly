@@ -41,7 +41,7 @@ public class SubscriptionRepository {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                subscriptions.add(new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>()));
+                                subscriptions.add(new Subscription(document.getId(), document.getString("name"), Long.parseLong(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>()));
                             }
                         }
                     }
@@ -63,7 +63,7 @@ public class SubscriptionRepository {
                                 DocumentSnapshot userDoc = task1.getResult();
                                 members.add(UserRepository.documentToUser(userDoc));
                                 if (members.size() == userRefs.size()) {
-                                    Subscription s = new Subscription(subsDoc.getId(), subsDoc.getString("name"), Integer.parseInt(subsDoc.get("bill").toString()), Integer.parseInt(subsDoc.get("duration").toString()), members);
+                                    Subscription s = new Subscription(subsDoc.getId(), subsDoc.getString("name"), Long.parseLong(subsDoc.get("bill").toString()), Integer.parseInt(subsDoc.get("duration").toString()), members);
                                     listener.onFinish(s);
                                 }
                             } else {

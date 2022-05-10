@@ -71,8 +71,14 @@
     <string name="title_profile_activity">Profil Saya</string>
     <string name="title_search_activity">Cari Teman</string>
     <string name="no_friends_message">Belum ada teman</string>
+
     <string name="paid_label">Lunas</string>
     <string name="verify_label">Verifikasi</string>
     <string name="paid_number_label">LUNAS</string>
     <string name="unpaid_number_label">BELUM</string>
+
+    <string name="already_have_account">Already have an account?</string>
+    <string name="error_empty_fields">Tidak boleh kosong</string>
+    <string name="error_zero_or_lower">Angka harus lebih besar dari 0</string>
+    <string name="error_negative_number">Angka harus positif</string>
 </resources>
