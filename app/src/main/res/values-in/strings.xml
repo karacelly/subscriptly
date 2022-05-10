@@ -66,8 +66,15 @@
     <string name="title_sign_up_activity">Sign Up</string>
     <string name="sign_up_string">Create a New Account</string>
     <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
+<<<<<<< Updated upstream
     <string name="already_have_account">Sudah memiliki akun?</string>
     <string name="title_profile_activity">Profil Saya</string>
     <string name="title_search_activity">Cari Teman</string>
     <string name="no_friends_message">Belum ada teman</string>
+=======
+    <string name="already_have_account">Already have an account?</string>
+    <string name="error_empty_fields">Tidak boleh kosong</string>
+    <string name="error_zero_or_lower">Angka harus lebih besar dari 0</string>
+    <string name="error_negative_number">Angka harus positif</string>
+>>>>>>> Stashed changes
 </resources>
