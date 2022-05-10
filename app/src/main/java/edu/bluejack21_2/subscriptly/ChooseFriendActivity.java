@@ -1,6 +1,5 @@
 package edu.bluejack21_2.subscriptly;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import edu.bluejack21_2.subscriptly.adapter.ChooseFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.utils.Friend;
 
 public class ChooseFriendActivity extends AppCompatActivity {
 
@@ -30,14 +30,13 @@ public class ChooseFriendActivity extends AppCompatActivity {
             return a.getUsername().compareTo(b.getUsername());
         }
     };
-    private ArrayList<User> users;
+    public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
+    public static ChosenUserRecyclerAdapter chosenUserAdapter;
+    private static ArrayList<User> users;
     private TextView doneChooseFriend;
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler, chosenUserRecycler;
     private Boolean isActivityReopened = false;
-
-    public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
-    public static ChosenUserRecyclerAdapter chosenUserAdapter;
 
     private static List<User> filter(List<User> users, String query) {
         Log.d("FLOW", "filter");
@@ -77,12 +76,18 @@ public class ChooseFriendActivity extends AppCompatActivity {
         setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
 
         chooseFriendAdapter = new ChooseFriendRecyclerAdapter(ALPHABETICAL_COMPARATOR, this);
-        users = new ArrayList<>();
+
+        if (users == null) users = new ArrayList<>();
+        else {
+            chooseFriendAdapter.add(users);
+            setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+        }
+
         UserRepository.userRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId())) {
+                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !Friend.userAlreadyExist(users, document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 chooseFriendAdapter.add(users);
                                 setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
@@ -115,8 +120,12 @@ public class ChooseFriendActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_choose_friend);
-            initComponents();
+
+        if(users == null) Log.d("USERS", "null");
+        if(users != null) Log.d("USERS", users.size()+"");
+
+        setContentView(R.layout.activity_choose_friend);
+        initComponents();
         if (!isActivityReopened) {
             isActivityReopened = true;
         }

@@ -10,9 +10,9 @@ public class User {
 
     public String getImage() {
         if(image == null) {
-            return "profile/DefaultProfile.jpg";
+            return "https://firebasestorage.googleapis.com/v0/b/subscriptly-3ccfb.appspot.com/o/profile%2FDefaultProfile.jpg?alt=media&token=0a6f7d26-e3ab-4a20-8ba5-14e8885821f6";
         }
-        return "profile/"+image;
+        return image;
     }
 
     public void setImage(String image) {

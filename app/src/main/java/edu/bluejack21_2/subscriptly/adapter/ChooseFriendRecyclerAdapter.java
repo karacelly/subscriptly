@@ -18,10 +18,11 @@ import java.util.List;
 
 import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
-import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
+import edu.bluejack21_2.subscriptly.databinding.*;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
+import edu.bluejack21_2.subscriptly.utils.Friend;
 
 public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
@@ -82,13 +83,9 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
         final User model = mSortedList.get(position);
         holder.bind(model);
 
-        ImageRepository.storageRef.child(model.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context).load(uri.toString()).into(holder.friendProfilePicture);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(context, "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
+        Glide.with(context).load(model.getImage()).into(holder.friendProfilePicture);
 
-        holder.chooseFriendBox.setChecked(checkChecked(SubscriptionRepository.chosenFriends, model.getUserID()));
+        holder.chooseFriendBox.setChecked(Friend.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
         holder.container.setOnClickListener(view -> {
             holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
         });
@@ -104,15 +101,6 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
             ChooseFriendActivity.updateChosenRecycler();
         });
     }
-
-    private Boolean checkChecked(ArrayList<User> users, String userID) {
-        for (User user:
-             users) {
-            if(user.getUserID().equals(userID)) return true;
-        }
-        return false;
-    }
-
 
     @Override
     public int getItemCount() {

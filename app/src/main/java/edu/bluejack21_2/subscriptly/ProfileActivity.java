@@ -61,11 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
         usernameTxt.setText(user.getUsername());
         emailTxt.setText(user.getEmail());
 
-        ImageRepository.storageRef.child(UserRepository.LOGGED_IN_USER.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(getApplicationContext()).load(uri.toString()).into(profilePicture);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
+        Glide.with(getApplicationContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePicture);
 
         editProfileBtn = findViewById(R.id.profile_edit_button);
         editProfileBtn.setOnClickListener(new View.OnClickListener() {

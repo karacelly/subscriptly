@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="model"
             type="edu.bluejack21_2.subscriptly.models.User" />
@@ -34,17 +33,28 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_friend_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".15"
+                android:fontFamily="@font/outfit_bold"
+                android:textColor="@color/primary_color"
+                android:text="@{model.name}"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/text_friend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_weight=".15"
                 android:fontFamily="@font/outfit_bold"
                 android:text="@{model.username}"
-                android:textSize="20sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center|end"
                 android:clickable="true"
-                android:focusable="true"
+                android:focusable="false"
                 android:scaleX="1.4"
                 android:scaleY="1.4"
                 android:button="@drawable/custom_round_checkbox"

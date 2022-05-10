@@ -26,11 +26,15 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="20dp">
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical">
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
@@ -74,7 +78,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/subs_name"
+                    android:id="@+id/field_subscription_name"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginVertical="10dp"
@@ -97,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/outfit_bold"
-                android:text="Subscription Bill"
+                android:text="Monthly Subscription Bill"
                 android:textColor="@color/black" />
 
             <EditText
@@ -108,7 +112,7 @@
                 android:background="@drawable/border"
                 android:fontFamily="@font/outfit"
                 android:hint="ex. 100000"
-                android:inputType="text"
+                android:inputType="number"
                 android:textSize="15dp" />
 
         </LinearLayout>
@@ -130,8 +134,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/action_add_friend"
@@ -141,10 +145,12 @@
                     android:background="@drawable/button"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add_foreground" />
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp">
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center_vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_users_chosen"
@@ -158,10 +164,42 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_friend_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_bold"
+                android:text="Time Range"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/field_subscription_duration"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/border"
+                android:fontFamily="@font/outfit"
+                android:hint="in month (ex. 12)"
+                android:inputType="number"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/date_subscription_start"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/outfit"
+                android:clickable="false"
+                android:background="@drawable/border"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:textSize="15dp"
+                android:focusableInTouchMode="false"
+                android:hint="Start Subscription Date"/>
+
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -169,15 +207,16 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginVertical="5dp"
-            android:textAppearance="@font/outfit_light"
-            android:textColor="@color/white"
             android:backgroundTint="@color/primary_color"
             android:fontFamily="@font/outfit_light"
-            android:text="CREATE"
-            android:textSize="15sp"
-            android:textAlignment="center"
             android:gravity="center"
+            android:text="CREATE"
+            android:textAlignment="center"
+            android:textAppearance="@font/outfit_light"
+            android:textColor="@color/white"
+            android:textSize="15sp"
             app:cornerRadius="12dp" />
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

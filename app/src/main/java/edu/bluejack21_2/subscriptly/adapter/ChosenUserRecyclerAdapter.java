@@ -38,11 +38,7 @@ public class ChosenUserRecyclerAdapter extends RecyclerView.Adapter<ChosenUserVi
         final User model = SubscriptionRepository.chosenFriends.get(position);
         holder.bind(model);
 
-        ImageRepository.storageRef.child(model.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context).load(uri.toString()).into(holder.userImage);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(context, "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
+        Glide.with(context).load(model.getImage()).into(holder.userImage);
 
         holder.removeUserButton.setOnClickListener(view -> {
             SubscriptionRepository.chosenFriends.remove(model);
