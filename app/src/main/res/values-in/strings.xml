@@ -77,7 +77,6 @@
     <string name="paid_number_label">LUNAS</string>
     <string name="unpaid_number_label">BELUM</string>
 
-    <string name="already_have_account">Already have an account?</string>
     <string name="error_empty_fields">Tidak boleh kosong</string>
     <string name="error_zero_or_lower">Angka harus lebih besar dari 0</string>
     <string name="error_negative_number">Angka harus positif</string>

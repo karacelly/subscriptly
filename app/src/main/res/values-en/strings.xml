@@ -75,9 +75,6 @@
     <string name="paid_number_label">PAID</string>
     <string name="unpaid_number_label">UNPAID</string>
 
-    <string name="title_profile_activity">My Profile</string>
-    <string name="title_search_activity">Search Friend</string>
-    <string name="no_friends_message">No friends yet</string>
     <string name="error_empty_fields">Must not be empty</string>
     <string name="error_negative_number">Value must be positive</string>
     <string name="error_zero_or_lower">Value must be bigger than 0</string>
