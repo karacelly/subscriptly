@@ -80,4 +80,8 @@
     <string name="error_empty_fields">Tidak boleh kosong</string>
     <string name="error_zero_or_lower">Angka harus lebih besar dari 0</string>
     <string name="error_negative_number">Angka harus positif</string>
+    <string name="title_pay_subscription_activity">Bayar Langganan</string>
+    <string name="month_label">Pembayaran untuk Bulan</string>
+    <string name="paid_prove_label">Bukti Pembayaran (untuk verifikasi)</string>
+    <string name="pay_button">Bayar</string>
 </resources>

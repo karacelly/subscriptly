@@ -78,4 +78,8 @@
     <string name="error_empty_fields">Must not be empty</string>
     <string name="error_negative_number">Value must be positive</string>
     <string name="error_zero_or_lower">Value must be bigger than 0</string>
+    <string name="title_pay_subscription_activity">Pay Subscription</string>
+    <string name="month_label">Month to Pay</string>
+    <string name="paid_prove_label">Paid Prove (for verification)</string>
+    <string name="pay_button">Pay</string>
 </resources>
