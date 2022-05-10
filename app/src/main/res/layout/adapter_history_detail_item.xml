@@ -59,13 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="Paid"/>
+                android:text="@string/paid_label"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_bg_white"
-                android:text="Verify"/>
+                android:text="@string/verify_label"/>
         </LinearLayout>
     </com.google.android.flexbox.FlexboxLayout>
 

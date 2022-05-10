@@ -70,4 +70,9 @@
     <string name="title_profile_activity">My Profile</string>
     <string name="title_search_activity">Search Friend</string>
     <string name="no_friends_message">No friends yet</string>
+    <string name="paid_label">Paid</string>
+    <string name="verify_label">Verify</string>
+    <string name="paid_number_label">PAID</string>
+    <string name="unpaid_number_label">UNPAID</string>
+
 </resources>

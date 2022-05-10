@@ -67,7 +67,12 @@
     <string name="sign_up_string">Create a New Account</string>
     <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
     <string name="already_have_account">Sudah memiliki akun?</string>
+
     <string name="title_profile_activity">Profil Saya</string>
     <string name="title_search_activity">Cari Teman</string>
     <string name="no_friends_message">Belum ada teman</string>
+    <string name="paid_label">Lunas</string>
+    <string name="verify_label">Verifikasi</string>
+    <string name="paid_number_label">LUNAS</string>
+    <string name="unpaid_number_label">BELUM</string>
 </resources>
