@@ -36,6 +36,9 @@
     <string name="title_choose_friend_activity">Choose Friend</string>
     <string name="done_button">Done</string>
 
+    <!-- Profile Activity -->
+    <string name="setting_language">Language Setting</string>
+
     <!-- Edit Profile Activity -->
     <string name="title_edit_profile_activity">Edit Profile</string>
     <string name="save_changes_button">Save Changes</string>

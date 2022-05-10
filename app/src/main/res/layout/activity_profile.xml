@@ -148,6 +148,12 @@
             android:text="Change Password"
             android:textColor="@color/white" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_medium"
+            android:text="@string/setting_language"
+            android:textColor="@color/black" />
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
