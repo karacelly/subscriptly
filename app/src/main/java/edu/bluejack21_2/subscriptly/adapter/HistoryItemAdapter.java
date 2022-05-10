@@ -1,44 +1,38 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
-import android.os.Bundle;
+import android.content.Context;
 
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import edu.bluejack21_2.subscriptly.adapter.viewholder.HistoryItemViewHolder;
+import edu.bluejack21_2.subscriptly.databinding.AdapterHistoryItemBinding;
 
-import edu.bluejack21_2.subscriptly.R;
-import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHolder> {
+    private Context ctx;
+    private final LayoutInflater mInflater;
 
-public class HistoryItemAdapter extends BaseAdapter {
-    private ArrayList<TransactionHeader> transactions;
-
-    public HistoryItemAdapter(ArrayList<TransactionHeader> transactions) {
-        this.transactions = transactions;
+    public HistoryItemAdapter(Context context) {
+        this.ctx = context;
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public int getCount() {
-        return transactions.size();
+    public HistoryItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final AdapterHistoryItemBinding binding = AdapterHistoryItemBinding.inflate(mInflater, parent, false);
+
+        return new HistoryItemViewHolder(binding);
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public void onBindViewHolder(HistoryItemViewHolder holder, int position) {
+
     }
 
     @Override
-    public long getItemId(int i) {
+    public int getItemCount() {
         return 0;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
     }
 }
