@@ -16,54 +16,55 @@
     <string name="title_activity_bottom_navigation_test">BottomNavigationTest</string>
 
     <!-- Add Subscription Activity -->
-    <string name="title_add_subscription">Add Subscription</string>
-    <string name="subscription_name_label">Subscription Name</string>
-    <string name="subscription_name_placeholder">ex. Netflix</string>
-    <string name="subscription_bill_label">Monthly Subscription Bill</string>
-    <string name="price_example_placeholder">ex. 100000</string>
-    <string name="add_member_label">Add Member</string>
+    <string name="title_add_subscription">Menambah Langganan</string>
+    <string name="subscription_name_label">Nama Langganan</string>
+    <string name="subscription_name_placeholder">cth. Netflix</string>
+    <string name="subscription_bill_label">Biaya Langganan Bulanan</string>
+    <string name="price_example_placeholder">cth. 100000</string>
+    <string name="add_member_label">Menambah Anggota</string>
     <string name="time_range_label">Time Range</string>
-    <string name="time_range_placeholder">in month (ex. 12)</string>
-    <string name="subscription_start_placeholder">Start Subscription Date</string>
+    <string name="time_range_placeholder">dalam bulan (cth. 12)</string>
+    <string name="subscription_start_placeholder">Tanggal Memulai Langganan</string>
 
     <!-- Change Password Activity -->
-    <string name="title_change_password_activity">Change Password</string>
-    <string name="current_password_label">Current Password</string>
-    <string name="new_password_label">New Password</string>
-    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="title_change_password_activity">Merubah Sandi</string>
+    <string name="current_password_label">Sandi Sekarang</string>
+    <string name="new_password_label">Sandi Baru</string>
+    <string name="confirm_new_password_label">Konfirmasi Sandi Baru</string>
 
     <!-- Choose Friend Activity -->
     <string name="title_choose_friend_activity">Choose Friend</string>
-    <string name="done_button">Done</string>
+    <string name="done_button">Selesai</string>
+
+    <!-- Profile Activity -->
+    <string name="setting_language">Pengaturan Bahasa</string>
+
 
     <!-- Edit Profile Activity -->
     <string name="title_edit_profile_activity">Edit Profile</string>
     <string name="save_changes_button">Save Changes</string>
 
     <!-- User Form -->
-    <string name="name_label">Name</string>
+    <string name="name_label">Nama</string>
     <string name="username_label">Username</string>
     <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
-    <string name="confirm_password_label">Confirm Password</string>
-    <string name="name_placeholder">ex. Elon Musk</string>
-    <string name="username_placeholder">ex. elonmusk</string>
-    <string name="email_placeholder">must be unique</string>
-    <string name="password_placeholder">minimum 8 to 30 characters</string>
+    <string name="password_label">Sandi</string>
+    <string name="confirm_password_label">Konfirmasi Sandi</string>
+    <string name="name_placeholder">cth. Elon Musk</string>
+    <string name="username_placeholder">cth. elonmusk</string>
+    <string name="email_placeholder">harus unik</string>
+    <string name="password_placeholder">minimal 8 sampai 30 karakter</string>
 
     <!-- Main Activity / Sign In -->
-    <string name="title_main_activity">Sign In</string>
-    <string name="welcome_back_string">Welcome Back!👋</string>
+    <string name="title_main_activity">Masuk</string>
+    <string name="welcome_back_string">Selamat Datang Kembali!👋</string>
     <string name="welcome_back_substring">We are so happy to see you. Continue to login to manage your subscriptions.</string>
-    <string name="sign_in_button">Sign In</string>
-    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_in_button">Masuk</string>
+    <string name="dont_have_account">Tidak memiliki akun?</string>
 
     <!-- Sign Up Activity -->
     <string name="title_sign_up_activity">Sign Up</string>
     <string name="sign_up_string">Create a New Account</string>
     <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
     <string name="already_have_account">Already have an account?</string>
-
-    <!-- Profile Activity -->
-    <string name="setting_language">Language Setting</string>
 </resources>

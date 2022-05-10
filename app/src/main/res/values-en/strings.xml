@@ -36,6 +36,9 @@
     <string name="title_choose_friend_activity">Choose Friend</string>
     <string name="done_button">Done</string>
 
+    <!-- Profile Activity -->
+    <string name="setting_language">Language Setting</string>
+
     <!-- Edit Profile Activity -->
     <string name="title_edit_profile_activity">Edit Profile</string>
     <string name="save_changes_button">Save Changes</string>
@@ -63,7 +66,4 @@
     <string name="sign_up_string">Create a New Account</string>
     <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
     <string name="already_have_account">Already have an account?</string>
-
-    <!-- Profile Activity -->
-    <string name="setting_language">Language Setting</string>
 </resources>
