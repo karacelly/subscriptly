@@ -66,4 +66,5 @@
     <string name="sign_up_string">Create a New Account</string>
     <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="title_profile_activity">My Profile</string>
 </resources>
