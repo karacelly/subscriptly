@@ -14,4 +14,13 @@
     <string name="title_activity_test">Test</string>
     <string name="title_activity_layout_activityy">LayoutActivity</string>
     <string name="title_activity_bottom_navigation_test">BottomNavigationTest</string>
+
+    <string name="subscription_name_label">Subscription Name</string>
+    <string name="subscription_name_placeholder">ex. Netflix</string>
+    <string name="subscription_bill_label">Monthly Subscription Bill</string>
+    <string name="price_example_placeholder">ex. 100000</string>
+    <string name="add_member_label">Add Member</string>
+    <string name="time_range_label">Time Range</string>
+    <string name="time_range_placeholder">in month (ex. 12)</string>
+    <string name="subscription_start_placeholder">Start Subscription Date</string>
 </resources>
