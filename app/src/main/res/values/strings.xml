@@ -29,7 +29,7 @@
     <string name="title_change_password_activity">Change Password</string>
     <string name="current_password_label">Current Password</string>
     <string name="new_password_label">New Password</string>
-    <string name="confirm_password_label">Confirm New Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
 
     <!-- Choose Friend Activity -->
     <string name="title_choose_friend_activity">Choose Friend</string>
@@ -44,9 +44,22 @@
     <string name="username_label">Username</string>
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
     <string name="name_placeholder">ex. Elon Musk</string>
     <string name="username_placeholder">ex. elonmusk</string>
     <string name="email_placeholder">must be unique</string>
     <string name="password_placeholder">minimum 8 to 30 characters</string>
 
+    <!-- Main Activity / Sign In -->
+    <string name="title_main_activity">Sign In</string>
+    <string name="welcome_back_string">Welcome Back!👋</string>
+    <string name="welcome_back_substring">We are so happy to see you. Continue to login to manage your subscriptions.</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+
+    <!-- Sign Up Activity -->
+    <string name="title_sign_up_activity">Sign Up</string>
+    <string name="sign_up_string">Create a New Account</string>
+    <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
+    <string name="already_have_account">Already have an account?</string>
 </resources>
