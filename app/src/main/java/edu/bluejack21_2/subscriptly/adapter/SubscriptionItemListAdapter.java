@@ -59,7 +59,7 @@ public class SubscriptionItemListAdapter extends BaseAdapter {
         convertView.setOnClickListener(v->{
             SubscriptionRepository.ACTIVE_SUBSCRIPTION = s;
             Intent detail = new Intent(ctx, SubscriptionDetail.class);
-            detail.putExtra("subscriptionID", subscriptions.get(position).getKey());
+            detail.putExtra("subscriptionID", subscriptions.get(position).getSubscriptionId());
             ctx.startActivity(detail);
         });
 

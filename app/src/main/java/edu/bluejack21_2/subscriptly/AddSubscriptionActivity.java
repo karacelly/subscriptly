@@ -44,6 +44,7 @@ import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
 import edu.bluejack21_2.subscriptly.utils.Image;
 
@@ -253,23 +254,26 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 flag = false;
             }
 
-//            Date startDate = new Date(2022, 5, 2, 0, 0, 0);
-
             if(flag) {
                 Timestamp timestamp = new Timestamp(myCalendar.getTime());
-                Log.d("SUBSCRIPTION CONCLUSION", name);
-                Log.d("SUBSCRIPTION CONCLUSION", billLong.toString());
-                Log.d("SUBSCRIPTION CONCLUSION", durationInt.toString());
-                Log.d("SUBSCRIPTION CONCLUSION", date);
-                Log.d("SUBSCRIPTION CONCLUSION", timestamp.toString());
-                Log.d("SUBSCRIPTION CONCLUSION", timestamp.toDate().toString());
-
-                for (User u:
-                        SubscriptionRepository.chosenFriends) {
-                    Log.d("SUBSCRIPTION CONCLUSION USER", u.getUsername());
-                }
-
-                Subscription subscription = new Subscription("", name, billLong, durationInt, SubscriptionRepository.chosenFriends);
+                Subscription subscription = new Subscription("", name, imageURL, billLong, durationInt, timestamp, SubscriptionRepository.chosenFriends);
+                SubscriptionRepository.isUniqueSubscriptionNameForCreator(UserRepository.LOGGED_IN_USER.getUserID(), name, listener -> {
+                    if(listener) {
+                        SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
+                            if(subListener) {
+                                Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(AddSubscriptionActivity.this, "Failed Add Subscription", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Log.d("ADD SUBSCRIPTION", "Subscription name already exist in your list!");
+                        Toast.makeText(AddSubscriptionActivity.this, "Subscription name already exist in your list!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         });

@@ -54,8 +54,8 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         holder.subscriptionContainer.setOnClickListener(v -> {
             Context c =  v.getContext();
             Intent detail = new Intent(c, SubscriptionDetail.class);
-            SubscriptionRepository.ACTIVE_SUBSCRIPTION = new Subscription(s.getKey(), s.getName(), s.getBill(), s.getDuration(), s.getMembers());
-            detail.putExtra("subscriptionID", s.getKey());
+            SubscriptionRepository.ACTIVE_SUBSCRIPTION = new Subscription(s.getSubscriptionId(), s.getName(), s.getBill(), s.getDuration(), s.getMembers());
+            detail.putExtra("subscriptionID", s.getSubscriptionId());
             c.startActivity(detail);
         });
     }
