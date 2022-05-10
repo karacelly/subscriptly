@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/outfit_bold"
-                android:text="Done"
+                android:text="@string/done_button"
                 android:gravity="right"
                 android:layout_weight="1"
                 android:textColor="@color/design_default_color_error"
