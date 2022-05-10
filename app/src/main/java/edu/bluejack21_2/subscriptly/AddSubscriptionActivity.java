@@ -3,6 +3,7 @@ package edu.bluejack21_2.subscriptly;
 import static edu.bluejack21_2.subscriptly.utils.Currency.formatToRupiah;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,23 +27,46 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
+import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
+import edu.bluejack21_2.subscriptly.utils.Field;
 import edu.bluejack21_2.subscriptly.utils.Image;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
+    private Context context;
+
     // Subscription Image
-    CardView imageToggle;
-    ImageView imageSubscription;
-    EditText subscriptionBill;
-    // Friend List
-    LinearLayout layoutFriendList;
-    ImageButton buttonAdd;
-    EditText friendName;
-    MaterialButton buttonCreateSubscription;
-    Context context;
+    private CardView imageToggle;
+    private ImageView imageSubscription;
+
+    private EditText subscriptionName, subscriptionBill, timeRange, subscriptionStartDate;
+//  LinearLayout layoutFriendList;
+
+    private ImageButton buttonAdd;
+    private MaterialButton buttonCreateSubscription;
+
+    private RecyclerView chosenUserRecycler;
+    public ChosenUserRecyclerAdapter chosenUserAdapter;
+    private String imageURL;
+
+    final Calendar myCalendar= Calendar.getInstance();
+
+    private void updateLabel(){
+        String myFormat="MM/dd/yy";
+        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
+        subscriptionStartDate.setText(dateFormat.format(myCalendar.getTime()));
+    }
+
     ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -51,13 +76,19 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 //
 //                    }
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
                         Intent data = result.getData();
 
                         if (data != null) {
                             Uri selectedImage = data.getData();
                             imageSubscription.setImageURI(selectedImage);
                             String fileName = Image.getImageFileName(context, selectedImage);
+                            ImageRepository.InsertImage("subscription", fileName, selectedImage, listener -> {
+                                if(listener != null) {
+                                    imageURL = listener;
+                                } else {
+                                    Toast.makeText(AddSubscriptionActivity.this, "Failed Upload Image!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }
                 }
@@ -69,11 +100,29 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         imageSubscription = findViewById(R.id.image_subscription);
 
         subscriptionBill = findViewById(R.id.field_subscription_bill);
+        subscriptionName = findViewById(R.id.field_subscription_name);
+        timeRange = findViewById(R.id.field_subscription_duration);
+        subscriptionStartDate = findViewById(R.id.date_subscription_start);
 
-        layoutFriendList = findViewById(R.id.layout_friend_list);
         buttonAdd = findViewById(R.id.action_add_friend);
-        friendName = findViewById(R.id.field_name_friend_default);
         buttonCreateSubscription = findViewById(R.id.action_create_subscription);
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH,month);
+                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                updateLabel();
+            }
+        };
+        subscriptionStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AddSubscriptionActivity.this, date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
         toolbar.setNavigationIcon(R.drawable.back_arrow);
@@ -83,6 +132,25 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
+        chosenUserAdapter = new ChosenUserRecyclerAdapter(this);
+        setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
+    }
+
+    private void showChosenFriends() {
+        chosenUserAdapter.notifyDataSetChanged();
+    }
+
+    private void setRecyclerView(RecyclerView.Adapter adapter, int layout, RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, layout, false));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showChosenFriends();
     }
 
     @Override
@@ -108,17 +176,11 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         subscriptionBill.addTextChangedListener(new TextWatcher() {
             private String current = subscriptionBill.getText().toString().trim();
 
-//            private String current = "";
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
-            //            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals(current)) {
@@ -141,50 +203,39 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonCreateSubscription.setOnClickListener(v -> {
-            /*
-            Get All Usernames
-             */
-//            for (int i = 0; i < layoutFriendList.getChildCount(); i++) {
-//                if (layoutFriendList.getChildAt(i) instanceof LinearLayout) {
-//                    LinearLayout row = (LinearLayout) layoutFriendList.getChildAt(i);
-//                    for (int j = 0; j < row.getChildCount(); j++) {
-//                        if (row.getChildAt(j) instanceof EditText) {
-//                            EditText friendName = (EditText) row.getChildAt(j);
-//                            if (friendName.getId() == R.id.field_name_friend) {
-//                                Toast.makeText(context, "" + friendName.getText().toString(), Toast.LENGTH_SHORT);
-//                            }
-//                            Log.d("FRIEND NAME", friendName.getText().toString());
-//                        }
-//                    }
-//                }
-//            }
-
-
+            String name = Field.getContent(subscriptionName.getText());
+            String bill = Field.getContent(subscriptionBill.getText());
+            bill = bill.replaceAll("[Rp. ]", "");
+            if(name.isEmpty()) {
+                subscriptionName.setError("Must not be empty");
+            }
+            if(bill.isEmpty()) {
+                subscriptionBill.setError("Must not be empty");
+            }
         });
 
     }
 
-    private void addView() {
-        String friendNameContent = friendName.getText().toString().trim();
-        if (friendNameContent.length() > 0) {
-            final View friendView = getLayoutInflater().inflate(R.layout.row_add_friend, null, false);
-
-            EditText friendNameAppend = friendView.findViewById(R.id.field_name_friend);
-            ImageButton removeFriend = friendView.findViewById(R.id.action_remove_friend);
-
-            friendNameAppend.setText(friendNameContent);
-            removeFriend.setOnClickListener(v -> {
-                removeView(friendView);
-            });
-
-            layoutFriendList.addView(friendView, 0);
-//            layoutFriendList.addView(friendView);
-        }
-        friendName.setText("");
-    }
+//    private void addView() {
+//        String friendNameContent = friendName.getText().toString().trim();
+//        if (friendNameContent.length() > 0) {
+//            final View friendView = getLayoutInflater().inflate(R.layout.row_add_friend, null, false);
+//
+//            EditText friendNameAppend = friendView.findViewById(R.id.field_name_friend);
+//            ImageButton removeFriend = friendView.findViewById(R.id.action_remove_friend);
+//
+//            friendNameAppend.setText(friendNameContent);
+////            removeFriend.setOnClickListener(v -> {
+////                removeView(friendView);
+////            });
+//
+//////            layoutFriendList.addView(friendView);
+//        }
+//        friendName.setText("");
+//    }
 
     private void removeView(View v) {
-        layoutFriendList.removeView(v);
+//        layoutFriendList.removeView(v);
     }
 
 

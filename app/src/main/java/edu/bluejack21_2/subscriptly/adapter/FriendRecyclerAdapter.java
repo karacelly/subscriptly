@@ -70,10 +70,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
     private final int template;
     private FriendViewHolder friendViewHolder;
 
-    // Constructor for HomeAdapter class
-    // which takes a users of String type
     public FriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Comparator<User> comparator, Context context, int template) {
-        Log.d("FLOW", "FriendRecyclerAdapter");
         this.context = context;
         this.users = users;
         this.requests = requests;
@@ -87,34 +84,19 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
     @Override
     public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("FLOW", "onCreateViewHolder");
-        final FriendItemBinding binding = FriendItemBinding.inflate(mInflater, parent, false);
-//        if (binding == null) {
-//            Log.d("NULL", "FriendItemBinding");
-//        }
-//        View itemView
-//                = LayoutInflater
-//                .from(parent.getContext())
-//                .inflate(template,
-//                        parent,
-//                        false);
+        FriendItemBinding binding = FriendItemBinding.inflate(mInflater, parent, false);
+
         friendViewHolder = new FriendViewHolder(binding);
         return friendViewHolder;
     }
 
     @Override
     public void onBindViewHolder(FriendViewHolder holder, int position) {
-        Log.d("FLOW", "onBindViewHolder (position: " + position + " )");
-        Log.d("COUNT", "Size mSortedList: " + mSortedList.size());
         final User model = mSortedList.get(position);
 
-        ImageRepository.storageRef.child(model.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context).load(uri.toString()).into(holder.friendProfilePicture);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(context, "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
-//        holder.friendName.setText(users.get(position).getName());
+        Glide.with(context).load(model.getImage()).into(holder.friendProfilePicture);
         holder.bind(model);
+
         /*
             Current Logged In User (Sender | Receiver)
             if Sender:
@@ -122,22 +104,14 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             else if Receiver
                 'Accept Friend Request'
                 'Reject Friend Request'
-
          */
-        Log.d("REQUEST", requests.size() + "");
 
         FriendRequest request = null;
         if (UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
             request = Friend.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
 
-
         if (request != null) {
             FriendRequest finalRequest = request;
-
-            Log.d("REQUEST Receiver", request.getReceiver());
-            Log.d("REQUEST Sender", request.getSender());
-            Log.d("REQUEST CurrentUserID", UserRepository.LOGGED_IN_USER.getUserID());
-            Log.d("REQUEST UserID", model.getUserID());
 
             holder.addFriend.setVisibility(View.GONE);
             if (request.getSender().equals(UserRepository.LOGGED_IN_USER.getUserID())) {
@@ -198,9 +172,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-
-        Log.d("CHECK FRIEND SIZE", users.size()+"");
-//        Log.d("CHECK FRIEND", UserRepository.checkFriend(users, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID()).toString());
         if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, model.getUserID())) {
             holder.addFriend.setVisibility(View.GONE);
             holder.removeFriend.setVisibility(View.VISIBLE);
@@ -223,21 +194,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         Log.d("COUNT", mSortedList.size() + "");
         return mSortedList.size();
     }
-
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-////        Log.d("BindViewHolder", users.get(position).getDuration().toString());
-//
-//        //        Picasso.get().load(users.get(position).getImage()).into(holder.shopImage);
-////        holder.shopName.setText(users.get(position).getName());
-////        holder.shopLocation.setText(users.get(position).getLocation());
-////        int shopID = users.get(position).getShopID();
-////        holder.plantShopCard.setOnClickListener(v -> {
-////            Intent detail = new Intent(context, DetailActivity.class);
-////            detail.putExtra("shopID", shopID);
-////            context.startActivity(detail);
-////        });
-//    }
 
     public void replaceAll(List<User> models) {
         mSortedList.beginBatchedUpdates();

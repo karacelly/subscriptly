@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
+import edu.bluejack21_2.subscriptly.models.User;
 
 public class Friend {
 
@@ -26,6 +27,14 @@ public class Friend {
 //            }
         }
         return null;
+    }
+
+    public static Boolean userAlreadyExist(ArrayList<User> users, String userID) {
+        for (User user:
+                users) {
+            if(user.getUserID().equals(userID)) return true;
+        }
+        return false;
     }
 
 }

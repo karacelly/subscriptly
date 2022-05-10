@@ -28,7 +28,7 @@ public class SubscriptionRepository {
     public static StorageReference subscriptionStorageRef = SubscriptlyDB.getStorageDB().child("subscriptions");
 
     public static ArrayList<User> chosenFriends = new ArrayList<>();
-    private static void insertSubscription(String name) {
+    private static void insertSubscription(Subscription subscription) {
 
     }
 

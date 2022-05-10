@@ -67,10 +67,10 @@ public class EditProfileActivity extends AppCompatActivity {
                             profilePictureImage.setImageURI(selectedImage);
                             String fileName = Image.getImageFileName(getApplicationContext(), selectedImage);
                             ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
-                                if(!listener) {
+                                if(listener == null) {
                                     Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    finalFileName = fileName;
+                                    finalFileName = listener;
                                 }
                             });
                         }
@@ -89,11 +89,7 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges = findViewById(R.id.action_save_changes);
         profilePictureCard = findViewById(R.id.profile_picture_card);
         profilePictureImage = findViewById(R.id.profile_picture);
-        ImageRepository.storageRef.child(UserRepository.LOGGED_IN_USER.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(getApplicationContext()).load(uri.toString()).into(profilePictureImage);
-        }).addOnFailureListener(e -> {
-           Toast.makeText(getApplicationContext(), "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
+        Glide.with(getApplicationContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePictureImage);
 
 
         User user = UserRepository.LOGGED_IN_USER;

@@ -84,10 +84,6 @@ public class TopNavBarFragment extends Fragment {
         });
 
         profilePicture = v.findViewById(R.id.profile_picture);
-        ImageRepository.storageRef.child(UserRepository.LOGGED_IN_USER.getImage()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(v.getContext()).load(uri.toString()).into(profilePicture);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(v.getContext(), "Failed Getting Profile Picture", Toast.LENGTH_SHORT).show();
-        });
+        Glide.with(v.getContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePicture);
     }
 }

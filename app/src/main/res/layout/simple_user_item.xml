@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="edu.bluejack21_2.subscriptly.models.User" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container_user_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/action_remove_chosen_user"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="-15dp"
+                android:layout_toEndOf="@id/image_user_card"
+                android:src="@drawable/ic_remove"
+                android:translationZ="10dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/image_user_card"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="100dp">
+
+                <ImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/iu_profile" />
+            </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_medium"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="@{model.name}"
+            android:textAlignment="center"
+            android:textColor="@color/primary_color"
+            android:textSize="10sp" />
+    </LinearLayout>
+</layout>

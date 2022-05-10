@@ -28,13 +28,9 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
         this.template = template;
     }
 
-    // Override onCreateViewHolder which deals
-    // with the inflation of the card layout
-    // as an item for the RecyclerView.
     @Override
     public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        // Inflate item.xml using LayoutInflator
         View itemView
                 = LayoutInflater
                 .from(parent.getContext())
@@ -47,19 +43,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-//        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
         holder.subscriptionMonth.setText(subscriptions.get(position).getDuration().toString());
         holder.subscriptionItems.setAdapter(new SubscriptionItemListAdapter(holder.subscriptionGroupItem.getContext(), subscriptions));
-
-        //        Picasso.get().load(subscriptions.get(position).getImage()).into(holder.shopImage);
-//        holder.shopName.setText(subscriptions.get(position).getName());
-//        holder.shopLocation.setText(subscriptions.get(position).getLocation());
-//        int shopID = subscriptions.get(position).getShopID();
-//        holder.plantShopCard.setOnClickListener(v -> {
-//            Intent detail = new Intent(context, DetailActivity.class);
-//            detail.putExtra("shopID", shopID);
-//            context.startActivity(detail);
-//        });
     }
 
     @Override

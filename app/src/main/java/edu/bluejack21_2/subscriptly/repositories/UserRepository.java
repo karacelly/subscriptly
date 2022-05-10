@@ -273,7 +273,7 @@ public class UserRepository {
 
 
     public static Boolean checkFriend(User user, String friendUserId) {
-        if(user.getFriends() == null) return false;
+        if(user == null || user.getFriends() == null) return false;
         return user.getFriends().contains(friendUserId);
     }
 
