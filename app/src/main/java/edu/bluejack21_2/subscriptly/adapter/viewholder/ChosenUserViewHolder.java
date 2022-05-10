@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
+import edu.bluejack21_2.subscriptly.databinding.SimpleUserItemBinding;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class ChosenUserViewHolder extends RecyclerView.ViewHolder {
 
     public LinearLayout container;
     public TextView userName;
-    public ImageView userImage;
-    private final FriendItemBinding binding;
+    public ImageView userImage, removeUserButton;
+    private final SimpleUserItemBinding binding;
 
-    public ChosenUserViewHolder(FriendItemBinding binding) {
+    public ChosenUserViewHolder(SimpleUserItemBinding binding) {
         super(binding.getRoot());
         View view = binding.getRoot();
         this.binding = binding;
@@ -31,6 +32,7 @@ public class ChosenUserViewHolder extends RecyclerView.ViewHolder {
         userName = view.findViewById(R.id.text_user_name);
 
         userImage = view.findViewById(R.id.image_user);
+        removeUserButton = view.findViewById(R.id.action_remove_chosen_user);
 
     }
 

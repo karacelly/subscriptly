@@ -57,6 +57,7 @@
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:text="@{model.name}"
+            android:textAlignment="center"
             android:textColor="@color/primary_color"
             android:textSize="10sp" />
     </LinearLayout>

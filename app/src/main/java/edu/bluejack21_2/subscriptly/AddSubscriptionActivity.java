@@ -25,9 +25,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
+import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.utils.Image;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
@@ -42,6 +45,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
     EditText friendName;
     MaterialButton buttonCreateSubscription;
     Context context;
+    private RecyclerView chosenUserRecycler;
+    public ChosenUserRecyclerAdapter chosenUserAdapter;
+
     ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -72,7 +78,6 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
         layoutFriendList = findViewById(R.id.layout_friend_list);
         buttonAdd = findViewById(R.id.action_add_friend);
-        friendName = findViewById(R.id.field_name_friend_default);
         buttonCreateSubscription = findViewById(R.id.action_create_subscription);
         toolbar = findViewById(R.id.toolbar);
         toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
@@ -83,6 +88,25 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
+        chosenUserAdapter = new ChosenUserRecyclerAdapter(this);
+        setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
+    }
+
+    private void showChosenFriends() {
+        chosenUserAdapter.notifyDataSetChanged();
+    }
+
+    private void setRecyclerView(RecyclerView.Adapter adapter, int layout, RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, layout, false));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showChosenFriends();
     }
 
     @Override
@@ -141,24 +165,6 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         buttonCreateSubscription.setOnClickListener(v -> {
-            /*
-            Get All Usernames
-             */
-//            for (int i = 0; i < layoutFriendList.getChildCount(); i++) {
-//                if (layoutFriendList.getChildAt(i) instanceof LinearLayout) {
-//                    LinearLayout row = (LinearLayout) layoutFriendList.getChildAt(i);
-//                    for (int j = 0; j < row.getChildCount(); j++) {
-//                        if (row.getChildAt(j) instanceof EditText) {
-//                            EditText friendName = (EditText) row.getChildAt(j);
-//                            if (friendName.getId() == R.id.field_name_friend) {
-//                                Toast.makeText(context, "" + friendName.getText().toString(), Toast.LENGTH_SHORT);
-//                            }
-//                            Log.d("FRIEND NAME", friendName.getText().toString());
-//                        }
-//                    }
-//                }
-//            }
-
 
         });
 
