@@ -83,12 +83,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/action_sign_up"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
+        android:paddingTop="15dp"
         android:backgroundTint="@color/primary_color"
         android:textAlignment="center"
-        android:fontFamily="@font/outfit_light"
         app:cornerRadius="12dp"
         android:layout_marginVertical="5dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:text="SIGN UP"/>
 
     <com.google.android.flexbox.FlexboxLayout

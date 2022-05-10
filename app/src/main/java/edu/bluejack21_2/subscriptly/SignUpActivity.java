@@ -9,13 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
-public class SignUpActivity extends AppCompatActivity implements QueryFinishListener<Boolean> {
+public class SignUpActivity extends AppCompatActivity {
 
     private EditText fieldName, fieldUsername, fieldEmail, fieldPassword, fieldPasswordConfirm;
-    private Button btnSignUp, btnSignInFacebook;
+    private MaterialButton btnSignUp, btnSignInFacebook;
     private TextView redirectLogin;
 
     private void initComponents() {
@@ -45,82 +47,76 @@ public class SignUpActivity extends AppCompatActivity implements QueryFinishList
         });
 
         btnSignUp.setOnClickListener(v -> {
-            String email;
+            String name, username, email, password, passwordConfirm;
+            name = fieldName.getText().toString();
+            username = fieldUsername.getText().toString();
             email = fieldEmail.getText().toString();
+            password = fieldPassword.getText().toString();
+            passwordConfirm = fieldPasswordConfirm.getText().toString();
 
-            UserRepository.emailIsUnique(email, this);
+            boolean flag = false;
+            if(name.isEmpty())
+            {
+                fieldName.setError("Name cannot be empty!");
+                flag = true;
+            }
+            else if(name.length() < 3)
+            {
+                fieldName.setError("Name must be at least 3 characters long");
+                flag = true;
+            }
+            if(username.isEmpty())
+            {
+                fieldUsername.setError("Username cannot be empty!");
+                flag = true;
+            }
+            else if(username.length() < 3)
+            {
+                fieldUsername.setError("Username must be at least 3 characters long");
+                flag = true;
+            }
+            if(email.isEmpty())
+            {
+                fieldEmail.setError("Email cannot be empty!");
+                flag = true;
+            }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            {
+                fieldEmail.setError("Email must be in a correct format!");
+                flag = true;
+            }
+            if(password.isEmpty())
+            {
+                fieldPassword.setError("Password cannot be empty");
+                flag = true;
+            }
+            else if(password.length() < 8 || password.length() > 30)
+            {
+                fieldPassword.setError("Your password must be between 8 and 30 characters");
+                flag = true;
+            }
 
+            if(!password.equals(passwordConfirm))
+            {
+                fieldPasswordConfirm.setError("Password didn't match!");
+                flag = true;
+            }
+
+            //IF VALID
+            if(!flag)
+            {
+                UserRepository.emailIsUnique(email, listener -> {
+                    if(listener) {
+                        UserRepository.insertUser(name, username, email, password);
+                        Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else{
+                        fieldEmail.setError("Email has been taken!");
+                    }
+                });
+            }
         });
     }
 
-    @Override
-    public void onFinish(Boolean data) {
-        String name, username, email, password, passwordConfirm;
-        name = fieldName.getText().toString();
-        username = fieldUsername.getText().toString();
-        email = fieldEmail.getText().toString();
-        password = fieldPassword.getText().toString();
-        passwordConfirm = fieldPasswordConfirm.getText().toString();
-
-        boolean flag = false;
-        if(name.isEmpty())
-        {
-            fieldName.setError("Name cannot be empty!");
-            flag = true;
-        }
-        else if(name.length() < 3)
-        {
-            fieldName.setError("Name must be at least 3 characters long");
-            flag = true;
-        }
-        if(username.isEmpty())
-        {
-            fieldUsername.setError("Username cannot be empty!");
-            flag = true;
-        }
-        else if(username.length() < 3)
-        {
-            fieldUsername.setError("Username must be at least 3 characters long");
-            flag = true;
-        }
-        if(email.isEmpty())
-        {
-            fieldEmail.setError("Email cannot be empty!");
-            flag = true;
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
-            fieldEmail.setError("Email must be in a correct format!");
-            flag = true;
-        }
-        else if(!data)
-        {
-            fieldEmail.setError("Email exists already!");
-            flag = true;
-        }
-        if(password.isEmpty())
-        {
-            fieldPassword.setError("Password cannot be empty");
-            flag = true;
-        }
-        else if(password.length() < 8 || password.length() > 30)
-        {
-            fieldPassword.setError("Your password must be between 8 and 30 characters");
-            flag = true;
-        }
-
-        if(!password.equals(passwordConfirm))
-        {
-            fieldPasswordConfirm.setError("Password didn't match!");
-        }
-
-        //IF VALID
-        if(!flag)
-        {
-            UserRepository.insertUser(name, username, email, password);
-            Intent i = new Intent(SignUpActivity.this, HomeActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }
 }
