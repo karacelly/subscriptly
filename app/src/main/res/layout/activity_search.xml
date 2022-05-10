@@ -28,7 +28,7 @@
             android:textColor="@color/primary_color"
             android:fontFamily="@font/outfit_bold"
             android:textSize="20dp"
-            android:text="Search Friend"/>
+            android:text="@string/title_search_activity"/>
 
         <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                 android:textSize="15dp"
                 android:fontFamily="@font/outfit_bold"
 
-                android:text="No friends yet"/>
+                android:text="@string/no_friends_message"/>
         </com.google.android.flexbox.FlexboxLayout>
 
     </com.google.android.flexbox.FlexboxLayout>
