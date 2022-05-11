@@ -1,20 +1,17 @@
 package edu.bluejack21_2.subscriptly.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -22,11 +19,11 @@ import javax.annotation.Nullable;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.HomeRecyclerAdapter;
-import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class HomeFragment extends Fragment implements QueryFinishListener<User> {
 
@@ -34,18 +31,18 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     private RecyclerView subscriptionGroupRecycler;
     private ArrayList<Subscription> subscriptions;
 
-    //    private FragmentHomeBinding binding;
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     public static HomeFragment newInstance() {
         fragment = new HomeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -71,32 +68,45 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        binding = null;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d("ON VIEW CREATED", "HOME");
         subscriptionGroupRecycler = view.findViewById(R.id.recycler_subscription_group);
         subscriptions = new ArrayList<>();
         fetchData();
     }
 
     private void fetchData() {
-        SubscriptlyDB.getDB().collection("subscriptions").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            SubscriptionRepository.documentToSubscription(document, data -> {
+        DocumentReference user = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
+        SubscriptionRepository.memberRef.whereEqualTo("valid_to", null).whereArrayContains("users", user).get()
+            .addOnSuccessListener(memberSnapshots -> {
+                for (DocumentSnapshot memberSnapshot :
+                        memberSnapshots) {
+                    DocumentReference subscription = memberSnapshot.getDocumentReference("subscription");
+                    Log.d("FETCH DATA: SUBSCRIPTION ID", subscription.getId());
+                    Log.d("FETCH DATA: SUBSCRIPTION", subscription.toString());
+
+                    if(subscription != null) {
+                        Log.d("FETCH DATA: SUBSCRIPTION", subscription.toString());
+                        subscription.get().addOnSuccessListener(subscriptionSnapshot -> {
+                            Log.d("FETCH DATA: SUBSCRIPTION SNAPSHOT", subscriptionSnapshot.toString());
+                            SubscriptionRepository.documentToSubscription(subscriptionSnapshot, data -> {
+                                Log.d("FETCH DATA: SUBSCRIPTION DATA", data.toString());
                                 if (data != null) {
+                                    Log.d("SET RECYCLER VIEW", "HOME");
                                     subscriptions.add(data);
                                     setRecyclerView(subscriptions, subscriptionGroupRecycler);
                                 }
                             });
-                        }
-                    } else {
-
+                        }).addOnFailureListener(e -> {
+                                Log.d("FETCH DATA: SUBSCRIPTION", e.toString());
+                        });
                     }
-                });
+                }
+            }).addOnFailureListener(e -> {
+        });
     }
 
     private void setRecyclerView(ArrayList<Subscription> data, RecyclerView recyclerView) {

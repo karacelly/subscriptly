@@ -18,7 +18,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
@@ -87,74 +86,85 @@ public class SubscriptionRepository {
         String id = subscriptionDoc.getId();
         Long bill = subscriptionDoc.getLong("bill");
         String image = subscriptionDoc.getString("image");
-        Log.d("MONTH DURATION", subscriptionDoc.getLong("month_duration")+"");
         Integer duration = subscriptionDoc.getLong("month_duration").intValue();
-//        Integer duration = subscriptionDoc.getLong("month_duration");
         String name = subscriptionDoc.getString("name");
         Timestamp startAt = subscriptionDoc.getTimestamp("start_at");
         ArrayList<TransactionHeader> headers = new ArrayList<>();
         subscriptionDoc.getReference().collection("transaction_headers").get()
                 .addOnSuccessListener(headerSnapshots -> {
-                    memberRef.whereEqualTo("subscription", subscriptionDoc.getReference()).whereEqualTo("valid_to", null).get().addOnSuccessListener(memberDocSnapshot -> {
-                        if (memberDocSnapshot.isEmpty()) {
+                    memberRef.whereEqualTo("subscription", subscriptionDoc.getReference()).whereEqualTo("valid_to", null).get().addOnSuccessListener(memberSnapshots -> {
+
+                        if (memberSnapshots.isEmpty()) {
                             listener.onFinish(null);
                         } else {
-                            DocumentSnapshot member = memberDocSnapshot.getDocuments().get(0);
+                            DocumentSnapshot member = memberSnapshots.getDocuments().get(0);
                             ArrayList<User> users = new ArrayList<>();
                             ArrayList<DocumentReference> userRefs = (ArrayList<DocumentReference>) member.get("users");
-                            for (DocumentReference userRef :
-                                    userRefs) {
-                                UserRepository.getUser(userRef.getId(), userData -> {
-                                    if (userData != null) {
-                                        users.add(userData);
-                                        if (users.size() == userRefs.size()) {
-                                            for (DocumentSnapshot headerSnapshot :
-                                                    headerSnapshots.getDocuments()) {
-                                                documentToTransactionHeader(headerSnapshot, header -> {
-                                                    if (header != null) {
-                                                        headers.add(header);
-                                                        if (headers.size() == headerSnapshots.size()) {
-                                                            listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
-//                                            Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<User> members)
+                            if (userRefs.isEmpty()) {
+                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
+                            } else {
+                                for (DocumentReference userRef :
+                                        userRefs) {
+                                    UserRepository.getUser(userRef.getId(), userData -> {
+                                        if (userData != null) {
+                                            users.add(userData);
+                                            if (users.size() == userRefs.size()) {
+                                                for (DocumentSnapshot headerSnapshot :
+                                                        headerSnapshots.getDocuments()) {
+                                                    documentToTransactionHeader(headerSnapshot, header -> {
+                                                        if (header != null) {
+                                                            headers.add(header);
+                                                            if (headers.size() == headerSnapshots.size()) {
+                                                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
+                                                            }
+                                                        } else {
+                                                            listener.onFinish(null);
                                                         }
-                                                    } else {
-                                                        listener.onFinish(null);
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             }
+                                        } else {
+                                            listener.onFinish(null);
                                         }
-                                    }
-                                });
+                                    });
+                                }
+
                             }
                         }
                     }).addOnFailureListener(e -> {
                         listener.onFinish(null);
                     });
-                });
+                }).addOnFailureListener(e -> {
+            listener.onFinish(null);
+        });
     }
 
     public static void documentToTransactionHeader(DocumentSnapshot transactionHeaderDoc, QueryFinishListener<TransactionHeader> listener) {
         String id = transactionHeaderDoc.getId();
-        Timestamp billingDate = (Timestamp) transactionHeaderDoc.get("billing_date");
+        Timestamp billingDate = transactionHeaderDoc.getTimestamp("billing_date");
         ArrayList<TransactionDetail> details = new ArrayList<>();
         transactionHeaderDoc.getReference().collection("transaction_details").get().addOnSuccessListener(detailSnapshots -> {
-            for (DocumentSnapshot detailSnapshot :
-                    detailSnapshots) {
-                documentToTransactionDetail(detailSnapshot, detail -> {
-                    if (detail != null) {
-                        details.add(detail);
-                        if (details.size() == detailSnapshots.size()) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(billingDate.toDate());
-                            listener.onFinish(new TransactionHeader(id, calendar, details));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(billingDate.toDate());
+            if (detailSnapshots.isEmpty()) {
+                listener.onFinish(new TransactionHeader(id, calendar, details));
+            } else {
+                for (DocumentSnapshot detailSnapshot :
+                        detailSnapshots) {
+                    documentToTransactionDetail(detailSnapshot, detail -> {
+                        if (detail != null) {
+                            details.add(detail);
+                            if (details.size() == detailSnapshots.size()) {
+                                listener.onFinish(new TransactionHeader(id, calendar, details));
+                            }
+                        } else {
+                            listener.onFinish(null);
                         }
-                    } else {
-                        listener.onFinish(null);
-                    }
-                });
+                    });
+                }
             }
         }).addOnFailureListener(e -> {
-
+            listener.onFinish(null);
         });
     }
 
