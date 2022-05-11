@@ -90,7 +90,7 @@ public class User {
         userData.put("name", name);
         userData.put("username", username);
         userData.put("email", email);
-        userData.put("password", password);
+        userData.put("users", password);
 
         return userData;
     }

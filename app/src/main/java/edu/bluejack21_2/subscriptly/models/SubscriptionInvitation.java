@@ -1,35 +1,46 @@
 package edu.bluejack21_2.subscriptly.models;
 
 public class SubscriptionInvitation {
-    private String creatorId, invitedId, subscriptionId;
+    private String invitationId;
+    private User creator, invited;
+    private Subscription subscription;
 
-    public SubscriptionInvitation(String creatorId, String invitedId, String subscriptionId) {
-        this.creatorId = creatorId;
-        this.invitedId = invitedId;
-        this.subscriptionId = subscriptionId;
+    public SubscriptionInvitation(String invitationId, User creator, User invited, Subscription subscription) {
+        this.invitationId = invitationId;
+        this.creator = creator;
+        this.invited = invited;
+        this.subscription = subscription;
     }
 
-    public String getCreatorId() {
-        return creatorId;
+    public String getInvitationId() {
+        return invitationId;
     }
 
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
+    public void setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
     }
 
-    public String getInvitedId() {
-        return invitedId;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setInvitedId(String invitedId) {
-        this.invitedId = invitedId;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
-    public String getSubscriptionId() {
-        return subscriptionId;
+    public User getInvited() {
+        return invited;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    public void setInvited(User invited) {
+        this.invited = invited;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }

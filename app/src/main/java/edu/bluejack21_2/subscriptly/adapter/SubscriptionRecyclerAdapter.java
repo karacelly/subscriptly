@@ -30,7 +30,6 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
     @Override
     public SubscriptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        // Inflate item.xml using LayoutInflator
         View itemView
                 = LayoutInflater
                 .from(parent.getContext())
@@ -43,14 +42,12 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-//        Log.d("BindViewHolder", subscriptions.get(position).getDuration().toString());
         Subscription s = subscriptions.get(position);
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionPrice.setText(Currency.formatToRupiah(s.getBill().doubleValue()/memberCount));
         holder.subscriptionMemberCounts.setText(memberCount + " people");
-        //        Picasso.get().load(s.getImage()).into(holder.shopImage);
-//        int shopID = subscriptions.get(position).getShopID();
+
         holder.subscriptionContainer.setOnClickListener(v -> {
             Context c =  v.getContext();
             Intent detail = new Intent(c, SubscriptionDetail.class);
