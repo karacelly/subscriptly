@@ -7,15 +7,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import edu.bluejack21_2.subscriptly.adapter.viewholder.HistoryItemViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.AdapterHistoryItemBinding;
+import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 
 public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHolder> {
-    private Context ctx;
+    private Context context;
     private final LayoutInflater mInflater;
+    private ArrayList<TransactionHeader> transactions;
 
-    public HistoryItemAdapter(Context context) {
-        this.ctx = context;
+    public HistoryItemAdapter(Context context, ArrayList<TransactionHeader> transactions) {
+        this.context = context;
+        this.transactions = transactions;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -28,11 +33,12 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
 
     @Override
     public void onBindViewHolder(HistoryItemViewHolder holder, int position) {
-
+        final TransactionHeader model = transactions.get(position);
+        holder.bind(model);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return transactions.size();
     }
 }

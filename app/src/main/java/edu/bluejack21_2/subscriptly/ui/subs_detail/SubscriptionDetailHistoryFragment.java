@@ -3,6 +3,8 @@ package edu.bluejack21_2.subscriptly.ui.subs_detail;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.adapter.HistoryItemAdapter;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 
 public class SubscriptionDetailHistoryFragment extends Fragment {
@@ -20,6 +23,13 @@ public class SubscriptionDetailHistoryFragment extends Fragment {
 
     public SubscriptionDetailHistoryFragment(ArrayList<TransactionHeader> transactions) {
         this.transactions = transactions;
+    }
+
+    @Override
+    public void onViewCreated(View view,Bundle savedInstanceState) {
+        RecyclerView rv = view.findViewById(R.id.recycler_history);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(new HistoryItemAdapter(getActivity(), transactions));
     }
 
     @Override
