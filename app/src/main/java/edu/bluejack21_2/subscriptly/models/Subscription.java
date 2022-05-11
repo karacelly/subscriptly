@@ -118,7 +118,7 @@ public class Subscription {
     public Map<String, Object> membersToMap(String subscriptionId) {
         Map<String, Object> memberData = new HashMap<>();
         memberData.put("creator", UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID()));
-        memberData.put("subscription_id", SubscriptionRepository.subscriptionRef.document(subscriptionId));
+        memberData.put("subscription", SubscriptionRepository.subscriptionRef.document(subscriptionId));
         SubscriptionRepository.chosenFriends.add(UserRepository.LOGGED_IN_USER);
         ArrayList<DocumentReference> users = new ArrayList<>();
         for (User user:
