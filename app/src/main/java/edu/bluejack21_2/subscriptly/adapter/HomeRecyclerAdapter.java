@@ -2,6 +2,7 @@ package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,21 @@ import java.util.ArrayList;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.HomeViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+import edu.bluejack21_2.subscriptly.utils.DateHelper;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     private final Context context;
     public ArrayList<Subscription> subscriptions;
+    public ArrayList<TransactionHeader> uniqueMonths;
     private final int template;
 
 
-    public HomeRecyclerAdapter(ArrayList<Subscription> subscriptions, Context context, int template) {
+    public HomeRecyclerAdapter(ArrayList<Subscription> subscriptions, ArrayList<TransactionHeader> uniqueMonths, Context context, int template) {
         this.context = context;
         this.subscriptions = subscriptions;
+        this.uniqueMonths = uniqueMonths;
         this.template = template;
     }
 
@@ -43,12 +48,14 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        holder.subscriptionMonth.setText(subscriptions.get(position).getDuration().toString());
+        TransactionHeader header = uniqueMonths.get(position);
+        holder.subscriptionMonth.setText(DateHelper.formatDate(header.getBillingDate(), "MMMM, YYYY").toUpperCase());
         holder.subscriptionItems.setAdapter(new SubscriptionItemListAdapter(holder.subscriptionGroupItem.getContext(), subscriptions));
     }
 
     @Override
     public int getItemCount() {
-        return subscriptions.size();
+        Log.d("UNIQUE MONTHS | SIZE", uniqueMonths.size()+"");
+        return uniqueMonths.size();
     }
 }

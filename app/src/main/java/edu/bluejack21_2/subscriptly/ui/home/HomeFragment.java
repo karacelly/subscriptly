@@ -10,10 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +25,8 @@ import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.HomeRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
+import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
@@ -79,29 +85,32 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     }
 
     private void fetchData() {
+        ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
         DocumentReference user = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
         SubscriptionRepository.memberRef.whereEqualTo("valid_to", null).whereArrayContains("users", user).get()
             .addOnSuccessListener(memberSnapshots -> {
                 for (DocumentSnapshot memberSnapshot :
                         memberSnapshots) {
                     DocumentReference subscription = memberSnapshot.getDocumentReference("subscription");
-                    Log.d("FETCH DATA: SUBSCRIPTION ID", subscription.getId());
-                    Log.d("FETCH DATA: SUBSCRIPTION", subscription.toString());
 
                     if(subscription != null) {
-                        Log.d("FETCH DATA: SUBSCRIPTION", subscription.toString());
                         subscription.get().addOnSuccessListener(subscriptionSnapshot -> {
-                            Log.d("FETCH DATA: SUBSCRIPTION SNAPSHOT", subscriptionSnapshot.toString());
                             SubscriptionRepository.documentToSubscription(subscriptionSnapshot, data -> {
-                                Log.d("FETCH DATA: SUBSCRIPTION DATA", data.toString());
                                 if (data != null) {
-                                    Log.d("SET RECYCLER VIEW", "HOME");
+                                    for (TransactionHeader header:
+                                         data.getHeaders()) {
+//                                        if(!isMonthYearTransactionExists(uniqueMonths, header) && header.getBillingDate().getTime().compareTo(Timestamp.now().toDate()) < 0) {
+                                        if(!isMonthYearTransactionExists(uniqueMonths, header)) {
+                                            uniqueMonths.add(header);
+                                            uniqueMonths.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
+//                                            Collections.sort(uniqueMonths);
+                                        }
+                                    }
                                     subscriptions.add(data);
-                                    setRecyclerView(subscriptions, subscriptionGroupRecycler);
+                                    setRecyclerView(subscriptions, uniqueMonths, subscriptionGroupRecycler);
                                 }
                             });
                         }).addOnFailureListener(e -> {
-                                Log.d("FETCH DATA: SUBSCRIPTION", e.toString());
                         });
                     }
                 }
@@ -109,9 +118,23 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
         });
     }
 
-    private void setRecyclerView(ArrayList<Subscription> data, RecyclerView recyclerView) {
+    private Boolean isMonthYearTransactionExists(ArrayList<TransactionHeader> headers, TransactionHeader newHeader) {
+        for (TransactionHeader transactionHeader:
+             headers) {
+            if(isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.MONTH) && isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.YEAR)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Boolean isSameDateField(Calendar first, Calendar second, int field) {
+        return first.get(field) == second.get(field);
+    }
+
+    private void setRecyclerView(ArrayList<Subscription> data, ArrayList<TransactionHeader> uniqueMonths, RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new HomeRecyclerAdapter(data, getActivity(), R.layout.home_subscription_group_item));
+        recyclerView.setAdapter(new HomeRecyclerAdapter(data, uniqueMonths, getActivity(), R.layout.home_subscription_group_item));
     }
 
     @Override

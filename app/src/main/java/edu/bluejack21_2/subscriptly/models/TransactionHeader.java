@@ -37,4 +37,5 @@ public class TransactionHeader {
     public void setDetails(ArrayList<TransactionDetail> details) {
         this.details = details;
     }
+
 }
