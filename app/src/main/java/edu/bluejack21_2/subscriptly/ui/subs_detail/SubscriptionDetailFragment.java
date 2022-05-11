@@ -110,7 +110,7 @@ public class SubscriptionDetailFragment extends Fragment {
             menuHistory.setTypeface(outfitBold);
 
             menuHistory.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
-            setFragment(new SubscriptionDetailHistoryFragment(subscription.getHeaders()));
+            setFragment(new SubscriptionDetailHistoryFragment(subscription));
         });
 
         menuMedia.setOnClickListener(view -> {

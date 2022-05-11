@@ -14,22 +14,23 @@ import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.HistoryItemAdapter;
+import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 
 public class SubscriptionDetailHistoryFragment extends Fragment {
-    private ArrayList<TransactionHeader> transactions;
+    private Subscription subscription;
 
     public SubscriptionDetailHistoryFragment() { }
 
-    public SubscriptionDetailHistoryFragment(ArrayList<TransactionHeader> transactions) {
-        this.transactions = transactions;
+    public SubscriptionDetailHistoryFragment(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         RecyclerView rv = view.findViewById(R.id.recycler_history);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new HistoryItemAdapter(getActivity(), transactions));
+        rv.setAdapter(new HistoryItemAdapter(getActivity(), subscription));
     }
 
     @Override
