@@ -16,7 +16,7 @@ import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    private final int NUM_PAGES = 4;
+    private final int NUM_PAGES = 3;
     private final ArrayList<Fragment> fragments = new ArrayList<>();
 
     public ViewPagerAdapter(FragmentActivity fragmentActivity) {
@@ -31,9 +31,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             return HomeFragment.newInstance();
         else if (position == 1)
             return SubscriptionsFragment.newInstance();
-        else if (position == 3 || position == 2)
+        else if (position == 2)
             return FriendsFragment.newInstance();
-        Log.d("ViewPager CreateFragment", "RETURNING NULL");
         return null;
     }
 

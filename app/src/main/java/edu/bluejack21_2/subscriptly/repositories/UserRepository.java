@@ -122,16 +122,14 @@ public class UserRepository {
     }
 
     public static void getUser(String id, QueryFinishListener<User> listener) {
-        DocumentReference findUser = userRef.document(id);
-
-        findUser.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot userDocument = task.getResult();
-                if (userDocument.exists()) {
-                    listener.onFinish(documentToUser(userDocument));
+        DocumentReference user = userRef.document(id);
+        user.get().addOnSuccessListener(userSnapshot -> {
+                if (userSnapshot.exists()) {
+                    listener.onFinish(documentToUser(userSnapshot));
                 } else
                     listener.onFinish(null);
-            }
+            }).addOnFailureListener(e -> {
+                listener.onFinish(null);
         });
     }
 
