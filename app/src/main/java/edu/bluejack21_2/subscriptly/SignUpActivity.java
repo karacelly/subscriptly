@@ -3,7 +3,9 @@ package edu.bluejack21_2.subscriptly;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,11 +36,32 @@ public class SignUpActivity extends AppCompatActivity {
 //        loginManager = LoginManager.getInstance();
     }
 
+    private void checkUserSession() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (prefs.contains("userID")) {
+
+            UserRepository.userCheck(prefs.getString("userID", null), (data) -> {
+                if (data != null) {
+                    UserRepository.LOGGED_IN_USER = data;
+                    Intent i = new Intent(this, HomeActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear();
+                    editor.commit();
+                }
+            });
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        checkUserSession();
         initComponents();
 
         redirectLogin.setOnClickListener(v -> {

@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter.viewholder;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout subscriptionContainer;
     public TextView subscriptionMemberCounts, subscriptionName, subscriptionPrice;
     public ImageView subscriptionImage;
+    public ImageButton acceptInvitation, rejectInvitation;
 
     public SubscriptionViewHolder(View view) {
         super(view);
@@ -23,5 +25,8 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         subscriptionPrice = view.findViewById(R.id.text_subscription_bill);
         subscriptionContainer = view.findViewById(R.id.container_subscription);
         subscriptionImage = view.findViewById(R.id.image_subscription);
+
+        acceptInvitation = view.findViewById(R.id.action_accept_invitation);
+        rejectInvitation = view.findViewById(R.id.action_reject_invitation);
     }
 }
