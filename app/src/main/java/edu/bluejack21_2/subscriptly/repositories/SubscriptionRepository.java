@@ -37,12 +37,6 @@ public class SubscriptionRepository {
 
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
-    {
-        listener.onFinish(null);
-    }
-
-    addOnFailureListener(e).
-
     public static void insertSubscription(Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
         DocumentReference creator = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
         Map<String, Object> subscriptionData = subscription.dataToMap();
@@ -87,18 +81,20 @@ public class SubscriptionRepository {
                 .addOnFailureListener(e -> {
                     listener.onFinish(false);
                 });
-    } ->
+    }
 
     public static void documentToSubscription(DocumentSnapshot subscriptionDoc, QueryFinishListener<Subscription> listener) {
         String id = subscriptionDoc.getId();
         Long bill = subscriptionDoc.getLong("bill");
         String image = subscriptionDoc.getString("image");
-        Integer duration = Integer.parseInt(subscriptionDoc.getString("month_duration"));
+        Log.d("MONTH DURATION", subscriptionDoc.getLong("month_duration")+"");
+        Integer duration = subscriptionDoc.getLong("month_duration").intValue();
+//        Integer duration = subscriptionDoc.getLong("month_duration");
         String name = subscriptionDoc.getString("name");
-        Timestamp startAt = (Timestamp) subscriptionDoc.get("start_at");
+        Timestamp startAt = subscriptionDoc.getTimestamp("start_at");
         ArrayList<TransactionHeader> headers = new ArrayList<>();
         subscriptionDoc.getReference().collection("transaction_headers").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addOnSuccessListener(headerSnapshots -> {
                     memberRef.whereEqualTo("subscription", subscriptionDoc.getReference()).whereEqualTo("valid_to", null).get().addOnSuccessListener(memberDocSnapshot -> {
                         if (memberDocSnapshot.isEmpty()) {
                             listener.onFinish(null);
@@ -111,6 +107,22 @@ public class SubscriptionRepository {
                                 UserRepository.getUser(userRef.getId(), userData -> {
                                     if (userData != null) {
                                         users.add(userData);
+                                        if (users.size() == userRefs.size()) {
+                                            for (DocumentSnapshot headerSnapshot :
+                                                    headerSnapshots.getDocuments()) {
+                                                documentToTransactionHeader(headerSnapshot, header -> {
+                                                    if (header != null) {
+                                                        headers.add(header);
+                                                        if (headers.size() == headerSnapshots.size()) {
+                                                            listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
+//                                            Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<User> members)
+                                                        }
+                                                    } else {
+                                                        listener.onFinish(null);
+                                                    }
+                                                });
+                                            }
+                                        }
                                     }
                                 });
                             }
@@ -118,17 +130,49 @@ public class SubscriptionRepository {
                     }).addOnFailureListener(e -> {
                         listener.onFinish(null);
                     });
-
-//        listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, users));
                 });
     }
 
-    public static TransactionHeader documentToTransactionHeader(DocumentSnapshot transactionHeaderDoc) {
+    public static void documentToTransactionHeader(DocumentSnapshot transactionHeaderDoc, QueryFinishListener<TransactionHeader> listener) {
         String id = transactionHeaderDoc.getId();
         Timestamp billingDate = (Timestamp) transactionHeaderDoc.get("billing_date");
         ArrayList<TransactionDetail> details = new ArrayList<>();
-        transactionHeaderDoc.getReference().collection("transaction_details")
-        return new TransactionHeader(id, Calendar.getInstance().setTime(billingDate.toDate()), );
+        transactionHeaderDoc.getReference().collection("transaction_details").get().addOnSuccessListener(detailSnapshots -> {
+            for (DocumentSnapshot detailSnapshot :
+                    detailSnapshots) {
+                documentToTransactionDetail(detailSnapshot, detail -> {
+                    if (detail != null) {
+                        details.add(detail);
+                        if (details.size() == detailSnapshots.size()) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(billingDate.toDate());
+                            listener.onFinish(new TransactionHeader(id, calendar, details));
+                        }
+                    } else {
+                        listener.onFinish(null);
+                    }
+                });
+            }
+        }).addOnFailureListener(e -> {
+
+        });
+    }
+
+    public static void documentToTransactionDetail(DocumentSnapshot transactionDetailDoc, QueryFinishListener<TransactionDetail> listener) {
+        String id = transactionDetailDoc.getId();
+        String image = transactionDetailDoc.getString("image");
+        Boolean verified = transactionDetailDoc.getBoolean("verified");
+        Timestamp paymentDate = transactionDetailDoc.getTimestamp("payment_date");
+        DocumentReference userRef = transactionDetailDoc.getDocumentReference("user");
+        UserRepository.getUser(userRef.getId(), userData -> {
+            if (userData != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(paymentDate.toDate());
+                listener.onFinish(new TransactionDetail(id, image, userData, verified, calendar));
+            } else {
+                listener.onFinish(null);
+            }
+        });
     }
 
     public static void acceptInvitation(String invitationId, QueryFinishListener<Boolean> listener) {
@@ -273,33 +317,5 @@ public class SubscriptionRepository {
                 });
 
         return subscriptions;
-    }
-
-    public static void documentToSubscription(DocumentSnapshot subsDoc, QueryFinishListener<Subscription> listener) {
-        ArrayList<User> members = new ArrayList<>();
-
-        SubscriptlyDB.getDB().collection("members").whereEqualTo("subscription_id", subsDoc.getId()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    List<DocumentReference> userRefs = (List<DocumentReference>) document.get("users");
-                    for (DocumentReference userRef : userRefs) {
-                        userRef.get().addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()) {
-                                DocumentSnapshot userDoc = task1.getResult();
-                                members.add(UserRepository.documentToUser(userDoc));
-                                if (members.size() == userRefs.size()) {
-                                    Subscription s = new Subscription(subsDoc.getId(), subsDoc.getString("name"), Long.parseLong(subsDoc.get("bill").toString()), Integer.parseInt(subsDoc.get("duration").toString()), members);
-                                    listener.onFinish(s);
-                                }
-                            } else {
-                                listener.onFinish(null);
-                            }
-                        });
-                    }
-                }
-            } else {
-                listener.onFinish(null);
-            }
-        });
     }
 }

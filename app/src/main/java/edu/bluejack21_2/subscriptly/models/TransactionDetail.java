@@ -5,13 +5,23 @@ import java.util.Calendar;
 public class TransactionDetail {
     private String transactionDetailId, image;
     private User user;
+    private Boolean verified;
     private Calendar paymentDate;
 
-    public TransactionDetail(String transactionDetailId, String image, User user, Calendar paymentDate) {
+    public TransactionDetail(String transactionDetailId, String image, User user, Boolean verified, Calendar paymentDate) {
         this.transactionDetailId = transactionDetailId;
         this.image = image;
         this.user = user;
+        this.verified = verified;
         this.paymentDate = paymentDate;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 
     public String getTransactionDetailId() {

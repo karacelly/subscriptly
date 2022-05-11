@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
         SubscriptlyDB.getDB().collection("subscriptions").get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (DocumentSnapshot document : task.getResult()) {
                             SubscriptionRepository.documentToSubscription(document, data -> {
                                 if (data != null) {
                                     subscriptions.add(data);

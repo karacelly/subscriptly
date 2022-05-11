@@ -17,6 +17,26 @@ public class Subscription {
     private Long bill;
     private Integer duration;
     private Timestamp startAt;
+    private ArrayList<TransactionHeader> headers;
+
+    public Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<TransactionHeader> headers, ArrayList<User> members) {
+        this.subscriptionId = subscriptionId;
+        this.name = name;
+        this.image = image;
+        this.bill = bill;
+        this.duration = duration;
+        this.startAt = startAt;
+        this.headers = headers;
+        this.members = members;
+    }
+
+    public ArrayList<TransactionHeader> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(ArrayList<TransactionHeader> headers) {
+        this.headers = headers;
+    }
 
     public Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<User> members) {
         this.subscriptionId = subscriptionId;
