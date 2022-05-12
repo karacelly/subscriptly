@@ -1,16 +1,14 @@
 package edu.bluejack21_2.subscriptly.ui.subs_detail;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import java.lang.reflect.Member;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.R;
@@ -41,9 +39,8 @@ public class SubscriptionDetailMemberFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d("SubscriptionDetailMemberFragment", "onViewCreated: Member Count:"+members.size());
-        MemberItemAdapter adapter = new MemberItemAdapter(getActivity(), members);
-        ListView list = getView().findViewById(R.id.subsMemberList);
-        list.setAdapter(adapter);
+        RecyclerView rv = view.findViewById(R.id.subsMemberList);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(new MemberItemAdapter(getActivity(), members));
     }
 }

@@ -6,10 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.subs_detail.SubscriptionDetailMemberFragment">
 
-    <ListView
-        android:id="@+id/subsMemberList"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </ListView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subsMemberList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
 
 </FrameLayout>
