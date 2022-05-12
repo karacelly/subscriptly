@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ import java.util.Calendar;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.HomeViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.DateHelper;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 import edu.bluejack21_2.subscriptly.utils.SubscriptionHelper;
@@ -62,6 +65,12 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
             if(particularHeader != null) {
                 subscriptionOnThatMonth.add(subscription);
                 transactionHeaderOnThatMonth.add(particularHeader);
+                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, UserRepository.LOGGED_IN_USER.getUserID());
+                if (transactionDetail == null) {
+                    int colorRed = Color.parseColor("#FF0000");
+                    holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorRed);
+                    holder.subscriptionGroupItem.setOutlineSpotShadowColor(colorRed);
+                }
             }
         }
         SubscriptionItemRecyclerAdapter adapter = new SubscriptionItemRecyclerAdapter(context, subscriptionOnThatMonth, transactionHeaderOnThatMonth, R.layout.home_subscription_item);

@@ -2,12 +2,14 @@ package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -47,7 +49,6 @@ public class SubscriptionItemRecyclerAdapter extends RecyclerView.Adapter<Subscr
                 .inflate(template,
                         parent,
                         false);
-
         return new SubscriptionItemViewHolder(itemView);
     }
 
@@ -58,7 +59,6 @@ public class SubscriptionItemRecyclerAdapter extends RecyclerView.Adapter<Subscr
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionBill.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
-
         TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, UserRepository.LOGGED_IN_USER.getUserID());
         if(transactionDetail == null) {
             holder.iconPaid.setImageResource(R.drawable.ic_remove_red_foreground);
