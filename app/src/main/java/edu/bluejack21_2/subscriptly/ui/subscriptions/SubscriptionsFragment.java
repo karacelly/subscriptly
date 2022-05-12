@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SearchView;
@@ -41,6 +42,8 @@ public class SubscriptionsFragment extends Fragment {
             return a.getName().compareTo(b.getName());
         }
     };
+
+    private Button sortAZ, sortZA, sortHighLow, sortLowHigh;
 
     private SearchView fieldSearchSubscription;
     private static SubscriptionsFragment fragment;
@@ -86,6 +89,16 @@ public class SubscriptionsFragment extends Fragment {
         subscriptionRecycler = view.findViewById(R.id.recycler_subscriptions);
         invitedRecycler = view.findViewById(R.id.recycler_invited_subscriptions);
         containerInvitation = view.findViewById(R.id.container_subscription_invitations);
+
+        sortAZ = view.findViewById(R.id.action_sort_alphabetical);
+        sortZA = view.findViewById(R.id.action_sort_alphabetical_inverse);
+        sortHighLow = view.findViewById(R.id.action_sort_price_high_to_low);
+        sortLowHigh = view.findViewById(R.id.action_sort_price_low_to_high);
+
+        sortAZ.setOnClickListener(v -> {
+
+        });
+
         subscriptions = new ArrayList<>();
         fetchData();
     }

@@ -73,6 +73,7 @@
                     android:layout_gravity="end">
 
                     <ImageButton
+                        android:id="@+id/action_upload_receipt"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_upload_icon_foreground"

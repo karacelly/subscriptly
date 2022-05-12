@@ -38,7 +38,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
     private static HomeFragment fragment;
     private RecyclerView subscriptionGroupRecycler;
-    private Button sortAZ, sortZA, sortHighLow, sortLowHigh;
     private ArrayList<Subscription> subscriptions;
 
     public HomeFragment() {
@@ -73,14 +72,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
         subscriptions = new ArrayList<>();
         Log.d("ON VIEW CREATED", "HOME");
         subscriptionGroupRecycler = view.findViewById(R.id.recycler_subscription_group);
-        sortAZ = view.findViewById(R.id.action_sort_alphabetical);
-        sortZA = view.findViewById(R.id.action_sort_alphabetical_inverse);
-        sortHighLow = view.findViewById(R.id.action_sort_price_high_to_low);
-        sortLowHigh = view.findViewById(R.id.action_sort_price_low_to_high);
 
-        sortAZ.setOnClickListener(v -> {
-
-        });
         fetchData();
     }
 
