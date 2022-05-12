@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
 
-public class Friend {
+public class UserHelper {
 
     private static Boolean checkSimilarity(String compared, String comparison1, String comparison2) {
         return compared.equals(comparison1) ? true : compared.equals(comparison2) ? true : false;

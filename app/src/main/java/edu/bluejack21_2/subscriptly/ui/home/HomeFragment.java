@@ -31,6 +31,7 @@ import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
+import edu.bluejack21_2.subscriptly.utils.SubscriptionHelper;
 
 public class HomeFragment extends Fragment implements QueryFinishListener<User> {
 
@@ -96,7 +97,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
                     for (TransactionHeader header:
                             subscription.getHeaders()) {
 //                      if(!isMonthYearTransactionExists(uniqueMonths, header) && header.getBillingDate().getTime().compareTo(Timestamp.now().toDate()) < 0) {
-                        if(!isMonthYearTransactionExists(uniqueMonths, header)) {
+                        if(!SubscriptionHelper.isMonthYearTransactionExists(uniqueMonths, header)) {
                             uniqueMonths.add(header);
                             uniqueMonths.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
                         }
@@ -107,20 +108,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
             }
         });
-    }
-
-    private Boolean isMonthYearTransactionExists(ArrayList<TransactionHeader> headers, TransactionHeader newHeader) {
-        for (TransactionHeader transactionHeader:
-             headers) {
-            if(isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.MONTH) && isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.YEAR)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Boolean isSameDateField(Calendar first, Calendar second, int field) {
-        return first.get(field) == second.get(field);
     }
 
     @Override

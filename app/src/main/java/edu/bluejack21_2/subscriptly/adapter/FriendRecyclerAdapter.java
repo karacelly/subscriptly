@@ -20,9 +20,8 @@ import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
-import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
-import edu.bluejack21_2.subscriptly.utils.Friend;
+import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
@@ -108,7 +107,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
         FriendRequest request = null;
         if (UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
-            request = Friend.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
+            request = UserHelper.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
 
         if (request != null) {
             FriendRequest finalRequest = request;

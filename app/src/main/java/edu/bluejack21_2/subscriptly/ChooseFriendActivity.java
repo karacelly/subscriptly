@@ -20,7 +20,7 @@ import edu.bluejack21_2.subscriptly.adapter.ChooseFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
-import edu.bluejack21_2.subscriptly.utils.Friend;
+import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class ChooseFriendActivity extends AppCompatActivity {
 
@@ -87,7 +87,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !Friend.userAlreadyExist(users, document.getId())) {
+                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 chooseFriendAdapter.add(users);
                                 setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);

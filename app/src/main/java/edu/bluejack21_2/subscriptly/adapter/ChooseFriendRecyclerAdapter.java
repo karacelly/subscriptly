@@ -5,14 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,9 +18,8 @@ import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.*;
 import edu.bluejack21_2.subscriptly.models.User;
-import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
-import edu.bluejack21_2.subscriptly.utils.Friend;
+import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
@@ -85,7 +82,7 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
 
         Glide.with(context).load(model.getImage()).into(holder.friendProfilePicture);
 
-        holder.chooseFriendBox.setChecked(Friend.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
+        holder.chooseFriendBox.setChecked(UserHelper.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
         holder.container.setOnClickListener(view -> {
             holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
         });

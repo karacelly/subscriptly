@@ -73,7 +73,6 @@ public class SubscriptionsFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_subscriptions, container, false);
 
         return rootView;
-//        return inflater.inflate(R.layout.fragment_subscriptions, container, false);
     }
 
     @Override
@@ -166,7 +165,10 @@ public class SubscriptionsFragment extends Fragment {
                     public boolean onQueryTextChange(String query) {
                         final List<Subscription> filteredModelList = filter(subscriptions, query);
                         adapter.replaceAll(filteredModelList);
-                        binding.recyclerSubscriptions.scrollToPosition(0);
+                        subscriptionRecycler.scrollToPosition(0);
+                        Log.d("FIELD SEARCH SUBSCRIPTION | Binding", binding.toString());
+                        Log.d("FIELD SEARCH SUBSCRIPTION | recycler Subscriptions",  binding.recyclerSubscriptions.toString());
+
                         return true;
                     }
                 });
