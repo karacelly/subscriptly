@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,11 +32,13 @@ import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
+import edu.bluejack21_2.subscriptly.utils.SubscriptionHelper;
 
 public class HomeFragment extends Fragment implements QueryFinishListener<User> {
 
     private static HomeFragment fragment;
     private RecyclerView subscriptionGroupRecycler;
+    private Button sortAZ, sortZA, sortHighLow, sortLowHigh;
     private ArrayList<Subscription> subscriptions;
 
     public HomeFragment() {
@@ -59,18 +62,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
         return rootView;
     }
-//    public View onCreateView(@NonNull LayoutInflater inflater,
-//                             ViewGroup container, Bundle savedInstanceState) {
-//        HomeViewModel homeViewModel =
-//                new ViewModelProvider(this).get(HomeViewModel.class);
-//
-//        binding = FragmentHomeBinding.inflate(inflater, container, false);
-//        View root = binding.getRoot();
-//
-////        final TextView textView = binding.textHome;
-////        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-//        return root;
-//    }
 
     @Override
     public void onDestroyView() {
@@ -79,9 +70,17 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        subscriptions = new ArrayList<>();
         Log.d("ON VIEW CREATED", "HOME");
         subscriptionGroupRecycler = view.findViewById(R.id.recycler_subscription_group);
-        subscriptions = new ArrayList<>();
+        sortAZ = view.findViewById(R.id.action_sort_alphabetical);
+        sortZA = view.findViewById(R.id.action_sort_alphabetical_inverse);
+        sortHighLow = view.findViewById(R.id.action_sort_price_high_to_low);
+        sortLowHigh = view.findViewById(R.id.action_sort_price_low_to_high);
+
+        sortAZ.setOnClickListener(v -> {
+
+        });
         fetchData();
     }
 
@@ -96,7 +95,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
                     for (TransactionHeader header:
                             subscription.getHeaders()) {
 //                      if(!isMonthYearTransactionExists(uniqueMonths, header) && header.getBillingDate().getTime().compareTo(Timestamp.now().toDate()) < 0) {
-                        if(!isMonthYearTransactionExists(uniqueMonths, header)) {
+                        if(!SubscriptionHelper.isMonthYearTransactionExists(uniqueMonths, header)) {
                             uniqueMonths.add(header);
                             uniqueMonths.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
                         }
@@ -107,20 +106,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
             }
         });
-    }
-
-    private Boolean isMonthYearTransactionExists(ArrayList<TransactionHeader> headers, TransactionHeader newHeader) {
-        for (TransactionHeader transactionHeader:
-             headers) {
-            if(isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.MONTH) && isSameDateField(transactionHeader.getBillingDate(), newHeader.getBillingDate(), Calendar.YEAR)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Boolean isSameDateField(Calendar first, Calendar second, int field) {
-        return first.get(field) == second.get(field);
     }
 
     @Override

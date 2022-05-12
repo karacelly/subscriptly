@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.HomeViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.DateHelper;
+import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
+import edu.bluejack21_2.subscriptly.utils.SubscriptionHelper;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
@@ -51,13 +57,24 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         TransactionHeader header = uniqueMonths.get(position);
         holder.subscriptionMonth.setText(DateHelper.formatDate(header.getBillingDate(), "MMMM, YYYY").toUpperCase());
-        setRecyclerView(subscriptions, holder.subscriptionItems, R.layout.home_subscription_item);
-    }
-
-    private void setRecyclerView
-            (ArrayList<Subscription> data, RecyclerView recyclerView, int layout) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new SubscriptionItemRecyclerAdapter(context, data, layout));
+        ArrayList<Subscription> subscriptionOnThatMonth = new ArrayList<>();
+        ArrayList<TransactionHeader> transactionHeaderOnThatMonth = new ArrayList<>();
+        for (Subscription subscription:
+             subscriptions) {
+            TransactionHeader particularHeader = SubscriptionHelper.getMonthYearTransactionExists(subscription.getHeaders(), header);
+            if(particularHeader != null) {
+                subscriptionOnThatMonth.add(subscription);
+                transactionHeaderOnThatMonth.add(particularHeader);
+                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, UserRepository.LOGGED_IN_USER.getUserID());
+                if (transactionDetail == null) {
+                    int colorRed = Color.parseColor("#FF0000");
+                    holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorRed);
+                    holder.subscriptionGroupItem.setOutlineSpotShadowColor(colorRed);
+                }
+            }
+        }
+        SubscriptionItemRecyclerAdapter adapter = new SubscriptionItemRecyclerAdapter(context, subscriptionOnThatMonth, transactionHeaderOnThatMonth, R.layout.home_subscription_item);
+        RecyclerViewHelper.setRecyclerView(context, adapter, LinearLayoutManager.VERTICAL, holder.subscriptionItems);
     }
 
     @Override

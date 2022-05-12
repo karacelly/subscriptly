@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+<!--    android:outlineSpotShadowColor="#80000000"-->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/container_subscription_group_item"
         android:layout_width="match_parent"
@@ -17,6 +19,8 @@
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false">
+
+
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/home_subscription_layout"
