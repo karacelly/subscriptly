@@ -49,25 +49,5 @@ public class SubscriptionDetail extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.subsDetailFragmentPlaceholder, new SubscriptionDetailFragment(SubscriptionRepository.ACTIVE_SUBSCRIPTION));
         ft.commit();
-//        Intent intent = getIntent();
-//
-//        DocumentReference findSubscription = SubscriptlyDB.getDB().collection("subscriptions").document(intent.getStringExtra("subscriptionID"));
-//
-//        findSubscription.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//
-//                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-////                        Subscription s = new Subscription(document.getId(), document.getString("name"), Integer.parseInt(document.get("bill").toString()), Integer.parseInt(document.get("duration").toString()), new ArrayList<User>());
-//                        ft.replace(R.id.subsDetailFragmentPlaceholder, new SubscriptionDetailFragment(SubscriptionRepository.ACTIVE_SUBSCRIPTION));
-////                        ft.replace(R.id.subsDetailFragmentPlaceholder, new SubscriptionDetailFragment(s));
-//                        ft.commit();
-//                    }
-//                }
-//            }
-//        });
     }
 }

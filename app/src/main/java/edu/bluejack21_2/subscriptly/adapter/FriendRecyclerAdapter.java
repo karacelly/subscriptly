@@ -190,8 +190,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
     @Override
     public int getItemCount() {
-        Log.d("FLOW", "getItemCountFriendRecyclerAdapter");
-        Log.d("COUNT", mSortedList.size() + "");
         return mSortedList.size();
     }
 

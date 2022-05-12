@@ -76,7 +76,7 @@ public class Subscription {
     }
 
     public String getImage() {
-        return image;
+        return image != null ? image : "https://firebasestorage.googleapis.com/v0/b/subscriptly-3ccfb.appspot.com/o/subscription%2Fimage_2022-05-12_133441233.png?alt=media&token=f3c08e89-526c-42f4-8d96-49957f5a3ed4";
     }
 
     public void setImage(String image) {

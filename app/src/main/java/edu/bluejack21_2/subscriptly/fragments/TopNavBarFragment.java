@@ -78,12 +78,11 @@ public class TopNavBarFragment extends Fragment {
                     return true;
                 });
 
-
                 popupMenu.show();
             }
         });
 
         profilePicture = v.findViewById(R.id.profile_picture);
-        Glide.with(v.getContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePicture);
+        if(UserRepository.LOGGED_IN_USER != null) Glide.with(v.getContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePicture);
     }
 }
