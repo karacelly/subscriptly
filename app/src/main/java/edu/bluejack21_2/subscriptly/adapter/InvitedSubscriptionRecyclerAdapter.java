@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,10 +26,14 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
 
     private final ArrayList<SubscriptionInvitation> invitations;
     private final int template;
+    private final Context context;
+    private final Fragment fragment;
 
-    public InvitedSubscriptionRecyclerAdapter(ArrayList<Subscription> invitations, int template) {
-        this.invitations = InvitedSubscriptionRecyclerAdapter.this.invitations;
+    public InvitedSubscriptionRecyclerAdapter(Context context, Fragment fragment, ArrayList<SubscriptionInvitation> invitations, int template) {
+        this.invitations = invitations;
         this.template = template;
+        this.context = context;
+        this.fragment = fragment;
     }
 
     @Override
@@ -55,6 +62,7 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
                 if(done) {
                     invitations.remove(subscriptionInvitation);
                     notifyDataSetChanged();
+                    updateFragment();
                 } else {
                     Toast.makeText(view.getContext(), "Accept Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
@@ -66,18 +74,16 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
                 if(done) {
                     invitations.remove(subscriptionInvitation);
                     notifyDataSetChanged();
+                    updateFragment();
                 } else {
                     Toast.makeText(view.getContext(), "Reject Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
             });
         });
-//        holder.subscriptionContainer.setOnClickListener(v -> {
-//            Context c =  v.getContext();
-//            Intent detail = new Intent(c, SubscriptionDetail.class);
-//            SubscriptionRepository.ACTIVE_SUBSCRIPTION = new Subscription(s.getSubscriptionId(), s.getName(), s.getBill(), s.getDuration(), s.getMembers());
-//            detail.putExtra("subscriptionID", s.getSubscriptionId());
-//            c.startActivity(detail);
-//        });
+    }
+
+    private void updateFragment() {
+        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
     }
 
     @Override

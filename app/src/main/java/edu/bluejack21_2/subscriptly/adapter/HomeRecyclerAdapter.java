@@ -1,18 +1,18 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import edu.bluejack21_2.subscriptly.SubscriptionDetail;
+import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.HomeViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
@@ -24,6 +24,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     public ArrayList<Subscription> subscriptions;
     public ArrayList<TransactionHeader> uniqueMonths;
     private final int template;
+
 
 
     public HomeRecyclerAdapter(ArrayList<Subscription> subscriptions, ArrayList<TransactionHeader> uniqueMonths, Context context, int template) {
@@ -50,7 +51,13 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         TransactionHeader header = uniqueMonths.get(position);
         holder.subscriptionMonth.setText(DateHelper.formatDate(header.getBillingDate(), "MMMM, YYYY").toUpperCase());
-        holder.subscriptionItems.setAdapter(new SubscriptionItemListAdapter(holder.subscriptionGroupItem.getContext(), subscriptions));
+        setRecyclerView(subscriptions, holder.subscriptionItems, R.layout.home_subscription_item);
+    }
+
+    private void setRecyclerView
+            (ArrayList<Subscription> data, RecyclerView recyclerView, int layout) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new SubscriptionItemRecyclerAdapter(context, data, layout));
     }
 
     @Override

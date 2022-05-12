@@ -3,6 +3,7 @@ package edu.bluejack21_2.subscriptly.repositories;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,15 +18,19 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.bluejack21_2.subscriptly.R;
+import edu.bluejack21_2.subscriptly.adapter.HomeRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
 public class SubscriptionRepository {
     public static Subscription ACTIVE_SUBSCRIPTION = null;
@@ -81,6 +86,36 @@ public class SubscriptionRepository {
                     listener.onFinish(false);
                 });
     }
+
+    public static void getUserSubscriptions(String userId, QueryFinishListener<ArrayList<Subscription>> listener) {
+        DocumentReference user = UserRepository.userRef.document(userId);
+        ArrayList<Subscription> subscriptions = new ArrayList<>();
+        SubscriptionRepository.memberRef.whereEqualTo("valid_to", null).whereArrayContains("users", user).get()
+                .addOnSuccessListener(memberSnapshots -> {
+                    for (DocumentSnapshot memberSnapshot :
+                            memberSnapshots) {
+                        DocumentReference subscription = memberSnapshot.getDocumentReference("subscription");
+
+                        if(subscription != null) {
+                            subscription.get().addOnSuccessListener(subscriptionSnapshot -> {
+                                SubscriptionRepository.documentToSubscription(subscriptionSnapshot, data -> {
+                                    if (data != null) {
+                                        subscriptions.add(data);
+                                        if(subscriptions.size() == memberSnapshots.size()) {
+                                            listener.onFinish(subscriptions);
+                                        }
+                                    }
+                                });
+                            }).addOnFailureListener(e -> {
+                                listener.onFinish(null);
+                            });
+                        }
+                    }
+                }).addOnFailureListener(e -> {
+                                listener.onFinish(null);
+        });
+    }
+
 
     public static void documentToSubscription(DocumentSnapshot subscriptionDoc, QueryFinishListener<Subscription> listener) {
         String id = subscriptionDoc.getId();
@@ -227,47 +262,6 @@ public class SubscriptionRepository {
         }).addOnFailureListener(e -> {
 
         });
-//        DocumentReference user = UserRepository.userRef.document(userId);
-//        DocumentReference subscription = subscriptionRef.document(subscriptionId);
-//        Query findInvitation = subscriptionInvitationRef.whereEqualTo("invited", user).whereEqualTo("subscription", subscription).limit(1);
-//        findInvitation.get().addOnSuccessListener(queryDocumentSnapshots -> {
-//            for (DocumentSnapshot docSnapshot :
-//                    queryDocumentSnapshots.getDocuments()) {
-//                docSnapshot.getReference().delete().addOnSuccessListener(status -> {
-//                    Query findMembers = memberRef.whereEqualTo("subscription", subscription).whereEqualTo("valid_to", null).limit(1);
-//                    findMembers.get().addOnSuccessListener(qMemberSnapshot -> {
-//                        if (qMemberSnapshot.getDocuments().size() > 0) {
-//                            DocumentSnapshot memberSnapshot = qMemberSnapshot.getDocuments().get(0);
-//                            DocumentReference memberDocRef = memberSnapshot.getReference();
-//                            DocumentReference creator = (DocumentReference) memberSnapshot.get("creator");
-//                            ArrayList<DocumentReference> users = (ArrayList<DocumentReference>) memberSnapshot.get("users");
-//                            users.add(user);
-//
-//                            Map<String, Object> newMemberData = new HashMap<>();
-//                            newMemberData.put("creator", creator);
-//                            newMemberData.put("subscription", subscription);
-//                            newMemberData.put("users", users);
-//                            newMemberData.put("valid_from", Timestamp.now());
-//                            newMemberData.put("valid_to", null);
-//
-//                            memberDocRef.update("valid_to", Timestamp.now()).addOnSuccessListener(updateMember -> {
-//                                memberRef.add(newMemberData).addOnSuccessListener(statusAdd -> {
-//                                    listener.onFinish(true);
-//                                }).addOnFailureListener(e -> {
-//                                    listener.onFinish(false);
-//                                });
-//                            }).addOnFailureListener(e -> {
-//                                listener.onFinish(false);
-//                            });
-//                        }
-//                    });
-//                }).addOnFailureListener(e -> {
-//                    listener.onFinish(false);
-//                });
-//            }
-//        }).addOnFailureListener(e -> {
-//            listener.onFinish(false);
-//        });
     }
 
     public static void rejectInvitation(String invitationId, QueryFinishListener<Boolean> listener) {
@@ -289,14 +283,12 @@ public class SubscriptionRepository {
         Query associatedMembers = memberRef.whereEqualTo("creator", creator).whereEqualTo("valid_to", null);
         associatedMembers.get()
                 .addOnSuccessListener(documentSnapshots -> {
-                    Log.d("ADD SUBSCRIPTION SIZE", documentSnapshots.size() + "");
                     int counter = 0;
                     for (DocumentSnapshot snapshot :
                             documentSnapshots) {
                         counter++;
                         int finalCounter = counter;
-                        snapshot.getDocumentReference("subscription_id").get().addOnSuccessListener(documentSnapshot -> {
-                            Log.d("ADD SUBSCRIPTION", documentSnapshot.get("name") + "");
+                        snapshot.getDocumentReference("subscription").get().addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.get("name").toString().equals(subscriptionName)) {
                                 listener.onFinish(false);
                             } else if (finalCounter == documentSnapshots.size()) {

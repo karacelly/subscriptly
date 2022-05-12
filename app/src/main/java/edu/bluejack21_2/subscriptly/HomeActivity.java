@@ -39,8 +39,8 @@ public class HomeActivity extends AppCompatActivity {
         loadFragment(new TopNavBarFragment(), R.id.top_bar);
 
         mBottomNavigation.setOnItemSelectedListener(item -> {
-            Log.d("ViewPager BottomNavigation", item.toString());
-            Log.d("ViewPager BottomNavigation ItemID", item.getItemId()+"");
+//            Log.d("ViewPager BottomNavigation", item.toString());
+//            Log.d("ViewPager BottomNavigation ItemID", item.getItemId()+"");
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     viewPager.setCurrentItem(0);

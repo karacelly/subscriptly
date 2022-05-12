@@ -5,6 +5,8 @@ public class SubscriptionInvitation {
     private User creator, invited;
     private Subscription subscription;
 
+    public SubscriptionInvitation() {}
+
     public SubscriptionInvitation(String invitationId, User creator, User invited, Subscription subscription) {
         this.invitationId = invitationId;
         this.creator = creator;

@@ -30,6 +30,7 @@ import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
 public class HomeFragment extends Fragment implements QueryFinishListener<User> {
 
@@ -86,35 +87,25 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
     private void fetchData() {
         ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
-        DocumentReference user = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
-        SubscriptionRepository.memberRef.whereEqualTo("valid_to", null).whereArrayContains("users", user).get()
-            .addOnSuccessListener(memberSnapshots -> {
-                for (DocumentSnapshot memberSnapshot :
-                        memberSnapshots) {
-                    DocumentReference subscription = memberSnapshot.getDocumentReference("subscription");
-
-                    if(subscription != null) {
-                        subscription.get().addOnSuccessListener(subscriptionSnapshot -> {
-                            SubscriptionRepository.documentToSubscription(subscriptionSnapshot, data -> {
-                                if (data != null) {
-                                    for (TransactionHeader header:
-                                         data.getHeaders()) {
-//                                        if(!isMonthYearTransactionExists(uniqueMonths, header) && header.getBillingDate().getTime().compareTo(Timestamp.now().toDate()) < 0) {
-                                        if(!isMonthYearTransactionExists(uniqueMonths, header)) {
-                                            uniqueMonths.add(header);
-                                            uniqueMonths.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
-//                                            Collections.sort(uniqueMonths);
-                                        }
-                                    }
-                                    subscriptions.add(data);
-                                    setRecyclerView(subscriptions, uniqueMonths, subscriptionGroupRecycler);
-                                }
-                            });
-                        }).addOnFailureListener(e -> {
-                        });
+        ArrayList<Subscription> subscriptions = new ArrayList<>();
+        SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
+            if(subs != null) {
+                subscriptions.addAll(subs);
+                for (Subscription subscription:
+                     subscriptions) {
+                    for (TransactionHeader header:
+                            subscription.getHeaders()) {
+//                      if(!isMonthYearTransactionExists(uniqueMonths, header) && header.getBillingDate().getTime().compareTo(Timestamp.now().toDate()) < 0) {
+                        if(!isMonthYearTransactionExists(uniqueMonths, header)) {
+                            uniqueMonths.add(header);
+                            uniqueMonths.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
+                        }
                     }
                 }
-            }).addOnFailureListener(e -> {
+                HomeRecyclerAdapter adapter = new HomeRecyclerAdapter(subscriptions, uniqueMonths, getActivity(), R.layout.home_subscription_group_item);
+                RecyclerViewHelper.setRecyclerView(getContext(), adapter, LinearLayoutManager.VERTICAL, subscriptionGroupRecycler);
+
+            }
         });
     }
 
@@ -130,11 +121,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
     private Boolean isSameDateField(Calendar first, Calendar second, int field) {
         return first.get(field) == second.get(field);
-    }
-
-    private void setRecyclerView(ArrayList<Subscription> data, ArrayList<TransactionHeader> uniqueMonths, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new HomeRecyclerAdapter(data, uniqueMonths, getActivity(), R.layout.home_subscription_group_item));
     }
 
     @Override

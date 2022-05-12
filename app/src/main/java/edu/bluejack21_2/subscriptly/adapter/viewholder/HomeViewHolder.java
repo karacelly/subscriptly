@@ -15,21 +15,16 @@ import edu.bluejack21_2.subscriptly.R;
 
 public class HomeViewHolder extends RecyclerView.ViewHolder {
 
-    // Text View
     public TextView subscriptionMonth;
     public CardView subscriptionGroupItem;
-    public ListView subscriptionItems;
+    public RecyclerView subscriptionItems;
     public FlexboxLayout subscriptionLayout;
-//            ImageView shopImage;
 
-    // parameterised constructor for View Holder class
-    // which takes the view as a parameter
     public HomeViewHolder(View view) {
         super(view);
-        Log.d("VIEWHOME", view+"");
         subscriptionMonth = view.findViewById(R.id.text_month_year_subscriptions);
         subscriptionGroupItem = view.findViewById(R.id.container_subscription_group_item);
-        subscriptionItems = view.findViewById(R.id.list_subscription_item);
+        subscriptionItems = view.findViewById(R.id.recycler_subscription_group_items);
         subscriptionLayout = view.findViewById(R.id.home_subscription_layout);
     }
 }

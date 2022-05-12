@@ -15,12 +15,12 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_bar"/>
+        android:layout_below="@id/top_bar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/buttom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:itemIconTint="@color/primary_color"

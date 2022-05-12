@@ -46,10 +46,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ListView
-                    android:id="@+id/list_subscription_item"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_subscription_group_items"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></ListView>
+                    android:layout_height="wrap_content"/>
+<!--                <ListView-->
+<!--                    android:id="@+id/list_subscription_item"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"></ListView>-->
             </LinearLayout>
 
         </com.google.android.flexbox.FlexboxLayout>

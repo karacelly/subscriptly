@@ -139,8 +139,8 @@ public class Subscription {
         Map<String, Object> memberData = new HashMap<>();
         memberData.put("creator", UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID()));
         memberData.put("subscription", SubscriptionRepository.subscriptionRef.document(subscriptionId));
-        ArrayList<User> users = new ArrayList<>();
-        users.add(UserRepository.LOGGED_IN_USER);
+        ArrayList<DocumentReference> users = new ArrayList<>();
+        users.add(UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID()));
         memberData.put("users", users);
         memberData.put("valid_from", Timestamp.now());
         memberData.put("valid_to", null);

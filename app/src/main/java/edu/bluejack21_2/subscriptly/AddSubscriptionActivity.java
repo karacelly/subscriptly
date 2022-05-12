@@ -47,6 +47,7 @@ import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
 import edu.bluejack21_2.subscriptly.utils.Image;
+import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
 
@@ -145,16 +146,11 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
         chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
         chosenUserAdapter = new ChosenUserRecyclerAdapter(this);
-        setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
+        RecyclerViewHelper.setRecyclerView(this, chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
     }
 
     private void showChosenFriends() {
         chosenUserAdapter.notifyDataSetChanged();
-    }
-
-    private void setRecyclerView(RecyclerView.Adapter adapter, int layout, RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, layout, false));
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
