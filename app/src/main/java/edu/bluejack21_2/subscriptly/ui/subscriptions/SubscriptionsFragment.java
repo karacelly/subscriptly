@@ -122,7 +122,7 @@ public class SubscriptionsFragment extends Fragment {
         SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
             if(subs != null) {
                 subscriptions.addAll(subs);
-                SubscriptionRecyclerAdapter adapter = new SubscriptionRecyclerAdapter(subscriptions, R.layout.subscriptions_subscription_item);
+                SubscriptionRecyclerAdapter adapter = new SubscriptionRecyclerAdapter(getContext(), subscriptions, R.layout.subscriptions_subscription_item);
                 RecyclerViewHelper.setRecyclerView(getContext(), adapter, LinearLayoutManager.VERTICAL, subscriptionRecycler);
             }
         });

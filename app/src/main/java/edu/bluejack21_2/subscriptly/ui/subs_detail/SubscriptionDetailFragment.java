@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
@@ -89,8 +91,9 @@ public class SubscriptionDetailFragment extends Fragment {
     }
 
     public void setDataOnView(View v){
+        Glide.with(getContext()).load(subscription.getImage()).into(subsPhoto);
+
         menuMembers.setTypeface(outfitBold);
-//        Picasso.get().load(subscription.get)
         subsName.setText(subscription.getName());
 
         menuMembers.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
