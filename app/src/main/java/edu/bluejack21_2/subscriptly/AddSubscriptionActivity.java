@@ -2,12 +2,9 @@ package edu.bluejack21_2.subscriptly;
 
 import static edu.bluejack21_2.subscriptly.utils.Currency.formatToRupiah;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -18,13 +15,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -36,17 +28,15 @@ import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.models.Subscription;
-import edu.bluejack21_2.subscriptly.models.User;
-import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
-import edu.bluejack21_2.subscriptly.utils.Image;
+import edu.bluejack21_2.subscriptly.utils.GlobalVariable;
+import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
 public class AddSubscriptionActivity extends AppCompatActivity {
@@ -75,32 +65,32 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         subscriptionStartDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-//                    if(result.getResultCode() == 3) {
+//    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
+//            new ActivityResultContracts.StartActivityForResult(),
+//            new ActivityResultCallback<ActivityResult>() {
+//                @Override
+//                public void onActivityResult(ActivityResult result) {
+////                    if(result.getResultCode() == 3) {
+////
+////                    }
+//                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        Intent data = result.getData();
 //
+//                        if (data != null) {
+//                            Uri selectedImage = data.getData();
+//                            imageSubscription.setImageURI(selectedImage);
+//                            String fileName = ImageHelper.getImageFileName(context, selectedImage);
+//                            ImageRepository.InsertImage("subscription", fileName, selectedImage, listener -> {
+//                                if(listener != null) {
+//                                    imageURL = listener;
+//                                } else {
+//                                    Toast.makeText(AddSubscriptionActivity.this, "Failed Upload Image!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                        }
 //                    }
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            imageSubscription.setImageURI(selectedImage);
-                            String fileName = Image.getImageFileName(context, selectedImage);
-                            ImageRepository.InsertImage("subscription", fileName, selectedImage, listener -> {
-                                if(listener != null) {
-                                    imageURL = listener;
-                                } else {
-                                    Toast.makeText(AddSubscriptionActivity.this, "Failed Upload Image!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }
-                }
-            });
+//                }
+//            });
     private Toolbar toolbar;
 
     private void initComponents() {
@@ -170,7 +160,9 @@ public class AddSubscriptionActivity extends AppCompatActivity {
 
         imageToggle.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            pickImageActivityResultLauncher.launch(intent);
+            ImageHelper.chooseImageAndUpload(this, imageSubscription, GlobalVariable.FOLDER_SUBSCRIPTION, listener -> {
+                imageURL = listener;
+            }).launch(intent);
         });
 
         buttonAdd.setOnClickListener(v -> {
@@ -271,32 +263,6 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                     }
                 });
             }
-
         });
-
     }
-
-//    private void addView() {
-//        String friendNameContent = friendName.getText().toString().trim();
-//        if (friendNameContent.length() > 0) {
-//            final View friendView = getLayoutInflater().inflate(R.layout.row_add_friend, null, false);
-//
-//            EditText friendNameAppend = friendView.findViewById(R.id.field_name_friend);
-//            ImageButton removeFriend = friendView.findViewById(R.id.action_remove_friend);
-//
-//            friendNameAppend.setText(friendNameContent);
-////            removeFriend.setOnClickListener(v -> {
-////                removeView(friendView);
-////            });
-//
-//////            layoutFriendList.addView(friendView);
-//        }
-//        friendName.setText("");
-//    }
-
-    private void removeView(View v) {
-//        layoutFriendList.removeView(v);
-    }
-
-
 }

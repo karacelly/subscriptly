@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class SubscriptionsFragment extends Fragment {
         }
     };
 
-    private Button sortAZ, sortZA, sortHighLow, sortLowHigh;
+    private Button sortAZ, sortZA, sortHighLow, sortLowHigh, sortNewest, sortOldest;
 
     private SearchView fieldSearchSubscription;
     private static SubscriptionsFragment fragment;
@@ -52,6 +53,7 @@ public class SubscriptionsFragment extends Fragment {
     private ArrayList<Subscription> subscriptions;
     private SubscriptionRecyclerAdapter adapter;
     private FragmentSubscriptionsBinding binding;
+    private static Boolean isFirst = true;
 
     public SubscriptionsFragment() {
         // Required empty public constructor
@@ -94,19 +96,49 @@ public class SubscriptionsFragment extends Fragment {
         sortZA = view.findViewById(R.id.action_sort_alphabetical_inverse);
         sortHighLow = view.findViewById(R.id.action_sort_price_high_to_low);
         sortLowHigh = view.findViewById(R.id.action_sort_price_low_to_high);
+        sortNewest = view.findViewById(R.id.action_sort_newest_to_oldest);
+        sortOldest = view.findViewById(R.id.action_sort_oldest_to_newest);
+
+
+        fetchData();
+        initListeners();
+    }
+
+    private void initListeners() {
 
         sortAZ.setOnClickListener(v -> {
-
+            adapter.setComparator(Comparator.comparing(Subscription::getName));
         });
 
-        subscriptions = new ArrayList<>();
-        fetchData();
+        sortZA.setOnClickListener(v -> {
+            adapter.setComparator(Comparator.comparing(Subscription::getName).reversed());
+        });
+
+        sortHighLow.setOnClickListener(v -> {
+            adapter.setComparator(Comparator.comparing(Subscription::getBill).reversed());
+        });
+
+        sortLowHigh.setOnClickListener(v -> {
+            adapter.setComparator(Comparator.comparing(Subscription::getBill));
+        });
+
+        sortNewest.setOnClickListener(v -> {
+            adapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
+        });
+
+        sortOldest.setOnClickListener(v -> {
+            adapter.setComparator(Comparator.comparing(Subscription::getStartAt));
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        fetchData();
+        if(isFirst == true) {
+            isFirst = false;
+        } else {
+            fetchData();
+        }
     }
 
     private static List<Subscription> filter(List<Subscription> subscriptions, String query) {
@@ -162,10 +194,15 @@ public class SubscriptionsFragment extends Fragment {
                 }).addOnFailureListener(e -> {
 
         });
-        ArrayList<Subscription> subscriptions = new ArrayList<>();
+        subscriptions = new ArrayList<>();
+
+        Log.d("FETCH DATA", subscriptions.size()+"");
         SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
             if(subs != null) {
+                Log.d("BEFORE SUBSCRIPTION SIZE", subscriptions.size()+"");
+//                if(subscriptions.size() < subs.size())
                 subscriptions.addAll(subs);
+                Log.d("AFTER SUBSCRIPTION SIZE", subscriptions.size()+"");
                 adapter = new SubscriptionRecyclerAdapter(getContext(), subscriptions, R.layout.subscriptions_subscription_item, ALPHABETICAL_COMPARATOR);
                 RecyclerViewHelper.setRecyclerView(getContext(), adapter, LinearLayoutManager.VERTICAL, subscriptionRecycler);
 

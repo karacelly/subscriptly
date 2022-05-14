@@ -131,6 +131,7 @@ public class SubscriptionDetailFragment extends Fragment {
             menuMedia.setTypeface(outfitBold);
 
             menuMedia.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
+            setFragment(new SubscriptionDetailMediaFragment(subscription));
         });
     }
 

@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +25,8 @@ import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
-import edu.bluejack21_2.subscriptly.utils.Image;
+import edu.bluejack21_2.subscriptly.utils.GlobalVariable;
+import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 
 public class EditProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -50,33 +50,33 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-//                if(result.getResultCode() == 3) {
+//    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
+//            new ActivityResultContracts.StartActivityForResult(),
+//            new ActivityResultCallback<ActivityResult>() {
+//                @Override
+//                public void onActivityResult(ActivityResult result) {
+////                if(result.getResultCode() == 3) {
+////
+////                }
+//                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        // There are no request codes
+//                        Intent data = result.getData();
 //
+//                        if (data != null) {
+//                            Uri selectedImage = data.getData();
+//                            profilePictureImage.setImageURI(selectedImage);
+//                            String fileName = ImageHelper.getImageFileName(getApplicationContext(), selectedImage);
+//                            ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
+//                                if(listener == null) {
+//                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    finalFileName = listener;
+//                                }
+//                            });
+//                        }
+//                    }
 //                }
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            profilePictureImage.setImageURI(selectedImage);
-                            String fileName = Image.getImageFileName(getApplicationContext(), selectedImage);
-                            ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
-                                if(listener == null) {
-                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    finalFileName = listener;
-                                }
-                            });
-                        }
-                    }
-                }
-            });
+//            });
 
     public void initComponents() {
         toolbar = findViewById(R.id.toolbar);
@@ -102,7 +102,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         profilePictureCard.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            pickImageActivityResultLauncher.launch(intent);
+            ImageHelper.chooseImageAndUpload(this, profilePictureImage, GlobalVariable.FOLDER_PROFILE, listener -> {
+                finalFileName = listener;
+            }).launch(intent);
         });
 
         saveChanges.setOnClickListener(view -> {

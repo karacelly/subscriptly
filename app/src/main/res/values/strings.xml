@@ -82,4 +82,5 @@
     <string name="month_label">Month to Pay</string>
     <string name="paid_prove_label">Paid Prove (for verification)</string>
     <string name="pay_button">Pay</string>
+    <string name="error_upload">Upload Error! Please Try Again</string>
 </resources>

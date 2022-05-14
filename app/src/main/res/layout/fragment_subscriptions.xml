@@ -89,6 +89,28 @@
                         android:text="Lowest Price"
                         android:textColor="@color/primary_color"
                         android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/action_sort_newest_to_oldest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="Newest"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/action_sort_oldest_to_newest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/border_bg_white"
+                        android:fontFamily="@font/outfit_bold"
+                        android:text="Oldest"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </HorizontalScrollView>
 

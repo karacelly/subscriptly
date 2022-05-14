@@ -273,9 +273,27 @@ public class SubscriptionRepository {
         });
     }
 
+    public static void uploadReceipt(String subscriptionId, String transactionHeaderId, String userId, String image, QueryFinishListener<Boolean> listener) {
+        DocumentReference user = UserRepository.userRef.document(userId);
+        Map<String, Object> receiptData = new HashMap<>();
+        receiptData.put("user", user);
+        receiptData.put("payment_date", Timestamp.now());
+        receiptData.put("verified", false);
+        receiptData.put("image", image);
+        getTransactionDetailRef(subscriptionId, transactionHeaderId).add(receiptData).addOnSuccessListener(document -> {
+            listener.onFinish(true);
+        }).addOnFailureListener(e -> {
+            listener.onFinish(false);
+        });
+    }
+
 
     private static CollectionReference getTransactionHeaderRef(String subscriptionId) {
         return subscriptionRef.document(subscriptionId).collection("transaction_headers");
+    }
+
+    private static CollectionReference getTransactionDetailRef(String subscriptionId, String transactionHeaderId) {
+        return subscriptionRef.document(subscriptionId).collection("transaction_headers").document(transactionHeaderId).collection("transaction_details");
     }
 
     public static void isUniqueSubscriptionNameForCreator(String creatorId, String subscriptionName, QueryFinishListener<Boolean> listener) {

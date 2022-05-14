@@ -74,6 +74,7 @@
                 android:layout_height="200dp" >
 
                 <ImageButton
+                    android:id="@+id/image_receipt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/border_bg_white"
@@ -83,6 +84,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/action_upload_receipt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pay_button"

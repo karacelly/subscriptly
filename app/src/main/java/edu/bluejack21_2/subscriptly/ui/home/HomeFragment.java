@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         subscriptions = new ArrayList<>();
-        Log.d("ON VIEW CREATED", "HOME");
         subscriptionGroupRecycler = view.findViewById(R.id.recycler_subscription_group);
 
         fetchData();
@@ -79,6 +78,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     private void fetchData() {
         ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
         ArrayList<Subscription> subscriptions = new ArrayList<>();
+        Log.d("LOGGED IN USER", UserRepository.LOGGED_IN_USER.toString());
         SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
             if(subs != null) {
                 subscriptions.addAll(subs);

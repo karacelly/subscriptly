@@ -70,6 +70,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
                     int colorRed = Color.parseColor("#FF0000");
                     holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorRed);
                     holder.subscriptionGroupItem.setOutlineSpotShadowColor(colorRed);
+                } else {
+                    int colorBlack = Color.parseColor("#000000");
+                    holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorBlack);
+                    holder.subscriptionGroupItem.setOutlineSpotShadowColor(colorBlack);
                 }
             }
         }

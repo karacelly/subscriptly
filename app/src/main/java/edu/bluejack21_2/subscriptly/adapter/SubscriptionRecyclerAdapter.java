@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SortedList;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,10 +26,9 @@ import edu.bluejack21_2.subscriptly.utils.Currency;
 
 public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {
 
-    private final ArrayList<Subscription> subscriptions;
     private final int template;
     private final Context context;
-    private final Comparator<Subscription> mComparator;
+    private Comparator<Subscription> mComparator;
     private final SortedList<Subscription> mSortedList = new SortedList<>(Subscription.class, new SortedList.Callback<Subscription>() {
         @Override
         public int compare(Subscription a, Subscription b) {
@@ -67,13 +67,18 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
     });
 
     public SubscriptionRecyclerAdapter(Context context, ArrayList<Subscription> subscriptions, int template, Comparator<Subscription> comparator) {
-        this.subscriptions = subscriptions;
         this.template = template;
         this.context = context;
         this.mComparator = comparator;
         if (subscriptions != null) {
             mSortedList.addAll(subscriptions);
         }
+    }
+
+    public void setComparator(Comparator<Subscription> comparator) {
+        this.mComparator = comparator;
+        ArrayList<Subscription> local = getSubscriptions();
+        mSortedList.replaceAll(local);
     }
 
     @Override
@@ -91,7 +96,7 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        Subscription s = subscriptions.get(position);
+        Subscription s = mSortedList.get(position);
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionPrice.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
@@ -122,6 +127,14 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         }
         mSortedList.addAll(models);
         mSortedList.endBatchedUpdates();
+    }
+
+    public ArrayList<Subscription> getSubscriptions(){
+        ArrayList<Subscription> subscriptions = new ArrayList<>();
+        for (int i = 0; i < mSortedList.size(); i++) {
+            subscriptions.add(mSortedList.get(i));
+        }
+        return subscriptions;
     }
 
     public void add(Subscription model) {
