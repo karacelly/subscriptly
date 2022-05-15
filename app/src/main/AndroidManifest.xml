@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Subscriptly">
         <activity
+            android:name=".InviteFriendActivity"
+            android:exported="false" />
+        <activity
             android:name=".PaySubscriptionActivity"
             android:exported="false" />
         <activity
@@ -48,7 +51,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

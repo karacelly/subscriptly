@@ -14,12 +14,14 @@
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_unchecked.xml" value="0.2765" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_upload_icon_background.xml" value="0.2995" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_upload_icon_foreground.xml" value="0.2995" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_choose_friend.xml" value="0.2504528985507246" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_home.xml" value="0.3104166666666667" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_invite_friend.xml" value="0.39166666666666666" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_pay_subscription.xml" value="0.39166666666666666" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_subscription_detail.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_history_detail_item.xml" value="0.11277173913043478" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_history_item.xml" value="0.25" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_member_item.xml" value="0.67" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_member_item.xml" value="0.33" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_home.xml" value="0.3104166666666667" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscription_detail.xml" value="0.1693840579710145" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscription_detail_history.xml" value="0.11277173913043478" />

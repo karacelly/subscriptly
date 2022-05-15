@@ -41,7 +41,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/outfit_medium"
-                android:text="Winston"
+                android:text="@{model.username}"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
             <androidx.cardview.widget.CardView
@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp">
                 <Button
+                    android:id="@+id/action_kick_member"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/red_button"
@@ -57,7 +58,6 @@
 
             </androidx.cardview.widget.CardView>
         </LinearLayout>
-<!--                android:text="@{model.username}"-->
 
     </LinearLayout>
 

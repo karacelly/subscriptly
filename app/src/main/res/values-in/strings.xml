@@ -85,4 +85,5 @@
     <string name="paid_prove_label">Bukti Pembayaran (untuk verifikasi)</string>
     <string name="pay_button">Bayar</string>
     <string name="error_upload">Upload Bermasalah! Silahkan coba kembali</string>
+    <string name="invite">Ajak</string>
 </resources>

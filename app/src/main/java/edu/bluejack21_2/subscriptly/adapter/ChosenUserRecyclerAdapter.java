@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.ChosenUserViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.databinding.SimpleUserItemBinding;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
@@ -21,10 +24,17 @@ public class ChosenUserRecyclerAdapter extends RecyclerView.Adapter<ChosenUserVi
 
     private final LayoutInflater mInflater;
     private final Context context;
+    private ChooseFriendRecyclerAdapter chooseFriendRecyclerAdapter;
+    private QueryChangeListener<ArrayList<User>> changeListener;
 
-    public ChosenUserRecyclerAdapter(Context context) {
+    public ChosenUserRecyclerAdapter(Context context, QueryChangeListener<ArrayList<User>> changeListener) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
+        this.changeListener = changeListener;
+    }
+
+    public void setChooseFriendRecyclerAdapter(ChooseFriendRecyclerAdapter chooseFriendRecyclerAdapter) {
+        this.chooseFriendRecyclerAdapter = chooseFriendRecyclerAdapter;
     }
 
     @Override
@@ -43,7 +53,10 @@ public class ChosenUserRecyclerAdapter extends RecyclerView.Adapter<ChosenUserVi
         holder.removeUserButton.setOnClickListener(view -> {
             SubscriptionRepository.chosenFriends.remove(model);
             notifyDataSetChanged();
-            ChooseFriendActivity.updateChooseFriendRecycler();
+            if(chooseFriendRecyclerAdapter != null) {
+                chooseFriendRecyclerAdapter.notifyDataSetChanged();
+                changeListener.onChange(SubscriptionRepository.chosenFriends);
+            }
         });
     }
 

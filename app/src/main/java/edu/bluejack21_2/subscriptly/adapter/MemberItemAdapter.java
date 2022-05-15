@@ -22,16 +22,19 @@ import java.util.Vector;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.MemberItemViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.AdapterMemberItemBinding;
+import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder> {
     private Context ctx;
     private final LayoutInflater mInflater;
     private ArrayList<User> members;
+    private final Subscription subscription;
 
-    public MemberItemAdapter(Context ctx, ArrayList<User> members) {
+    public MemberItemAdapter(Context ctx, ArrayList<User> members, Subscription subscription) {
         this.ctx = ctx;
         this.members = members;
+        this.subscription = subscription;
         mInflater = LayoutInflater.from(ctx);
     }
 
@@ -46,11 +49,7 @@ public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull MemberItemViewHolder holder, int position) {
         final User model = members.get(position);
-        holder.bind(model);
-
-        holder.getUsernameTxt().setText(model.getUsername());
-
-        Glide.with(ctx).load(model.getImage()).into(holder.getUserImage());
+        holder.bind(model, subscription);
     }
 
     @Override

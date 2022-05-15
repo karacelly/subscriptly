@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
+import edu.bluejack21_2.subscriptly.InviteFriendActivity;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.MemberItemAdapter;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 
 public class SubscriptionDetailMemberFragment extends Fragment {
     private ArrayList<User> members;
@@ -46,10 +48,10 @@ public class SubscriptionDetailMemberFragment extends Fragment {
         addMemberContainer = view.findViewById(R.id.container_add_member);
         RecyclerView rv = view.findViewById(R.id.subsMemberList);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new MemberItemAdapter(getActivity(), members));
+        rv.setAdapter(new MemberItemAdapter(getActivity(), members, SubscriptionRepository.ACTIVE_SUBSCRIPTION));
 
         addMemberContainer.setOnClickListener(v -> {
-            Intent addMember = new Intent(v.getContext(), ChooseFriendActivity.class);
+            Intent addMember = new Intent(v.getContext(), InviteFriendActivity.class);
             startActivity(addMember);
         });
     }

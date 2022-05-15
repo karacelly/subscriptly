@@ -45,8 +45,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (data != null) {
                     UserRepository.LOGGED_IN_USER = data;
                     Intent i = new Intent(this, HomeActivity.class);
-                    startActivity(i);
                     finish();
+                    startActivity(i);
                 } else {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.clear();

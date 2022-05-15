@@ -11,20 +11,25 @@ import androidx.recyclerview.widget.SortedList;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
+import edu.bluejack21_2.subscriptly.InviteFriendActivity;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.*;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
+    private final ChosenUserRecyclerAdapter chosenUserRecyclerAdapter;
     private final LayoutInflater mInflater;
     private final Comparator<User> mComparator;
+    private final QueryChangeListener<ArrayList<User>> queryChangeListener;
     private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
         @Override
         public int compare(User a, User b) {
@@ -63,10 +68,12 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
     });
     private final Context context;
 
-    public ChooseFriendRecyclerAdapter(Comparator<User> comparator, Context context) {
+    public ChooseFriendRecyclerAdapter(Comparator<User> comparator, Context context, ChosenUserRecyclerAdapter chosenUserRecyclerAdapter, QueryChangeListener<ArrayList<User>> queryChangeListener) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         mComparator = comparator;
+        this.chosenUserRecyclerAdapter = chosenUserRecyclerAdapter;
+        this.queryChangeListener = queryChangeListener;
     }
 
     @Override
@@ -95,7 +102,8 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
             } else {
                 SubscriptionRepository.chosenFriends.remove(model);
             }
-            ChooseFriendActivity.updateChosenRecycler();
+            chosenUserRecyclerAdapter.notifyDataSetChanged();
+            queryChangeListener.onChange(SubscriptionRepository.chosenFriends);
         });
     }
 

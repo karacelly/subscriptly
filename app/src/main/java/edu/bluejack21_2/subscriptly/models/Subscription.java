@@ -17,7 +17,28 @@ public class Subscription {
     private Long bill;
     private Integer duration;
     private Timestamp startAt;
+    private User creator;
     private ArrayList<TransactionHeader> headers;
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, User creator, ArrayList<TransactionHeader> headers, ArrayList<User> members) {
+        this.subscriptionId = subscriptionId;
+        this.name = name;
+        this.image = image;
+        this.bill = bill;
+        this.duration = duration;
+        this.startAt = startAt;
+        this.creator = creator;
+        this.headers = headers;
+        this.members = members;
+    }
 
     public Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<TransactionHeader> headers, ArrayList<User> members) {
         this.subscriptionId = subscriptionId;
@@ -51,7 +72,7 @@ public class Subscription {
     private ArrayList<User> members;
 
     public Subscription(String subscriptionId, String name, Long bill, Integer duration, ArrayList<User> members) {
-        this.subscriptionId = Subscription.this.subscriptionId;
+        this.subscriptionId = subscriptionId;
         this.name = name;
         this.bill = bill;
         this.duration = duration;
@@ -59,7 +80,7 @@ public class Subscription {
     }
 
     public Subscription(String subscriptionId, String name, Long bill, Integer duration, Timestamp startAt, ArrayList<User> members) {
-        this.subscriptionId = Subscription.this.subscriptionId;
+        this.subscriptionId = subscriptionId;
         this.name = name;
         this.bill = bill;
         this.duration = duration;
@@ -72,7 +93,7 @@ public class Subscription {
     }
 
     public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = Subscription.this.subscriptionId;
+        this.subscriptionId = subscriptionId;
     }
 
     public String getImage() {
