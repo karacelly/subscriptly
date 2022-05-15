@@ -14,8 +14,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:paddingTop="20dp"
-        android:paddingRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         />
     <ImageView
         android:id="@+id/image_popup"

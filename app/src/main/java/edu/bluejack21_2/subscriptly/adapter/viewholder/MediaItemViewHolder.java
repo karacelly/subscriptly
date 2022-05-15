@@ -51,12 +51,13 @@ public class MediaItemViewHolder extends RecyclerView.ViewHolder {
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             );
-            if(Build.VERSION.SDK_INT>=21){
-                popupWindow.setElevation(5.0f);
-            }
             ImageView fullSizeImage = customView.findViewById(R.id.image_popup);
             Glide.with(view.getContext()).load(transactionDetail.getImage()).into(fullSizeImage);
             ImageButton closeButton = customView.findViewById(R.id.action_close_popup);
+            if(Build.VERSION.SDK_INT>=21){
+                popupWindow.setElevation(5.0f);
+                closeButton.setElevation(6.0f);
+            }
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
