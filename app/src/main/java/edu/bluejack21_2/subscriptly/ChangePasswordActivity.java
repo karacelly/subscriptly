@@ -51,14 +51,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
             String confirmPassword = confirmTxt.getText().toString();
 
             if(!current.isEmpty() && !newPassword.isEmpty() && !confirmPassword.isEmpty()) {
-                if(Crypt.verifyHash(current, UserRepository.LOGGED_IN_USER.getPassword())) {
+                if(Crypt.verifyHash(current, UserRepository.getLoggedInUser().getPassword())) {
                     if(newPassword.length() < 8 || newPassword.length() > 30) {
                         Toast.makeText(getApplicationContext(), "Your password must be between 8 and 30 characters", Toast.LENGTH_SHORT).show();
                     }else{
                         if(newPassword.equals(confirmPassword)) {
-                            UserRepository.updateUserPassword(UserRepository.LOGGED_IN_USER.getUserID(), newPassword, listener -> {
+                            UserRepository.updateUserPassword(UserRepository.getLoggedInUser().getUserID(), newPassword, listener -> {
                                 if(listener) {
-                                    UserRepository.LOGGED_IN_USER.setPassword(Crypt.generateHash(newPassword));
+                                    UserRepository.getLoggedInUser().setPassword(Crypt.generateHash(newPassword));
                                     Toast.makeText(getApplicationContext(), "Change password success!", Toast.LENGTH_SHORT).show();
                                     onBackPressed();
                                 }else{

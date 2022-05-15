@@ -59,7 +59,7 @@ public class SubscriptionItemRecyclerAdapter extends RecyclerView.Adapter<Subscr
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionBill.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
-        TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, UserRepository.LOGGED_IN_USER.getUserID());
+        TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, UserRepository.getLoggedInUser().getUserID());
         if(transactionDetail == null) {
             holder.iconPaid.setImageResource(R.drawable.ic_remove_red_foreground);
         } else {

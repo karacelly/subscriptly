@@ -65,7 +65,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
             if(particularHeader != null) {
                 subscriptionOnThatMonth.add(subscription);
                 transactionHeaderOnThatMonth.add(particularHeader);
-                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, UserRepository.LOGGED_IN_USER.getUserID());
+                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, UserRepository.getLoggedInUser().getUserID());
                 if (transactionDetail == null) {
                     int colorRed = Color.parseColor("#FF0000");
                     holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorRed);

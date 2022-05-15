@@ -135,7 +135,7 @@ public class FriendsFragment extends Fragment {
 //                                }
 //                                ArrayList<User> members = (ArrayList<User>)document.get("members");
 //                                Log.d("Members", document.get("members").getClass().toString());
-                            if(!UserRepository.LOGGED_IN_USER.getUserID().equals(document.getId())) {
+                            if(!UserRepository.getLoggedInUser().getUserID().equals(document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 setRecyclerView(users, requests, friendsRecycler);
                             }

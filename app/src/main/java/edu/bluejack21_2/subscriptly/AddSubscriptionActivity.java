@@ -248,7 +248,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
             if(flag) {
                 Timestamp timestamp = new Timestamp(myCalendar.getTime());
                 Subscription subscription = new Subscription("", name, imageURL, billLong, durationInt, timestamp, SubscriptionRepository.chosenFriends);
-                SubscriptionRepository.isUniqueSubscriptionNameForCreator(UserRepository.LOGGED_IN_USER.getUserID(), name, listener -> {
+                SubscriptionRepository.isUniqueSubscriptionNameForCreator(UserRepository.getLoggedInUser().getUserID(), name, listener -> {
                     if(listener) {
                         SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
                             if(subListener) {

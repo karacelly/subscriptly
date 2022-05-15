@@ -32,7 +32,7 @@ public class SubscriptionRepository {
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
     public static void insertSubscription(Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
-        DocumentReference creator = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
+        DocumentReference creator = UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID());
         Map<String, Object> subscriptionData = subscription.dataToMap();
         subscriptionRef.add(subscriptionData)
                 .addOnSuccessListener(documentReference -> {

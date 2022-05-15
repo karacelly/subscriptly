@@ -106,14 +106,14 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
          */
 
         FriendRequest request = null;
-        if (UserRepository.LOGGED_IN_USER.getUserID() != model.getUserID())
-            request = UserHelper.getFriendRequest(requests, UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID());
+        if (UserRepository.getLoggedInUser().getUserID() != model.getUserID())
+            request = UserHelper.getFriendRequest(requests, UserRepository.getLoggedInUser().getUserID(), model.getUserID());
 
         if (request != null) {
             FriendRequest finalRequest = request;
 
             holder.addFriend.setVisibility(View.GONE);
-            if (request.getSender().equals(UserRepository.LOGGED_IN_USER.getUserID())) {
+            if (request.getSender().equals(UserRepository.getLoggedInUser().getUserID())) {
                 holder.cancelFriend.setVisibility(View.VISIBLE);
                 holder.cancelFriend.setOnClickListener(v -> {
                     UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), listener -> {
@@ -160,7 +160,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             holder.addFriend.setVisibility(View.VISIBLE);
         }
         holder.addFriend.setOnClickListener(v -> {
-            UserRepository.sendFriendRequest(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), data -> {
+            UserRepository.sendFriendRequest(UserRepository.getLoggedInUser().getUserID(), model.getUserID(), data -> {
                 if (data) {
                     holder.addFriend.setVisibility(View.GONE);
                     holder.cancelFriend.setVisibility(View.VISIBLE);
@@ -171,12 +171,12 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-        if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, model.getUserID())) {
+        if (UserRepository.checkFriend(UserRepository.getLoggedInUser(), model.getUserID())) {
             holder.addFriend.setVisibility(View.GONE);
             holder.removeFriend.setVisibility(View.VISIBLE);
         }
         holder.removeFriend.setOnClickListener(v -> {
-            UserRepository.removeFriend(UserRepository.LOGGED_IN_USER.getUserID(), model.getUserID(), listener -> {
+            UserRepository.removeFriend(UserRepository.getLoggedInUser().getUserID(), model.getUserID(), listener -> {
                 if (listener) {
                     holder.removeFriend.setVisibility(View.GONE);
                     holder.addFriend.setVisibility(View.VISIBLE);

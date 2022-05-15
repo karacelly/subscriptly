@@ -158,10 +158,10 @@ public class Subscription {
 
     public Map<String, Object> membersToMap(String subscriptionId) {
         Map<String, Object> memberData = new HashMap<>();
-        memberData.put("creator", UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID()));
+        memberData.put("creator", UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID()));
         memberData.put("subscription", SubscriptionRepository.subscriptionRef.document(subscriptionId));
         ArrayList<DocumentReference> users = new ArrayList<>();
-        users.add(UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID()));
+        users.add(UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID()));
         memberData.put("users", users);
         memberData.put("valid_from", Timestamp.now());
         memberData.put("valid_to", null);

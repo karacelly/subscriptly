@@ -156,7 +156,7 @@ public class SubscriptionsFragment extends Fragment {
 
     private void fetchData() {
         containerInvitation.setVisibility(View.GONE);
-        DocumentReference currentUserRef = UserRepository.userRef.document(UserRepository.LOGGED_IN_USER.getUserID());
+        DocumentReference currentUserRef = UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID());
         ArrayList<SubscriptionInvitation> invitations = new ArrayList<>();
         SubscriptionRepository.subscriptionInvitationRef.whereEqualTo("invited", currentUserRef).get()
                 .addOnSuccessListener(invitationSnapshots -> {
@@ -197,7 +197,7 @@ public class SubscriptionsFragment extends Fragment {
         subscriptions = new ArrayList<>();
 
         Log.d("FETCH DATA", subscriptions.size()+"");
-        SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
+        SubscriptionRepository.getUserSubscriptions(UserRepository.getLoggedInUser().getUserID(), subs -> {
             if(subs != null) {
                 Log.d("BEFORE SUBSCRIPTION SIZE", subscriptions.size()+"");
 //                if(subscriptions.size() < subs.size())

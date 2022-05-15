@@ -118,7 +118,7 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
+                            if (UserRepository.checkFriend(UserRepository.getLoggedInUser(), document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 chooseFriendAdapter.add(users);
                                 setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);

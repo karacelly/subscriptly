@@ -73,7 +73,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         ArrayList<TransactionHeader> availableHeaders = new ArrayList<>();
         for (TransactionHeader header:
                 SubscriptionRepository.ACTIVE_SUBSCRIPTION.getHeaders()) {
-            if(SubscriptionHelper.getUserPaidDetail(header, UserRepository.LOGGED_IN_USER.getUserID()) == null) {
+            if(SubscriptionHelper.getUserPaidDetail(header, UserRepository.getLoggedInUser().getUserID()) == null) {
                 availableHeaders.add(header);
             }
         }
@@ -122,7 +122,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         }
 
         if(!error) {
-            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), chosenHeader.getTransactionId(), UserRepository.LOGGED_IN_USER.getUserID(), imageURL, listener -> {
+            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), chosenHeader.getTransactionId(), UserRepository.getLoggedInUser().getUserID(), imageURL, listener -> {
                 if(listener) {
                     onBackPressed();
                 } else {

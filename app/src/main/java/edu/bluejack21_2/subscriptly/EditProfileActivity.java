@@ -89,10 +89,10 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges = findViewById(R.id.action_save_changes);
         profilePictureCard = findViewById(R.id.profile_picture_card);
         profilePictureImage = findViewById(R.id.profile_picture);
-        Glide.with(getApplicationContext()).load(UserRepository.LOGGED_IN_USER.getImage()).into(profilePictureImage);
+        Glide.with(getApplicationContext()).load(UserRepository.getLoggedInUser().getImage()).into(profilePictureImage);
 
 
-        User user = UserRepository.LOGGED_IN_USER;
+        User user = UserRepository.getLoggedInUser();
         nameTxt.setHint(user.getName());
         nameTxt.setText(user.getName());
         usernameTxt.setHint(user.getUsername());
@@ -111,20 +111,20 @@ public class EditProfileActivity extends AppCompatActivity {
             String name = Field.getContent(nameTxt.getText());
             String username = Field.getContent(usernameTxt.getText());
             String email = Field.getContent(emailTxt.getText());
-            String file = finalFileName == null ? UserRepository.LOGGED_IN_USER.getImage() : finalFileName;
+            String file = finalFileName == null ? UserRepository.getLoggedInUser().getImage() : finalFileName;
             if(name.length() > 0 && username.length() > 0 && email.length() > 0) {
-                if(!username.equals(UserRepository.LOGGED_IN_USER.getUsername())) {
+                if(!username.equals(UserRepository.getLoggedInUser().getUsername())) {
                     UserRepository.usernameIsUnique(username, usernameListener -> {
                         if(usernameListener) {
-                            if (!email.equals(UserRepository.LOGGED_IN_USER.getEmail())) {
+                            if (!email.equals(UserRepository.getLoggedInUser().getEmail())) {
                                 UserRepository.emailIsUnique(email, emailListener -> {
                                     if (emailListener) {
-                                        UserRepository.updateUserData(UserRepository.LOGGED_IN_USER.getUserID(), name, username, email, file, updateListener -> {
+                                        UserRepository.updateUserData(UserRepository.getLoggedInUser().getUserID(), name, username, email, file, updateListener -> {
                                             if(updateListener) {
-                                                UserRepository.LOGGED_IN_USER.setName(name);
-                                                UserRepository.LOGGED_IN_USER.setUsername(username);
-                                                UserRepository.LOGGED_IN_USER.setEmail(email);
-                                                UserRepository.LOGGED_IN_USER.setImage(file);
+                                                UserRepository.getLoggedInUser().setName(name);
+                                                UserRepository.getLoggedInUser().setUsername(username);
+                                                UserRepository.getLoggedInUser().setEmail(email);
+                                                UserRepository.getLoggedInUser().setImage(file);
                                                 Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                                 onBackPressed();
                                             } else {
@@ -136,12 +136,12 @@ public class EditProfileActivity extends AppCompatActivity {
                                     }
                                 });
                             }  else {
-                                UserRepository.updateUserData(UserRepository.LOGGED_IN_USER.getUserID(), name, username, email, file, updateListener -> {
+                                UserRepository.updateUserData(UserRepository.getLoggedInUser().getUserID(), name, username, email, file, updateListener -> {
                                     if(updateListener) {
-                                        UserRepository.LOGGED_IN_USER.setName(name);
-                                        UserRepository.LOGGED_IN_USER.setUsername(username);
-                                        UserRepository.LOGGED_IN_USER.setEmail(email);
-                                        UserRepository.LOGGED_IN_USER.setImage(file);
+                                        UserRepository.getLoggedInUser().setName(name);
+                                        UserRepository.getLoggedInUser().setUsername(username);
+                                        UserRepository.getLoggedInUser().setEmail(email);
+                                        UserRepository.getLoggedInUser().setImage(file);
                                         Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                         onBackPressed();
                                     } else {
@@ -153,15 +153,15 @@ public class EditProfileActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Username is taken!", Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else if (!email.equals(UserRepository.LOGGED_IN_USER.getEmail())) {
+                } else if (!email.equals(UserRepository.getLoggedInUser().getEmail())) {
                     UserRepository.emailIsUnique(email, emailListener -> {
                         if (emailListener) {
-                            UserRepository.updateUserData(UserRepository.LOGGED_IN_USER.getUserID(), name, username, email, file, updateListener -> {
+                            UserRepository.updateUserData(UserRepository.getLoggedInUser().getUserID(), name, username, email, file, updateListener -> {
                                 if(updateListener) {
-                                    UserRepository.LOGGED_IN_USER.setName(name);
-                                    UserRepository.LOGGED_IN_USER.setUsername(username);
-                                    UserRepository.LOGGED_IN_USER.setEmail(email);
-                                    UserRepository.LOGGED_IN_USER.setImage(file);
+                                    UserRepository.getLoggedInUser().setName(name);
+                                    UserRepository.getLoggedInUser().setUsername(username);
+                                    UserRepository.getLoggedInUser().setEmail(email);
+                                    UserRepository.getLoggedInUser().setImage(file);
                                     Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                     onBackPressed();
                                 } else {
@@ -173,12 +173,12 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    UserRepository.updateUserData(UserRepository.LOGGED_IN_USER.getUserID(), name, username, email, file, updateListener -> {
+                    UserRepository.updateUserData(UserRepository.getLoggedInUser().getUserID(), name, username, email, file, updateListener -> {
                         if(updateListener) {
-                            UserRepository.LOGGED_IN_USER.setName(name);
-                            UserRepository.LOGGED_IN_USER.setUsername(username);
-                            UserRepository.LOGGED_IN_USER.setEmail(email);
-                            UserRepository.LOGGED_IN_USER.setImage(file);
+                            UserRepository.getLoggedInUser().setName(name);
+                            UserRepository.getLoggedInUser().setUsername(username);
+                            UserRepository.getLoggedInUser().setEmail(email);
+                            UserRepository.getLoggedInUser().setImage(file);
                             Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                             onBackPressed();
                         } else {
