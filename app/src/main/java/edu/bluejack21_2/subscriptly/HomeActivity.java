@@ -34,8 +34,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Log.d("onCreate:HomeActivity", UserRepository.getLoggedInUser().getName());
-
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);
         initComponents();

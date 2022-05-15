@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 import edu.bluejack21_2.subscriptly.MainActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
@@ -43,33 +44,23 @@ public class UserRepository {
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    public static User getLoggedInUser(){
+    public static void getLoggedInUser(QueryFinishListener<User> listener){
         if(LOGGED_IN_USER == null) {
+            Log.d("getLoggedInUser", "getting....");
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
+            Log.d("getLoggedInUser", "id: " + firebaseUser.getUid());
             getUser(firebaseUser.getUid(), user -> {
                 LOGGED_IN_USER = user;
+                listener.onFinish(user);
             });
+        }else {
+            listener.onFinish(LOGGED_IN_USER);
         }
-
-        while(LOGGED_IN_USER == null){
-
-        }
-        return LOGGED_IN_USER;
     }
 
     public static void logOutFirebaseUser(){
         firebaseAuth.signOut();
-    }
-
-    public static void insertUser(String name, String username, String email, String password) {
-
-        User tempInsert = new User("", name, username, email, Crypt.generateHash(password));
-
-        Map<String, Object> userData = tempInsert.dataToMap();
-        userRef.add(userData)
-                .addOnSuccessListener(documentReference -> Log.d("Success", "document Snapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
     }
 
     public static void signUp(String name, String username, String email, String password, QueryFinishListener<Boolean> listener){
@@ -121,6 +112,7 @@ public class UserRepository {
     }
 
     public static User documentToUser(DocumentSnapshot userDoc) {
+        Log.d("documentToUser", userDoc.getId());
         String key = userDoc.getId();
         String name = userDoc.getString("name");
         String email = userDoc.getString("email");
@@ -155,7 +147,24 @@ public class UserRepository {
         });
     }
 
-    public static void authWithGoogleAccount(GoogleSignInAccount account, QueryFinishListener<Boolean> newUser) {
+    public static void signIn(String email, String password, QueryFinishListener<Boolean> listener) {
+        String TAG = "signIn";
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "signInWithEmail:success");
+                            listener.onFinish(true);
+                        }else{
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            listener.onFinish(true);
+                        }
+                    }
+                });
+    }
+
+    public static void authWithGoogleAccount(Context ctx, GoogleSignInAccount account, QueryFinishListener<Boolean> newUser) {
         String tag = "GOOGLE_SIGN_IN_TAG";
         Log.d(tag, "authWithGoogleAccount: begin firebase auth with google account");
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -188,6 +197,7 @@ public class UserRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ctx, "Login failed! " + e.getMessage(), Toast.LENGTH_SHORT);
                         Log.d(tag, "onFailure: Login failed " + e.getMessage());
                     }
                 });
@@ -245,14 +255,23 @@ public class UserRepository {
     }
 
     public static void getUser(String id, QueryFinishListener<User> listener) {
+        Log.d("getUser", "masuk...");
         DocumentReference user = userRef.document(id);
+        Log.d("getUser", "user: " + user);
+        Log.d("getUser", "user: " + id);
         user.get().addOnSuccessListener(userSnapshot -> {
                 if (userSnapshot.exists()) {
+                    Log.d("getUser", "exist...");
                     listener.onFinish(documentToUser(userSnapshot));
-                } else
+                } else {
+                    Log.d("getUser", "not exist...");
                     listener.onFinish(null);
+                }
             }).addOnFailureListener(e -> {
+                Log.d("getUser", e.getMessage());
                 listener.onFinish(null);
+        }).addOnCompleteListener(complete -> {
+            Log.d("getUser", "complete: " + complete.toString());
         });
     }
 

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("38668327357-01jd8d4jl1u43tg90u2g6dk88qs85jjd.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -97,19 +97,30 @@ public class MainActivity extends AppCompatActivity {
             email = fieldEmail.getText().toString();
             password = fieldPassword.getText().toString();
 
-            UserRepository.authenticateLogin(email, password, data -> {
-                if(data != null) {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("userID", data.getUserID());
+//            UserRepository.authenticateLogin(email, password, data -> {
+//                if(data != null) {
+//                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                    SharedPreferences.Editor editor = prefs.edit();
+//                    editor.putString("userID", data.getUserID());
+//
+//                    editor.commit();
+//
+//                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+//                    startActivity(i);
+//                    finish();
+//                } else
+//                    Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
+//            });
 
-                    editor.commit();
-
+            UserRepository.signIn(email, password, listener -> {
+                if(listener) {
                     Intent i = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(i);
                     finish();
-                } else
+                } else {
+                    Log.d("signIn", "Invalid Credentials!");
                     Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
+                }
             });
         });
 
@@ -124,29 +135,28 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    Log.d(TAG, result.getResultCode() + "");
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Log.d(TAG, "onActivityResult: Google signin intent result");
 
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                         try {
                             GoogleSignInAccount account = task.getResult(ApiException.class);
-                            UserRepository.authWithGoogleAccount(account, newUser -> {
+                            UserRepository.authWithGoogleAccount(MainActivity.this, account, newUser -> {
+                                Intent i;
                                 if(newUser) {
-                                    Intent i = new Intent(MainActivity.this, UsernameActivity.class);
-                                    startActivity(i);
-                                    finish();
+                                    i = new Intent(MainActivity.this, UsernameActivity.class);
                                 }else{
 //                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 //                                    SharedPreferences.Editor editor = prefs.edit();
 //                                    editor.putString("userID", account.getId());
 //
 //                                    editor.commit();
-
-
-                                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                                    startActivity(i);
-                                    finish();
+                                    Log.d(TAG, "existing user, redirecting...");
+                                    i = new Intent(MainActivity.this, HomeActivity.class);
                                 }
+                                startActivity(i);
+                                finish();
                             });
                         }catch (Exception e) {
                             Log.d(TAG, "onActivityResult: "+ e.getMessage());
