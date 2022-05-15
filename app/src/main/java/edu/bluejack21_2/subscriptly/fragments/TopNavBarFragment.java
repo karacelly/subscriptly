@@ -87,6 +87,9 @@ public class TopNavBarFragment extends Fragment {
         });
 
         profilePicture = v.findViewById(R.id.profile_picture);
-        if(UserRepository.getLoggedInUser() != null) Glide.with(v.getContext()).load(UserRepository.getLoggedInUser().getImage()).into(profilePicture);
+        UserRepository.getLoggedInUser(res -> {
+            Glide.with(v.getContext()).load(res.getImage()).into(profilePicture);
+        });
+
     }
 }

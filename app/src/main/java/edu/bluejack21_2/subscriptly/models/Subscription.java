@@ -1,6 +1,7 @@
 package edu.bluejack21_2.subscriptly.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 
@@ -158,10 +159,10 @@ public class Subscription {
 
     public Map<String, Object> membersToMap(String subscriptionId) {
         Map<String, Object> memberData = new HashMap<>();
-        memberData.put("creator", UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID()));
+        memberData.put("creator", UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid()));
         memberData.put("subscription", SubscriptionRepository.subscriptionRef.document(subscriptionId));
         ArrayList<DocumentReference> users = new ArrayList<>();
-        users.add(UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID()));
+        users.add(UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid()));
         memberData.put("users", users);
         memberData.put("valid_from", Timestamp.now());
         memberData.put("valid_to", null);

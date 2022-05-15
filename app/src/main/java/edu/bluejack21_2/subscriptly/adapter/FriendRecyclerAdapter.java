@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -106,14 +107,14 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
          */
 
         FriendRequest request = null;
-        if (UserRepository.getLoggedInUser().getUserID() != model.getUserID())
-            request = UserHelper.getFriendRequest(requests, UserRepository.getLoggedInUser().getUserID(), model.getUserID());
+        if (FirebaseAuth.getInstance().getCurrentUser().getUid() != model.getUserID())
+            request = UserHelper.getFriendRequest(requests, FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID());
 
         if (request != null) {
             FriendRequest finalRequest = request;
 
             holder.addFriend.setVisibility(View.GONE);
-            if (request.getSender().equals(UserRepository.getLoggedInUser().getUserID())) {
+            if (request.getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 holder.cancelFriend.setVisibility(View.VISIBLE);
                 holder.cancelFriend.setOnClickListener(v -> {
                     UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), listener -> {
@@ -160,7 +161,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             holder.addFriend.setVisibility(View.VISIBLE);
         }
         holder.addFriend.setOnClickListener(v -> {
-            UserRepository.sendFriendRequest(UserRepository.getLoggedInUser().getUserID(), model.getUserID(), data -> {
+            UserRepository.sendFriendRequest(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), data -> {
                 if (data) {
                     holder.addFriend.setVisibility(View.GONE);
                     holder.cancelFriend.setVisibility(View.VISIBLE);
@@ -171,12 +172,14 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-        if (UserRepository.checkFriend(UserRepository.getLoggedInUser(), model.getUserID())) {
-            holder.addFriend.setVisibility(View.GONE);
-            holder.removeFriend.setVisibility(View.VISIBLE);
-        }
+        UserRepository.getLoggedInUser(user -> {
+            if (UserRepository.checkFriend(user, model.getUserID())) {
+                holder.addFriend.setVisibility(View.GONE);
+                holder.removeFriend.setVisibility(View.VISIBLE);
+            }
+        });
         holder.removeFriend.setOnClickListener(v -> {
-            UserRepository.removeFriend(UserRepository.getLoggedInUser().getUserID(), model.getUserID(), listener -> {
+            UserRepository.removeFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), listener -> {
                 if (listener) {
                     holder.removeFriend.setVisibility(View.GONE);
                     holder.addFriend.setVisibility(View.VISIBLE);

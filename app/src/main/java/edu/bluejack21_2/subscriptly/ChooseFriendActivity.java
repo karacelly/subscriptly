@@ -114,33 +114,36 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
             setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
         }
 
-        UserRepository.userRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.getLoggedInUser(), document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
-                                users.add(UserRepository.documentToUser(document));
-                                chooseFriendAdapter.add(users);
-                                setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+        UserRepository.getLoggedInUser(user -> {
+            UserRepository.userRef.get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (UserRepository.checkFriend(user, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
+                                    users.add(UserRepository.documentToUser(document));
+                                    chooseFriendAdapter.add(users);
+                                    setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+                                }
                             }
+                        } else {
                         }
-                    } else {
-                    }
-                    fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return false;
-                        }
+                        fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onQueryTextChange(String query) {
-                            final List<User> filteredModelList = filter(users, query);
-                            chooseFriendAdapter.replaceAll(filteredModelList);
-                            friendsRecycler.scrollToPosition(0);
-                            return true;
-                        }
+                            @Override
+                            public boolean onQueryTextChange(String query) {
+                                final List<User> filteredModelList = filter(users, query);
+                                chooseFriendAdapter.replaceAll(filteredModelList);
+                                friendsRecycler.scrollToPosition(0);
+                                return true;
+                            }
+                        });
                     });
-                });
+        });
+
     }
 
     private void setRecyclerView(RecyclerView.Adapter adapter, int layout, RecyclerView recyclerView) {

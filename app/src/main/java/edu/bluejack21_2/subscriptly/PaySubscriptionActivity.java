@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -73,7 +75,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         ArrayList<TransactionHeader> availableHeaders = new ArrayList<>();
         for (TransactionHeader header:
                 SubscriptionRepository.ACTIVE_SUBSCRIPTION.getHeaders()) {
-            if(SubscriptionHelper.getUserPaidDetail(header, UserRepository.getLoggedInUser().getUserID()) == null) {
+            if(SubscriptionHelper.getUserPaidDetail(header, FirebaseAuth.getInstance().getCurrentUser().getUid()) == null) {
                 availableHeaders.add(header);
             }
         }
@@ -122,7 +124,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         }
 
         if(!error) {
-            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), chosenHeader.getTransactionId(), UserRepository.getLoggedInUser().getUserID(), imageURL, listener -> {
+            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), chosenHeader.getTransactionId(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imageURL, listener -> {
                 if(listener) {
                     onBackPressed();
                 } else {

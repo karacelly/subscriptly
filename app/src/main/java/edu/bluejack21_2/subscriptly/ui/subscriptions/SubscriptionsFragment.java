@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -156,7 +157,7 @@ public class SubscriptionsFragment extends Fragment {
 
     private void fetchData() {
         containerInvitation.setVisibility(View.GONE);
-        DocumentReference currentUserRef = UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID());
+        DocumentReference currentUserRef = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         ArrayList<SubscriptionInvitation> invitations = new ArrayList<>();
         SubscriptionRepository.subscriptionInvitationRef.whereEqualTo("invited", currentUserRef).get()
                 .addOnSuccessListener(invitationSnapshots -> {
@@ -197,7 +198,7 @@ public class SubscriptionsFragment extends Fragment {
         subscriptions = new ArrayList<>();
 
         Log.d("FETCH DATA", subscriptions.size()+"");
-        SubscriptionRepository.getUserSubscriptions(UserRepository.getLoggedInUser().getUserID(), subs -> {
+        SubscriptionRepository.getUserSubscriptions(FirebaseAuth.getInstance().getCurrentUser().getUid(), subs -> {
             if(subs != null) {
                 Log.d("BEFORE SUBSCRIPTION SIZE", subscriptions.size()+"");
 //                if(subscriptions.size() < subs.size())

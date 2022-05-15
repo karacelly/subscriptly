@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -65,7 +67,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
             if(particularHeader != null) {
                 subscriptionOnThatMonth.add(subscription);
                 transactionHeaderOnThatMonth.add(particularHeader);
-                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, UserRepository.getLoggedInUser().getUserID());
+                TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(particularHeader, FirebaseAuth.getInstance().getCurrentUser().getUid());
                 if (transactionDetail == null) {
                     int colorRed = Color.parseColor("#FF0000");
                     holder.subscriptionGroupItem.setOutlineAmbientShadowColor(colorRed);

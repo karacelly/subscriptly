@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -248,7 +249,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
             if(flag) {
                 Timestamp timestamp = new Timestamp(myCalendar.getTime());
                 Subscription subscription = new Subscription("", name, imageURL, billLong, durationInt, timestamp, SubscriptionRepository.chosenFriends);
-                SubscriptionRepository.isUniqueSubscriptionNameForCreator(UserRepository.getLoggedInUser().getUserID(), name, listener -> {
+                SubscriptionRepository.isUniqueSubscriptionNameForCreator(FirebaseAuth.getInstance().getCurrentUser().getUid(), name, listener -> {
                     if(listener) {
                         SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
                             if(subListener) {

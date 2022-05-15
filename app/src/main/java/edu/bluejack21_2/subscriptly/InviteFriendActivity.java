@@ -14,6 +14,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -116,33 +117,36 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
             setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
         }
 
-        UserRepository.userRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.getLoggedInUser(), document.getId()) && !UserHelper.userAlreadyExist(users, document.getId()) && !UserHelper.userAlreadyExist(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getMembers(), document.getId())) {
-                                users.add(UserRepository.documentToUser(document));
-                                chooseFriendAdapter.add(users);
-                                setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+        UserRepository.getLoggedInUser(res -> {
+            UserRepository.userRef.get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (UserRepository.checkFriend(res, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId()) && !UserHelper.userAlreadyExist(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getMembers(), document.getId())) {
+                                    users.add(UserRepository.documentToUser(document));
+                                    chooseFriendAdapter.add(users);
+                                    setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+                                }
                             }
+                        } else {
                         }
-                    } else {
-                    }
-                    fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return false;
-                        }
+                        fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onQueryTextChange(String query) {
-                            final List<User> filteredModelList = filter(users, query);
-                            chooseFriendAdapter.replaceAll(filteredModelList);
-                            friendsRecycler.scrollToPosition(0);
-                            return true;
-                        }
+                            @Override
+                            public boolean onQueryTextChange(String query) {
+                                final List<User> filteredModelList = filter(users, query);
+                                chooseFriendAdapter.replaceAll(filteredModelList);
+                                friendsRecycler.scrollToPosition(0);
+                                return true;
+                            }
+                        });
                     });
-                });
+        });
+
     }
     private void setInviteListener(){
         Toast.makeText(this, "Setting Invite Listener", Toast.LENGTH_SHORT).show();
@@ -153,7 +157,7 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
                 for (User user:
                      SubscriptionRepository.chosenFriends) {
                     Log.d("INVITED USER", user.getUserID());
-                    SubscriptionRepository.sendInvitation(UserRepository.getLoggedInUser().getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), user.getUserID(), inviteListener -> {
+                    SubscriptionRepository.sendInvitation(FirebaseAuth.getInstance().getCurrentUser().getUid(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), user.getUserID(), inviteListener -> {
                         if(inviteListener) {
                             Toast.makeText(this, "Success Invite New Member", Toast.LENGTH_SHORT).show();
                             if(SubscriptionRepository.chosenFriends.get(SubscriptionRepository.chosenFriends.size()-1).equals(user)) {

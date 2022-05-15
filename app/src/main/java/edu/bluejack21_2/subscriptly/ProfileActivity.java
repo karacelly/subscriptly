@@ -40,10 +40,11 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        User user = UserRepository.getLoggedInUser();
-        nameTxt.setText(user.getName());
-        usernameTxt.setText(user.getUsername());
-        emailTxt.setText(user.getEmail());
+        UserRepository.getLoggedInUser(user -> {
+            nameTxt.setText(user.getName());
+            usernameTxt.setText(user.getUsername());
+            emailTxt.setText(user.getEmail());
+        });
     }
 
     public void initComponents() {
@@ -56,12 +57,15 @@ public class ProfileActivity extends AppCompatActivity {
         emailTxt = findViewById(R.id.profile_email_txt);
         profilePicture = findViewById(R.id.profile_picture);
 
-        User user = UserRepository.getLoggedInUser();
-        nameTxt.setText(user.getName());
-        usernameTxt.setText(user.getUsername());
-        emailTxt.setText(user.getEmail());
+        UserRepository.getLoggedInUser(user -> {
+            nameTxt.setText(user.getName());
+            usernameTxt.setText(user.getUsername());
+            emailTxt.setText(user.getEmail());
 
-        Glide.with(getApplicationContext()).load(UserRepository.getLoggedInUser().getImage()).into(profilePicture);
+            Glide.with(getApplicationContext()).load(user.getImage()).into(profilePicture);
+        });
+
+
 
         editProfileBtn = findViewById(R.id.profile_edit_button);
         editProfileBtn.setOnClickListener(new View.OnClickListener() {

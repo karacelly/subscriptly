@@ -52,7 +52,7 @@ public class UserRepository {
             Log.d("getLoggedInUser", "id: " + firebaseUser.getUid());
             getUser(firebaseUser.getUid(), user -> {
                 LOGGED_IN_USER = user;
-                listener.onFinish(user);
+                listener.onFinish(LOGGED_IN_USER);
             });
         }else {
             listener.onFinish(LOGGED_IN_USER);
@@ -86,29 +86,46 @@ public class UserRepository {
                 });
     }
 
-    public static void updateUserData(String userId, String name, String username, String email, String fileName, QueryFinishListener<Boolean> listener) {
-        DocumentReference user = userRef.document(userId);
+    public static void updateUserData(String name, String username, String email, String fileName, QueryFinishListener<Boolean> listener) {
+        String TAG = "updateUserData";
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        DocumentReference user = userRef.document(firebaseUser.getUid());
 
-        user.update(
-                "name", name,
-                "username", username,
-                "email", email,
-                "image", fileName).addOnSuccessListener(task -> {
-            listener.onFinish(true);
-        }).addOnFailureListener(e -> {
-            listener.onFinish(false);
-        });
+        firebaseUser.updateEmail(email)
+                .addOnCompleteListener(complete -> {
+                    if(complete.isSuccessful()) {
+                        Log.d(TAG, "User email updated");
+
+                        user.update(
+                                "name", name,
+                                "username", username,
+                                "email", email,
+                                "image", fileName).addOnSuccessListener(task -> {
+                            listener.onFinish(true);
+                        }).addOnFailureListener(e -> {
+                            listener.onFinish(false);
+                        });
+                    }else{
+                        listener.onFinish(false);
+                        Log.d(TAG, "User email update failed!");
+                    }
+                });
     }
 
-    public static void updateUserPassword(String userId, String password, QueryFinishListener<Boolean> listener) {
-        DocumentReference user = userRef.document(userId);
+    public static void updateUserPassword(String password, QueryFinishListener<Boolean> listener) {
+        String TAG = "updateUserPassword";
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        user.update(
-                "password", Crypt.generateHash(password)).addOnSuccessListener(task -> {
-            listener.onFinish(true);
-        }).addOnFailureListener(e -> {
-            listener.onFinish(false);
-        });
+        firebaseUser.updatePassword(password)
+                .addOnCompleteListener(complete -> {
+                    if(complete.isSuccessful()) {
+                        listener.onFinish(true);
+                        Log.d(TAG, "User password updated");
+                    }else{
+                        listener.onFinish(false);
+                        Log.d(TAG, "User password update failed!");
+                    }
+                });
     }
 
     public static User documentToUser(DocumentSnapshot userDoc) {
@@ -127,24 +144,6 @@ public class UserRepository {
             }
         }
         return new User(key, name, username, email, password, image, friends);
-    }
-
-    public static void authenticateLogin(String email, String password, QueryFinishListener<User> listener) {
-        Query findUserEmail = userRef.whereEqualTo("email", email);
-
-        findUserEmail.get().addOnSuccessListener(documentSnapshots -> {
-            if (!documentSnapshots.isEmpty()) {
-                DocumentSnapshot userDocument = documentSnapshots.getDocuments().get(0);
-
-                String databaseUserPassword = userDocument.getString("password");
-                if (Crypt.verifyHash(password, databaseUserPassword)) {
-                    LOGGED_IN_USER = documentToUser(userDocument);
-                    listener.onFinish(LOGGED_IN_USER);
-                } else
-                    listener.onFinish(null);
-            } else
-                listener.onFinish(null);
-        });
     }
 
     public static void signIn(String email, String password, QueryFinishListener<Boolean> listener) {

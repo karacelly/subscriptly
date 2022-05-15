@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -135,7 +136,7 @@ public class FriendsFragment extends Fragment {
 //                                }
 //                                ArrayList<User> members = (ArrayList<User>)document.get("members");
 //                                Log.d("Members", document.get("members").getClass().toString());
-                            if(!UserRepository.getLoggedInUser().getUserID().equals(document.getId())) {
+                            if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 setRecyclerView(users, requests, friendsRecycler);
                             }

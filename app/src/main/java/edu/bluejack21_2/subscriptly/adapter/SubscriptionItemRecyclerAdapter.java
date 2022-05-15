@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.R;
@@ -59,7 +61,7 @@ public class SubscriptionItemRecyclerAdapter extends RecyclerView.Adapter<Subscr
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionBill.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
-        TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, UserRepository.getLoggedInUser().getUserID());
+        TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, FirebaseAuth.getInstance().getCurrentUser().getUid());
         if(transactionDetail == null) {
             holder.iconPaid.setImageResource(R.drawable.ic_remove_red_foreground);
         } else {

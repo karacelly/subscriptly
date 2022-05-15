@@ -3,6 +3,7 @@ package edu.bluejack21_2.subscriptly.repositories;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +33,7 @@ public class SubscriptionRepository {
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
     public static void insertSubscription(Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
-        DocumentReference creator = UserRepository.userRef.document(UserRepository.getLoggedInUser().getUserID());
+        DocumentReference creator = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String, Object> subscriptionData = subscription.dataToMap();
         subscriptionRef.add(subscriptionData)
                 .addOnSuccessListener(documentReference -> {

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -78,12 +79,7 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     private void fetchData() {
         ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
         ArrayList<Subscription> subscriptions = new ArrayList<>();
-        if(UserRepository.getLoggedInUser() == null) {
-            Log.d("LOGGED IN USER", "NULL");
-        }else {
-            Log.d("LOGGED IN USER", UserRepository.getLoggedInUser().toString());
-        }
-        SubscriptionRepository.getUserSubscriptions(UserRepository.getLoggedInUser().getUserID(), subs -> {
+        SubscriptionRepository.getUserSubscriptions(FirebaseAuth.getInstance().getCurrentUser().getUid(), subs -> {
             if(subs != null) {
                 subscriptions.addAll(subs);
                 for (Subscription subscription:
