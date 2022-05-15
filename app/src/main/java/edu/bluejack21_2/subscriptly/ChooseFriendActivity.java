@@ -1,9 +1,7 @@
 package edu.bluejack21_2.subscriptly;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -27,7 +25,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
         @Override
         public int compare(User a, User b) {
-            return a.getUsername().compareTo(b.getUsername());
+            return a.getName().compareTo(b.getName());
         }
     };
     public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
@@ -39,7 +37,6 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private Boolean isActivityReopened = false;
 
     private static List<User> filter(List<User> users, String query) {
-        Log.d("FLOW", "filter");
         final String lowerCaseQuery = query.toLowerCase();
 
         final List<User> filteredModelList = new ArrayList<>();
@@ -61,7 +58,6 @@ public class ChooseFriendActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        Toast.makeText(this, "INIT COMPONENT CHOOSE FRIEND ACTIVITY", Toast.LENGTH_SHORT).show();
         friendsRecycler = findViewById(R.id.recycler_friends);
         chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
 
@@ -120,9 +116,6 @@ public class ChooseFriendActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(users == null) Log.d("USERS", "null");
-        if(users != null) Log.d("USERS", users.size()+"");
 
         setContentView(R.layout.activity_choose_friend);
         initComponents();
