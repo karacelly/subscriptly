@@ -54,6 +54,7 @@ public class HistoryItemViewHolder extends RecyclerView.ViewHolder {
         recyclerCardView.setVisibility(View.GONE);
         recyclerCardView.setAlpha(0.0f);
         recyclerCardView.setTranslationY(-recyclerCardView.getHeight());
+
         historyHeader.setOnClickListener(v -> {
             if (!isOpen) {
                 recyclerCardView.setVisibility(View.VISIBLE);

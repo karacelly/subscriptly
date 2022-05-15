@@ -27,11 +27,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
@@ -39,7 +42,7 @@ import edu.bluejack21_2.subscriptly.utils.GlobalVariable;
 import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
-public class AddSubscriptionActivity extends AppCompatActivity {
+public class AddSubscriptionActivity extends AppCompatActivity implements QueryChangeListener<ArrayList<User>> {
 
     private Context context;
 
@@ -135,7 +138,7 @@ public class AddSubscriptionActivity extends AppCompatActivity {
         });
 
         chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
-        chosenUserAdapter = new ChosenUserRecyclerAdapter(this);
+        chosenUserAdapter = new ChosenUserRecyclerAdapter(this, this);
         RecyclerViewHelper.setRecyclerView(this, chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
     }
 
@@ -264,5 +267,10 @@ public class AddSubscriptionActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onChange(ArrayList<User> data) {
+
     }
 }

@@ -1,16 +1,18 @@
 package edu.bluejack21_2.subscriptly;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -22,10 +24,11 @@ import edu.bluejack21_2.subscriptly.adapter.ChooseFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
-public class ChooseFriendActivity extends AppCompatActivity implements QueryChangeListener<ArrayList<User>> {
+public class InviteFriendActivity extends AppCompatActivity implements QueryChangeListener<ArrayList<User>> {
 
     private static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
         @Override
@@ -36,19 +39,19 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
     private HorizontalScrollView containerChosenUser;
     public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
     public static ChosenUserRecyclerAdapter chosenUserAdapter;
-    private static ArrayList<User> users;
-    private TextView doneChooseFriend;
+    private ArrayList<User> users;
+    private TextView inviteFriend;
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler, chosenUserRecycler;
     private Boolean isActivityReopened = false;
-    private static Boolean chosenUserIsShown = false;
+    private Boolean chosenUserIsShown = false;
 
     private static List<User> filter(List<User> users, String query) {
         final String lowerCaseQuery = query.toLowerCase();
 
         final List<User> filteredModelList = new ArrayList<>();
         for (User model : users) {
-            final String text = model.getUsername().toLowerCase();
+            final String text = model.getName().toLowerCase();
             if (text.contains(lowerCaseQuery)) {
                 filteredModelList.add(model);
             }
@@ -93,12 +96,11 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
 
         friendsRecycler = findViewById(R.id.recycler_friends);
         chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
-
         fieldSearchFriend = findViewById(R.id.field_search_friend);
 
-        doneChooseFriend = findViewById(R.id.action_done_choose_friend);
-        doneChooseFriend.setText("Prefer Alone");
-        doneChooseFriend.setOnClickListener(view -> {
+        inviteFriend = findViewById(R.id.action_invite_friend);
+        inviteFriend.setText("Cancel");
+        inviteFriend.setOnClickListener(view -> {
             onBackPressed();
         });
 
@@ -118,7 +120,7 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId())) {
+                            if (UserRepository.checkFriend(UserRepository.LOGGED_IN_USER, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId()) && !UserHelper.userAlreadyExist(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getMembers(), document.getId())) {
                                 users.add(UserRepository.documentToUser(document));
                                 chooseFriendAdapter.add(users);
                                 setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
@@ -142,6 +144,32 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
                     });
                 });
     }
+    private void setInviteListener(){
+        Toast.makeText(this, "Setting Invite Listener", Toast.LENGTH_SHORT).show();
+        inviteFriend.setOnClickListener(view -> {
+        Toast.makeText(this, "Invite Listener is Clicked", Toast.LENGTH_SHORT).show();
+                    Log.d("INVITED USER | SIZE", SubscriptionRepository.chosenFriends.size()+"");
+            if(!SubscriptionRepository.chosenFriends.isEmpty()) {
+                for (User user:
+                     SubscriptionRepository.chosenFriends) {
+                    Log.d("INVITED USER", user.getUserID());
+                    SubscriptionRepository.sendInvitation(UserRepository.LOGGED_IN_USER.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), user.getUserID(), inviteListener -> {
+                        if(inviteListener) {
+                            Toast.makeText(this, "Success Invite New Member", Toast.LENGTH_SHORT).show();
+                            if(SubscriptionRepository.chosenFriends.get(SubscriptionRepository.chosenFriends.size()-1).equals(user)) {
+                                SubscriptionRepository.chosenFriends.clear();
+                                onBackPressed();
+                            }
+                        } else {
+                            Toast.makeText(this, "Invitation Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+            }
+        });
+    }
 
     private void setRecyclerView(RecyclerView.Adapter adapter, int layout, RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, layout, false));
@@ -152,7 +180,7 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_choose_friend);
+        setContentView(R.layout.activity_invite_friend);
         initComponents();
         if (!isActivityReopened) {
             isActivityReopened = true;
@@ -164,10 +192,14 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
     public void onChange(ArrayList<User> data) {
         if(data.isEmpty()) {
             if(chosenUserIsShown) hideChosenUserList();
-            doneChooseFriend.setText("Prefer Alone");
+            inviteFriend.setText("Cancel");
+            inviteFriend.setOnClickListener(view -> {
+                onBackPressed();
+            });
         } else {
             if(!chosenUserIsShown) showChosenUserList();
-            doneChooseFriend.setText("Done");
+            inviteFriend.setText("Invite");
+            setInviteListener();
         }
     }
 }
