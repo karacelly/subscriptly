@@ -16,6 +16,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.MainActivity;
 import edu.bluejack21_2.subscriptly.ProfileActivity;
@@ -72,6 +73,9 @@ public class TopNavBarFragment extends Fragment {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.clear();
                     editor.commit();
+
+                    UserRepository.logOutFirebaseUser();
+
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();

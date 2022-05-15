@@ -7,8 +7,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,6 +58,10 @@ public class UserRepository {
         return LOGGED_IN_USER;
     }
 
+    public static void logOutFirebaseUser(){
+        firebaseAuth.signOut();
+    }
+
     public static void insertUser(String name, String username, String email, String password) {
 
         User tempInsert = new User("", name, username, email, Crypt.generateHash(password));
@@ -64,6 +70,29 @@ public class UserRepository {
         userRef.add(userData)
                 .addOnSuccessListener(documentReference -> Log.d("Success", "document Snapshot added with ID: " + documentReference.getId()))
                 .addOnFailureListener(e -> Log.w("Failed", "Error adding document", e));
+    }
+
+    public static void signUp(String name, String username, String email, String password, QueryFinishListener<Boolean> listener){
+        String TAG = "Sign_Up";
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "createUserWithEmail:success");
+
+                            fillUserInformation(name, username, flag -> {
+                                if(flag) {
+                                    listener.onFinish(true);
+                                }else{
+                                    listener.onFinish(false);
+                                }
+                            });
+                        }else{
+                            listener.onFinish(false);
+                        }
+                    }
+                });
     }
 
     public static void updateUserData(String userId, String name, String username, String email, String fileName, QueryFinishListener<Boolean> listener) {
@@ -149,22 +178,9 @@ public class UserRepository {
 
                         if(authResult.getAdditionalUserInfo().isNewUser()) {
                             newUser.onFinish(true);
-//                            Log.d(tag, "onSuccess: Account created..\n" + email);
-//
-//
-//                            Map<String, Object> userData = user.dataNoPasswordToMap();
-//
-//                            userRef.document(uid).set(userData)
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void unused) {
-//                                            LOGGED_IN_USER = user;
-//                                            listener.onFinish(true);
-//                                        }
-//                                    });
+                            Log.d(tag, "onSuccess: Account created..\n" + email);
                         }else {
                             Log.d(tag, "onSuccess: Existing user..\n" + email);
-//                            LOGGED_IN_USER = user;
                             newUser.onFinish(false);
                         }
                     }
@@ -178,9 +194,28 @@ public class UserRepository {
     }
 
     public static void fillUserInformation(String name, String username, QueryFinishListener<Boolean> listener) {
+        String TAG = "GOOGLE_SIGN_IN_TAG";
         firebaseAuth = FirebaseAuth.getInstance();
 
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        User user = new User(firebaseUser.getUid(), name, username, firebaseUser.getEmail());
+        Map<String, Object> userData = user.dataNoPasswordToMap();
+
+        userRef.document(firebaseUser.getUid()).set(userData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        LOGGED_IN_USER = user;
+                        listener.onFinish(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFinish(false);
+                    }
+                });
     }
 
     public static void emailIsUnique(String email, QueryFinishListener<Boolean> listener) {

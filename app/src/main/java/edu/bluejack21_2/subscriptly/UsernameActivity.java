@@ -2,6 +2,7 @@ package edu.bluejack21_2.subscriptly;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ public class UsernameActivity extends AppCompatActivity {
     private void initComponents(){
         nameTxt = findViewById(R.id.fill_field_name);
         usernameTxt = findViewById(R.id.fill_field_username);
+        doneBtn = findViewById(R.id.action_done_sign_in);
     }
 
     @Override
@@ -45,16 +47,13 @@ public class UsernameActivity extends AppCompatActivity {
             } else if(username.length() < 3) {
                 usernameTxt.setError("Username must be at least 3 characters long");
             } else{
-                try {
-                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-                    if(account != null) {
-
-                    }else{
-                        Log.d(TAG, "onCreate UsernameActivity: account null");
+                UserRepository.fillUserInformation(name, username, listener -> {
+                    if(listener) {
+                        Intent i = new Intent(UsernameActivity.this, HomeActivity.class);
+                        startActivity(i);
+                        finish();
                     }
-                }catch (Exception e) {
-                    Log.d(TAG, "onCreate UsernameActivity: "+ e.getMessage());
-                }
+                });
             }
         });
     }

@@ -30,7 +30,7 @@ import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
-public class MainActivity extends AppCompatActivity implements QueryFinishListener<User> {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "GOOGLE_SIGN_IN_TAG";
 
@@ -97,7 +97,20 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
             email = fieldEmail.getText().toString();
             password = fieldPassword.getText().toString();
 
-            UserRepository.authenticateLogin(email, password, this);
+            UserRepository.authenticateLogin(email, password, data -> {
+                if(data != null) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("userID", data.getUserID());
+
+                    editor.commit();
+
+                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(i);
+                    finish();
+                } else
+                    Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
+            });
         });
 
         btnSignInWithGoogle.setOnClickListener(v -> {
@@ -123,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
                                     startActivity(i);
                                     finish();
                                 }else{
+//                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                                    SharedPreferences.Editor editor = prefs.edit();
+//                                    editor.putString("userID", account.getId());
+//
+//                                    editor.commit();
+
+
                                     Intent i = new Intent(MainActivity.this, HomeActivity.class);
                                     startActivity(i);
                                     finish();
@@ -134,22 +154,4 @@ public class MainActivity extends AppCompatActivity implements QueryFinishListen
                     }
                 }
             });
-
-    @Override
-    public void onFinish(User data) {
-        if(data != null) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("userID", data.getUserID());
-//            editor.putString("email", data.getEmail());
-//            editor.putString("name", data.getName());
-//            editor.putString("username", data.getUsername());
-            editor.commit();
-
-            Intent i = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(i);
-            finish();
-        } else
-            Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
-    }
 }

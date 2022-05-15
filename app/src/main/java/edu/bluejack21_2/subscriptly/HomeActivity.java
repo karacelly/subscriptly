@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
 import edu.bluejack21_2.subscriptly.fragments.TopNavBarFragment;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.ui.home.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Log.d("onCreate:HomeActivity", UserRepository.getLoggedInUser().getName());
 
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);

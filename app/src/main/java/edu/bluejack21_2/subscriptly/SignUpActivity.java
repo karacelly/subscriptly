@@ -122,10 +122,12 @@ public class SignUpActivity extends AppCompatActivity {
                     if(emailListener) {
                         UserRepository.usernameIsUnique(username, usernameListener -> {
                             if(usernameListener) {
-                                UserRepository.insertUser(name, username, email, password);
-                                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
-                                startActivity(i);
-                                finish();
+//                                UserRepository.insertUser(name, username, email, password);
+                                UserRepository.signUp(name, username, email, password, listener -> {
+                                    Intent i = new Intent(SignUpActivity.this, HomeActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                });
                             } else {
                                 fieldUsername.setError("Username has been taken!");
                             }
