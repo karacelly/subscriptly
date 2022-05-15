@@ -83,4 +83,8 @@
     <string name="paid_prove_label">Paid Prove (for verification)</string>
     <string name="pay_button">Pay</string>
     <string name="error_upload">Upload Error! Please Try Again</string>
+    <string name="sign_in_with_google">SIGN IN WITH GOOGLE</string>
+    <string name="or">OR</string>
+    <string name="almost_there">Almost There!</string>
+    <string name="fill_info">Fill in your information so we can know you better.</string>
 </resources>

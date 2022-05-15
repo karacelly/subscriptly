@@ -37,6 +37,13 @@ public class User {
         this.password = password;
     }
 
+    public User(String userID, String name, String username, String email) {
+        this.userID = userID;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+    }
+
     public ArrayList<String> getFriends() {
         return friends;
     }
@@ -90,7 +97,16 @@ public class User {
         userData.put("name", name);
         userData.put("username", username);
         userData.put("email", email);
-        userData.put("users", password);
+        userData.put("password", password);
+
+        return userData;
+    }
+
+    public Map<String, Object> dataNoPasswordToMap() {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("name", name);
+        userData.put("username", username);
+        userData.put("email", email);
 
         return userData;
     }

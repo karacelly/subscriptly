@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Subscriptly</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_friend">AddFriendActivity</string>
@@ -83,4 +84,8 @@
     <string name="paid_prove_label">Paid Prove (for verification)</string>
     <string name="pay_button">Pay</string>
     <string name="error_upload">Upload Error! Please Try Again</string>
+    <string name="sign_in_with_google">SIGN IN WITH GOOGLE</string>
+    <string name="or">OR</string>
+    <string name="almost_there">Almost There!</string>
+    <string name="fill_info">Fill in your information so we can know you better.</string>
 </resources>

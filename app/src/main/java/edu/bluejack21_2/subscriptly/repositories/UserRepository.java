@@ -1,7 +1,20 @@
 package edu.bluejack21_2.subscriptly.repositories;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -13,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.bluejack21_2.subscriptly.MainActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.User;
@@ -24,6 +38,23 @@ public class UserRepository {
     public static final CollectionReference friendRequestRef = SubscriptlyDB.getDB().collection("friend_requests");
     public static final CollectionReference friendRef = SubscriptlyDB.getDB().collection("friends");
     public static User LOGGED_IN_USER = null;
+
+    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    public static User getLoggedInUser(){
+        if(LOGGED_IN_USER == null) {
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+            getUser(firebaseUser.getUid(), user -> {
+                LOGGED_IN_USER = user;
+            });
+        }
+
+        while(LOGGED_IN_USER == null){
+
+        }
+        return LOGGED_IN_USER;
+    }
 
     public static void insertUser(String name, String username, String email, String password) {
 
@@ -93,6 +124,63 @@ public class UserRepository {
             } else
                 listener.onFinish(null);
         });
+    }
+
+    public static void authWithGoogleAccount(GoogleSignInAccount account, QueryFinishListener<Boolean> newUser) {
+        String tag = "GOOGLE_SIGN_IN_TAG";
+        Log.d(tag, "authWithGoogleAccount: begin firebase auth with google account");
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(tag, "onSuccess: Logged in");
+
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                        String uid = firebaseUser.getUid();
+                        String email = firebaseUser.getEmail();
+
+                        Log.d(tag, "onSuccess: Email: " + email);
+                        Log.d(tag, "onSuccess: UID: " + uid);
+
+                        if(authResult.getAdditionalUserInfo().isNewUser()) {
+                            newUser.onFinish(true);
+//                            Log.d(tag, "onSuccess: Account created..\n" + email);
+//
+//
+//                            Map<String, Object> userData = user.dataNoPasswordToMap();
+//
+//                            userRef.document(uid).set(userData)
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void unused) {
+//                                            LOGGED_IN_USER = user;
+//                                            listener.onFinish(true);
+//                                        }
+//                                    });
+                        }else {
+                            Log.d(tag, "onSuccess: Existing user..\n" + email);
+//                            LOGGED_IN_USER = user;
+                            newUser.onFinish(false);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(tag, "onFailure: Login failed " + e.getMessage());
+                    }
+                });
+    }
+
+    public static void fillUserInformation(String name, String username, QueryFinishListener<Boolean> listener) {
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
     }
 
     public static void emailIsUnique(String email, QueryFinishListener<Boolean> listener) {
