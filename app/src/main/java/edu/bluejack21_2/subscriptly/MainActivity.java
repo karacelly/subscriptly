@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
+<<<<<<< Updated upstream
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
@@ -147,11 +148,28 @@ public class MainActivity extends AppCompatActivity {
                                 if(newUser) {
                                     i = new Intent(MainActivity.this, UsernameActivity.class);
                                 }else{
+=======
+            result -> {
+                Log.d("Google ACTIVITY RESULT", result.getResultCode()+"");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Log.d(TAG, "onActivityResult: Google signin intent result");
+
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        UserRepository.authWithGoogleAccount(account, newUser -> {
+                            Intent i;
+                            if(newUser) {
+                                i = new Intent(MainActivity.this, UsernameActivity.class);
+                            }else{
+>>>>>>> Stashed changes
 //                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 //                                    SharedPreferences.Editor editor = prefs.edit();
 //                                    editor.putString("userID", account.getId());
 //
 //                                    editor.commit();
+<<<<<<< Updated upstream
                                     Log.d(TAG, "existing user, redirecting...");
                                     i = new Intent(MainActivity.this, HomeActivity.class);
                                 }
@@ -161,6 +179,17 @@ public class MainActivity extends AppCompatActivity {
                         }catch (Exception e) {
                             Log.d(TAG, "onActivityResult: "+ e.getMessage());
                         }
+=======
+
+
+                                i = new Intent(MainActivity.this, HomeActivity.class);
+                            }
+                            startActivity(i);
+                            finish();
+                        });
+                    }catch (Exception e) {
+                        Log.d(TAG, "onActivityResult: "+ e.getMessage());
+>>>>>>> Stashed changes
                     }
                 }
             });
