@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/container_subscription_history"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     tools:context=".adapter.HistoryItemAdapter">
 
     <LinearLayout
         android:id="@+id/history_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <com.google.android.flexbox.FlexboxLayout
@@ -23,10 +27,10 @@
                 android:id="@+id/text_month_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:fontFamily="@font/outfit_medium"
-                android:textSize="20sp"
-                android:text="MARCH, 2022"/>
+                android:text="MARCH, 2022"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="120dp"
@@ -38,16 +42,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/outfit"
-                    android:textColor="#004AAD"
-                    android:text="@string/paid_number_label"/>
+                    android:text="@string/paid_number_label"
+                    android:textColor="#004AAD" />
 
                 <TextView
                     android:id="@+id/text_unpaid_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/outfit"
-                    android:textColor="#ff0000"
-                    android:text="@string/unpaid_number_label"/>
+                    android:text="@string/unpaid_number_label"
+                    android:textColor="#ff0000" />
             </com.google.android.flexbox.FlexboxLayout>
         </com.google.android.flexbox.FlexboxLayout>
 
@@ -55,21 +59,24 @@
 
     <androidx.cardview.widget.CardView
         android:layout_below="@id/history_parent"
+        android:id="@+id/card_recycler_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:padding="10dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        android:animateLayoutChanges="true">
 
         <RelativeLayout
+            android:id="@+id/container_recycler_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_history_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             </androidx.recyclerview.widget.RecyclerView>

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
     private final LayoutInflater mInflater;
     private Subscription subscription;
     private ArrayList<TransactionHeader> transactions;
+    private int lastPosition = -1;
 
     private RecyclerView.RecycledViewPool
             viewPool
@@ -52,7 +55,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
                 holder
                         .getHistoryDetailRV()
                          .getContext(),
-                LinearLayoutManager.HORIZONTAL,
+                LinearLayoutManager.VERTICAL,
                 false);
 
         layoutManager.setInitialPrefetchItemCount(subscription.getMembers().size());
@@ -61,6 +64,18 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
         holder.getHistoryDetailRV().setLayoutManager(layoutManager);
         holder.getHistoryDetailRV().setAdapter(historyDetailItemAdapter);
         holder.getHistoryDetailRV().setRecycledViewPool(viewPool);
+        setAnimation(holder.itemView, position);
+    }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override

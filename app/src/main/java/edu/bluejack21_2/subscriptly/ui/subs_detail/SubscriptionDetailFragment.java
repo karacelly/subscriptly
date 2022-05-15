@@ -40,6 +40,7 @@ public class SubscriptionDetailFragment extends Fragment {
     private TextView subsName, menuMembers, menuHistory, menuMedia;
 
     private Typeface outfitMedium, outfitSemiBold, outfitBold;
+    private FrameLayout layout;
 
     public SubscriptionDetailFragment() { }
 
@@ -72,6 +73,7 @@ public class SubscriptionDetailFragment extends Fragment {
     }
 
     public void initComponents(View v) {
+        layout = v.findViewById(R.id.layout_fragment_detail);
         subsPhoto = v.findViewById(R.id.subs_photo);
         subsName = v.findViewById(R.id.subs_name);
 
@@ -131,7 +133,7 @@ public class SubscriptionDetailFragment extends Fragment {
             menuMedia.setTypeface(outfitBold);
 
             menuMedia.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
-            setFragment(new SubscriptionDetailMediaFragment(subscription));
+            setFragment(new SubscriptionDetailMediaFragment(subscription, layout));
         });
     }
 

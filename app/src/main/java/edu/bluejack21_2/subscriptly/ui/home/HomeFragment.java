@@ -78,7 +78,11 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     private void fetchData() {
         ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
         ArrayList<Subscription> subscriptions = new ArrayList<>();
-        Log.d("LOGGED IN USER", UserRepository.LOGGED_IN_USER.toString());
+        if(UserRepository.LOGGED_IN_USER == null) {
+            Log.d("LOGGED IN USER", "NULL");
+        }else {
+            Log.d("LOGGED IN USER", UserRepository.LOGGED_IN_USER.toString());
+        }
         SubscriptionRepository.getUserSubscriptions(UserRepository.LOGGED_IN_USER.getUserID(), subs -> {
             if(subs != null) {
                 subscriptions.addAll(subs);

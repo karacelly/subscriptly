@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,18 +19,24 @@ import edu.bluejack21_2.subscriptly.models.Subscription;
 
 public class SubscriptionDetailMediaFragment extends Fragment {
     private Subscription subscription;
+    private FrameLayout layout;
 
     public SubscriptionDetailMediaFragment() { }
 
-    public SubscriptionDetailMediaFragment(Subscription subscription) {
+    public SubscriptionDetailMediaFragment(Subscription subscription, FrameLayout layout) {
         this.subscription = subscription;
+        this.layout = layout;
     }
 
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
+        initComponents(view);
+    }
+
+    private void initComponents(View view) {
         RecyclerView rv = view.findViewById(R.id.recycler_media);
         rv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        rv.setAdapter(new MediaItemRecyclerAdapter(getActivity(), subscription));
+        rv.setAdapter(new MediaItemRecyclerAdapter(getActivity(), subscription, layout));
     }
 
     @Override

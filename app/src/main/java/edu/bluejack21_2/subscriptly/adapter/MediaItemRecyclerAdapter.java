@@ -3,6 +3,7 @@ package edu.bluejack21_2.subscriptly.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,9 +19,11 @@ public class MediaItemRecyclerAdapter extends RecyclerView.Adapter<MediaItemView
     private final LayoutInflater mInflater;
     private final Context context;
     private final ArrayList<TransactionDetail> transactionDetails;
+    private final FrameLayout layout;
 
-    public MediaItemRecyclerAdapter(Context context, Subscription subscription) {
+    public MediaItemRecyclerAdapter(Context context, Subscription subscription, FrameLayout layout) {
         this.context = context;
+        this.layout = layout;
         mInflater = LayoutInflater.from(context);
         transactionDetails = getAllDetails(subscription.getHeaders());
     }
@@ -44,7 +47,7 @@ public class MediaItemRecyclerAdapter extends RecyclerView.Adapter<MediaItemView
 
     @Override
     public void onBindViewHolder(MediaItemViewHolder holder, int position) {
-        holder.bind(transactionDetails.get(position));
+        holder.bind(transactionDetails.get(position), layout);
     }
 
     @Override

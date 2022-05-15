@@ -1,46 +1,81 @@
 package edu.bluejack21_2.subscriptly.adapter.viewholder;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import edu.bluejack21_2.subscriptly.R;
-import edu.bluejack21_2.subscriptly.databinding.AdapterHistoryItemBinding;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.utils.DateHelper;
 
 public class HistoryItemViewHolder extends RecyclerView.ViewHolder {
-    private TextView monthTxt, paidTxt, unpaidTxt;
-    private RecyclerView historyDetailRV;
-    private View view;
+    private final RelativeLayout container;
+    private final CardView recyclerCardView;
+    private final LinearLayout historyHeader;
+    private final TextView monthTxt;
+    private final TextView paidTxt;
+    private final TextView unpaidTxt;
+    private final RecyclerView historyDetailRV;
+    private final View view;
+    private boolean isOpen = false;
 
     public HistoryItemViewHolder(final View itemView) {
         super(itemView);
         view = itemView;
 
+        container = view.findViewById(R.id.container_subscription_history);
+        recyclerCardView = view.findViewById(R.id.card_recycler_history);
+        historyHeader = view.findViewById(R.id.history_parent);
         monthTxt = view.findViewById(R.id.text_month_history);
         paidTxt = view.findViewById(R.id.text_paid_history);
         unpaidTxt = view.findViewById(R.id.text_unpaid_history);
         historyDetailRV = view.findViewById(R.id.recycler_history_detail);
     }
 
-    public void bind (Subscription s, TransactionHeader th) {
+    public void bind(Subscription s, TransactionHeader th) {
         int members = s.getMembers().size();
         int paid = th.getDetails().size();
         int unpaid = members - paid;
 
         monthTxt.setText(DateHelper.formatDate(th.getBillingDate(), "MMMM, YYYY").toUpperCase());
-        paidTxt.setText("" + paid + " " + view.getResources().getString(R.string.paid_number_label));
-        unpaidTxt.setText("" + unpaid + " " + view.getResources().getString(R.string.unpaid_number_label));
+        paidTxt.setText(paid + " " + view.getResources().getString(R.string.paid_number_label));
+        unpaidTxt.setText(unpaid + " " + view.getResources().getString(R.string.unpaid_number_label));
+
+        historyHeader.setZ(999);
+        recyclerCardView.setZ(-5);
+        recyclerCardView.setVisibility(View.GONE);
+        recyclerCardView.setAlpha(0.0f);
+        recyclerCardView.setTranslationY(-recyclerCardView.getHeight());
+        historyHeader.setOnClickListener(v -> {
+            if (!isOpen) {
+                recyclerCardView.setVisibility(View.VISIBLE);
+                recyclerCardView.setAlpha(0.0f);
+                recyclerCardView
+                        .animate()
+                        .translationY(0)
+                        .alpha(1.0f).setListener(null);
+            } else {
+                recyclerCardView.animate()
+                        .translationY(-recyclerCardView.getHeight())
+                        .alpha(0.0f)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                recyclerCardView.setVisibility(View.GONE);
+                            }
+                        });
+            }
+            isOpen = !isOpen;
+        });
     }
 
     public RecyclerView getHistoryDetailRV() {
