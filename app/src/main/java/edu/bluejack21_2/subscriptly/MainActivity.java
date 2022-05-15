@@ -1,12 +1,5 @@
 package edu.bluejack21_2.subscriptly;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,19 +23,47 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 
-import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
-import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "GOOGLE_SIGN_IN_TAG";
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Log.d("Google ACTIVITY RESULT", result.getResultCode() + "");
 
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Log.d(TAG, "onActivityResult: Google signin intent result");
+
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        UserRepository.authWithGoogleAccount(MainActivity.this, account, newUser -> {
+                            Intent i;
+                            if (newUser) {
+                                i = new Intent(MainActivity.this, UsernameActivity.class);
+                            } else {
+//                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                                    SharedPreferences.Editor editor = prefs.edit();
+//                                    editor.putString("userID", account.getId());
+//
+//                                    editor.commit();
+                                Log.d(TAG, "existing user, redirecting...");
+                                i = new Intent(MainActivity.this, HomeActivity.class);
+                            }
+                            startActivity(i);
+                            finish();
+                        });
+                    } catch (Exception e) {
+                        Log.d(TAG, "onActivityResult: " + e.getMessage());
+                    }
+                }
+            });
     private EditText fieldEmail, fieldPassword;
     private MaterialButton btnSignIn;
     private Button btnSignInWithGoogle;
     private TextView redirectSignUp;
-
     private GoogleSignInClient mGoogleSignInClient;
 
     private void initComponents() {
@@ -113,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 //            });
 
             UserRepository.signIn(email, password, listener -> {
-                if(listener) {
+                if (listener) {
                     Intent i = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(i);
                     finish();
@@ -129,68 +154,4 @@ public class MainActivity extends AppCompatActivity {
             activityResultLauncher.launch(signInIntent);
         });
     }
-
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-<<<<<<< Updated upstream
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Log.d(TAG, result.getResultCode() + "");
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Log.d(TAG, "onActivityResult: Google signin intent result");
-
-                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                        try {
-                            GoogleSignInAccount account = task.getResult(ApiException.class);
-                            UserRepository.authWithGoogleAccount(MainActivity.this, account, newUser -> {
-                                Intent i;
-                                if(newUser) {
-                                    i = new Intent(MainActivity.this, UsernameActivity.class);
-                                }else{
-=======
-            result -> {
-                Log.d("Google ACTIVITY RESULT", result.getResultCode()+"");
-
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Log.d(TAG, "onActivityResult: Google signin intent result");
-
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                    try {
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        UserRepository.authWithGoogleAccount(account, newUser -> {
-                            Intent i;
-                            if(newUser) {
-                                i = new Intent(MainActivity.this, UsernameActivity.class);
-                            }else{
->>>>>>> Stashed changes
-//                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-//                                    SharedPreferences.Editor editor = prefs.edit();
-//                                    editor.putString("userID", account.getId());
-//
-//                                    editor.commit();
-<<<<<<< Updated upstream
-                                    Log.d(TAG, "existing user, redirecting...");
-                                    i = new Intent(MainActivity.this, HomeActivity.class);
-                                }
-                                startActivity(i);
-                                finish();
-                            });
-                        }catch (Exception e) {
-                            Log.d(TAG, "onActivityResult: "+ e.getMessage());
-                        }
-=======
-
-
-                                i = new Intent(MainActivity.this, HomeActivity.class);
-                            }
-                            startActivity(i);
-                            finish();
-                        });
-                    }catch (Exception e) {
-                        Log.d(TAG, "onActivityResult: "+ e.getMessage());
->>>>>>> Stashed changes
-                    }
-                }
-            });
 }
