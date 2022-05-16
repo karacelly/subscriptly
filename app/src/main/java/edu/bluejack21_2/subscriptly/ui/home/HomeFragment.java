@@ -35,7 +35,7 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 import edu.bluejack21_2.subscriptly.utils.SubscriptionHelper;
 
-public class HomeFragment extends Fragment implements QueryFinishListener<User> {
+public class HomeFragment extends Fragment {
 
     private static HomeFragment fragment;
     private RecyclerView subscriptionGroupRecycler;
@@ -72,7 +72,11 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         subscriptions = new ArrayList<>();
         subscriptionGroupRecycler = view.findViewById(R.id.recycler_subscription_group);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         fetchData();
     }
 
@@ -98,10 +102,5 @@ public class HomeFragment extends Fragment implements QueryFinishListener<User> 
 
             }
         });
-    }
-
-    @Override
-    public void onFinish(User data) {
-
     }
 }
