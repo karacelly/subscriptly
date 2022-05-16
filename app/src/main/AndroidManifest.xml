@@ -13,6 +13,9 @@
             android:name=".UsernameActivity"
             android:exported="false" />
         <activity
+            android:name=".InviteFriendActivity"
+            android:exported="false" />
+        <activity
             android:name=".PaySubscriptionActivity"
             android:exported="false" />
         <activity
