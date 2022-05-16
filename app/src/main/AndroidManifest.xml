@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Subscriptly">
         <activity
+            android:name=".MyTransactionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".UsernameActivity"
             android:exported="false" />
         <activity
@@ -45,7 +48,7 @@
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
