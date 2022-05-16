@@ -110,56 +110,66 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != model.getUserID())
             request = UserHelper.getFriendRequest(requests, FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID());
 
+        setListeners(holder, model, request);
         if (request != null) {
-            FriendRequest finalRequest = request;
-
             holder.addFriend.setVisibility(View.GONE);
             if (request.getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 holder.cancelFriend.setVisibility(View.VISIBLE);
-                holder.cancelFriend.setOnClickListener(v -> {
-                    UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), listener -> {
-                        if (listener) {
-                            holder.addFriend.setVisibility(View.VISIBLE);
-                            holder.cancelFriend.setVisibility(View.GONE);
-                        } else {
-
-                        }
-                    });
-                });
-
             } else {
                 holder.acceptFriend.setVisibility(View.VISIBLE);
-
-                holder.acceptFriend.setOnClickListener(v -> {
-                    UserRepository.acceptFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
-                        if (data) {
-                            Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
-                            holder.acceptFriend.setVisibility(View.GONE);
-                            holder.rejectFriend.setVisibility(View.GONE);
-                            holder.removeFriend.setVisibility(View.VISIBLE);
-                        } else {
-                            Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
-                        }
-                    });
-                });
-
                 holder.rejectFriend.setVisibility(View.VISIBLE);
-                holder.rejectFriend.setOnClickListener(v -> {
-                    UserRepository.rejectFriendRequest(finalRequest.getSender(), finalRequest.getReceiver(), data -> {
-                        if (data) {
-                            holder.rejectFriend.setVisibility(View.GONE);
-                            holder.acceptFriend.setVisibility(View.GONE);
-                            holder.addFriend.setVisibility(View.VISIBLE);
-                            Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
-                        } else {
-                            Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
-                        }
-                    });
-                });
             }
         } else {
             holder.addFriend.setVisibility(View.VISIBLE);
         }
+
+        UserRepository.getLoggedInUser(user -> {
+            if (UserRepository.checkFriend(user, model.getUserID())) {
+                holder.addFriend.setVisibility(View.GONE);
+                holder.removeFriend.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    private void setListeners(FriendViewHolder holder, User model, FriendRequest request) {
+        holder.cancelFriend.setOnClickListener(v -> {
+            UserRepository.rejectFriendRequest(request.getSender(), request.getReceiver(), listener -> {
+                if (listener) {
+                    holder.addFriend.setVisibility(View.VISIBLE);
+                    holder.cancelFriend.setVisibility(View.GONE);
+                } else {
+
+                }
+            });
+        });
+
+        holder.acceptFriend.setOnClickListener(v -> {
+            UserRepository.acceptFriendRequest(request.getSender(), request.getReceiver(), data -> {
+                if (data) {
+                    Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
+                    holder.acceptFriend.setVisibility(View.GONE);
+                    holder.rejectFriend.setVisibility(View.GONE);
+                    holder.removeFriend.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
+                }
+            });
+        });
+
+        holder.rejectFriend.setOnClickListener(v -> {
+            UserRepository.rejectFriendRequest(request.getSender(), request.getReceiver(), data -> {
+                if (data) {
+                    holder.rejectFriend.setVisibility(View.GONE);
+                    holder.acceptFriend.setVisibility(View.GONE);
+                    holder.addFriend.setVisibility(View.VISIBLE);
+                    Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
+                } else {
+                    Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
+                }
+            });
+        });
+
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), data -> {
                 if (data) {
@@ -172,12 +182,6 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-        UserRepository.getLoggedInUser(user -> {
-            if (UserRepository.checkFriend(user, model.getUserID())) {
-                holder.addFriend.setVisibility(View.GONE);
-                holder.removeFriend.setVisibility(View.VISIBLE);
-            }
-        });
         holder.removeFriend.setOnClickListener(v -> {
             UserRepository.removeFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), listener -> {
                 if (listener) {

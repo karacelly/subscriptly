@@ -13,9 +13,9 @@
         android:id="@+id/container_user_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
                 android:layout_marginLeft="-15dp"
                 android:layout_toEndOf="@id/image_user_card"
                 android:src="@drawable/ic_remove"
-                android:translationZ="10dp"/>
+                android:translationZ="10dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/image_user_card"

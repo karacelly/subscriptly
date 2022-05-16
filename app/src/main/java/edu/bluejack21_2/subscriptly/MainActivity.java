@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 Log.d("Google ACTIVITY RESULT", result.getResultCode() + "");
-
+                Log.d("Google ACTIVITY RESULT", result + "");
+                Log.d("Google ACTIVITY RESULT", result.getData() + "");
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Log.d(TAG, "onActivityResult: Google signin intent result");
 
