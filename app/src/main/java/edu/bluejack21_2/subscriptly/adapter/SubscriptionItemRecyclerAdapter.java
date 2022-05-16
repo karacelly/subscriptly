@@ -22,6 +22,7 @@ import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionItemViewHolde
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Currency;

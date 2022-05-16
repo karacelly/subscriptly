@@ -31,12 +31,7 @@ import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class InviteFriendActivity extends AppCompatActivity implements QueryChangeListener<ArrayList<User>> {
 
-    private static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
-        @Override
-        public int compare(User a, User b) {
-            return a.getName().compareTo(b.getName());
-        }
-    };
+    private static final Comparator<User> ALPHABETICAL_COMPARATOR = Comparator.comparing(User::getName);
     private HorizontalScrollView containerChosenUser;
     public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
     public static ChosenUserRecyclerAdapter chosenUserAdapter;

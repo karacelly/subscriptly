@@ -31,6 +31,8 @@ import edu.bluejack21_2.subscriptly.PaySubscriptionActivity;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
 
 public class SubscriptionDetailFragment extends Fragment {
@@ -51,7 +53,6 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_subscription_detail, container, false);
     }
 
@@ -62,8 +63,7 @@ public class SubscriptionDetailFragment extends Fragment {
         initComponents(view);
         setDataOnView(view);
         createMenu(view);
-        Log.d("SUBSCRIPTION MEMBERS", subscription.getMembers().size()+"");
-        setFragment(new SubscriptionDetailMemberFragment(subscription.getMembers()));
+        setFragment(new SubscriptionDetailMemberFragment(subscription));
     }
 
     private void initFonts(View v) {
@@ -115,7 +115,7 @@ public class SubscriptionDetailFragment extends Fragment {
             menuMembers.setTypeface(outfitBold);
 
             menuMembers.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_white));
-            setFragment(new SubscriptionDetailMemberFragment(subscription.getMembers()));
+            setFragment(new SubscriptionDetailMemberFragment(subscription));
         });
 
         menuHistory.setOnClickListener(view -> {

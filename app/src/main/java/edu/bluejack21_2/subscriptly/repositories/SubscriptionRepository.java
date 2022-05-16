@@ -203,38 +203,42 @@ public class SubscriptionRepository {
                             listener.onFinish(null);
                         } else {
                             DocumentSnapshot member = memberSnapshots.getDocuments().get(0);
+                            DocumentReference creatorRef = member.getDocumentReference("creator");
                             ArrayList<User> users = new ArrayList<>();
                             ArrayList<DocumentReference> userRefs = (ArrayList<DocumentReference>) member.get("users");
-                            if (userRefs.isEmpty()) {
-                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
-                            } else {
-                                for (DocumentReference userRef :
-                                        userRefs) {
-                                    UserRepository.getUser(userRef.getId(), userData -> {
-                                        if (userData != null) {
-                                            users.add(userData);
-                                            if (users.size() == userRefs.size()) {
-                                                for (DocumentSnapshot headerSnapshot :
-                                                        headerSnapshots.getDocuments()) {
-                                                    documentToTransactionHeader(headerSnapshot, header -> {
-                                                        if (header != null) {
-                                                            headers.add(header);
-                                                            if (headers.size() == headerSnapshots.size()) {
-                                                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, headers, users));
+                            UserRepository.getUser(creatorRef.getId(), creator -> {
+                                if (userRefs.isEmpty()) {
+                                    listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
+                                } else {
+                                    for (DocumentReference userRef :
+                                            userRefs) {
+                                        UserRepository.getUser(userRef.getId(), userData -> {
+                                            if (userData != null) {
+                                                users.add(userData);
+                                                if (users.size() == userRefs.size()) {
+                                                    for (DocumentSnapshot headerSnapshot :
+                                                            headerSnapshots.getDocuments()) {
+                                                        documentToTransactionHeader(headerSnapshot, header -> {
+                                                            if (header != null) {
+                                                                headers.add(header);
+                                                                if (headers.size() == headerSnapshots.size()) {
+                                                                    listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
+                                                                }
+                                                            } else {
+                                                                listener.onFinish(null);
                                                             }
-                                                        } else {
-                                                            listener.onFinish(null);
-                                                        }
-                                                    });
+                                                        });
+                                                    }
                                                 }
+                                            } else {
+                                                listener.onFinish(null);
                                             }
-                                        } else {
-                                            listener.onFinish(null);
-                                        }
-                                    });
+                                        });
+                                    }
+
                                 }
 
-                            }
+                            });
                         }
                     }).addOnFailureListener(e -> {
                         listener.onFinish(null);

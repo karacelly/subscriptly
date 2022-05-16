@@ -17,15 +17,16 @@ import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
 import edu.bluejack21_2.subscriptly.InviteFriendActivity;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.MemberItemAdapter;
+import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 
 public class SubscriptionDetailMemberFragment extends Fragment {
-    private ArrayList<User> members;
+    private Subscription subscription;
     private LinearLayout addMemberContainer;
 
-    public SubscriptionDetailMemberFragment(ArrayList<User> members) {
-        this.members = members;
+    public SubscriptionDetailMemberFragment(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SubscriptionDetailMemberFragment extends Fragment {
         addMemberContainer = view.findViewById(R.id.container_add_member);
         RecyclerView rv = view.findViewById(R.id.subsMemberList);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new MemberItemAdapter(getActivity(), members, SubscriptionRepository.ACTIVE_SUBSCRIPTION));
+        rv.setAdapter(new MemberItemAdapter(getActivity(), subscription));
 
         addMemberContainer.setOnClickListener(v -> {
             Intent addMember = new Intent(v.getContext(), InviteFriendActivity.class);
