@@ -55,7 +55,6 @@ public class SubscriptionsFragment extends Fragment implements QueryChangeListen
     private ArrayList<Subscription> subscriptions;
     private SubscriptionRecyclerAdapter subscriptionRecyclerAdapter;
     private FragmentSubscriptionsBinding binding;
-    private static Boolean isFirst = true;
 
     public SubscriptionsFragment() {
         // Required empty public constructor
@@ -214,9 +213,6 @@ public class SubscriptionsFragment extends Fragment implements QueryChangeListen
                         final List<Subscription> filteredModelList = filter(subscriptions, query);
                         subscriptionRecyclerAdapter.replaceAll(filteredModelList);
                         subscriptionRecycler.scrollToPosition(0);
-                        Log.d("FIELD SEARCH SUBSCRIPTION | Binding", binding.toString());
-                        Log.d("FIELD SEARCH SUBSCRIPTION | recycler Subscriptions",  binding.recyclerSubscriptions.toString());
-
                         return true;
                     }
                 });

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +25,6 @@ import edu.bluejack21_2.subscriptly.ui.subs_detail.SubscriptionDetailFragment;
 
 public class SubscriptionDetail extends AppCompatActivity {
     private Toolbar toolbar;
-    private Subscription subscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,8 @@ public class SubscriptionDetail extends AppCompatActivity {
         initComponents();
         setFragment();
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        toolbar.setNavigationOnClickListener(view -> {
+            onBackPressed();
         });
     }
 

@@ -21,6 +21,7 @@ import java.util.List;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.Currency;
 
@@ -105,8 +106,8 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         Glide.with(context).load(s.getImage()).into(holder.subscriptionImage);
         holder.subscriptionContainer.setOnClickListener(v -> {
             Context c = v.getContext();
-            Intent detail = new Intent(c, SubscriptionDetail.class);
             SubscriptionRepository.ACTIVE_SUBSCRIPTION = s;
+            Intent detail = new Intent(c, SubscriptionDetail.class);
             detail.putExtra("subscriptionID", s.getSubscriptionId());
             c.startActivity(detail);
         });

@@ -28,12 +28,10 @@ import edu.bluejack21_2.subscriptly.models.User;
 public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder> {
     private Context ctx;
     private final LayoutInflater mInflater;
-    private ArrayList<User> members;
     private final Subscription subscription;
 
-    public MemberItemAdapter(Context ctx, ArrayList<User> members, Subscription subscription) {
+    public MemberItemAdapter(Context ctx, Subscription subscription) {
         this.ctx = ctx;
-        this.members = members;
         this.subscription = subscription;
         mInflater = LayoutInflater.from(ctx);
     }
@@ -48,13 +46,13 @@ public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MemberItemViewHolder holder, int position) {
-        final User model = members.get(position);
+        final User model = subscription.getMembers().get(position);
         holder.bind(model, subscription);
     }
 
     @Override
     public int getItemCount() {
-        return members.size();
+        return subscription.getMembers().size();
     }
 
 }
