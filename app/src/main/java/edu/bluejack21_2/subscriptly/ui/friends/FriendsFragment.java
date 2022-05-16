@@ -38,8 +38,8 @@ public class FriendsFragment extends Fragment {
             return a.getUsername().compareTo(b.getUsername());
         }
     };
-    private ArrayList<User> users;
-    private ArrayList<FriendRequest> requests;
+    private static ArrayList<User> users;
+    private static ArrayList<FriendRequest> requests;
 
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler;
@@ -89,18 +89,37 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchData();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Log.d("FLOW", "onViewCreated");
         fieldSearchFriend = view.findViewById(R.id.field_search_friend);
         friendsRecycler = view.findViewById(R.id.recycler_friends);
 
+        fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                final List<User> filteredModelList = filter(users, query);
+                mAdapter.replaceAll(filteredModelList);
+                mBinding.recyclerFriends.scrollToPosition(0);
+                return true;
+            }
+        });
+    }
+
+    private void fetchData() {
         users = new ArrayList<>();
         requests = new ArrayList<>();
-
         UserRepository.friendRequestRef.get()
                 .addOnSuccessListener(task -> {
                     for (DocumentSnapshot d :
@@ -116,7 +135,7 @@ public class FriendsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Failed Sender", Toast.LENGTH_SHORT);
                             });
                         }).addOnFailureListener(e -> {
-                                Toast.makeText(getContext(), "Failed Receiver", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(), "Failed Receiver", Toast.LENGTH_SHORT);
                         });
                     }
                 })
@@ -126,49 +145,22 @@ public class FriendsFragment extends Fragment {
                 });
 
         UserRepository.userRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                ArrayList<String> memberIDs = (ArrayList<String>)document.get("members");
-//                                for (String id:
-//                                     memberIDs) {
-//                                    UserRepository.getUser(id, fragment);
-//                                }
-//                                ArrayList<User> members = (ArrayList<User>)document.get("members");
-//                                Log.d("Members", document.get("members").getClass().toString());
-                            if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(document.getId())) {
-                                users.add(UserRepository.documentToUser(document));
-                                setRecyclerView(users, requests, friendsRecycler);
-                            }
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(document.getId())) {
+                            users.add(UserRepository.documentToUser(document));
+                            setRecyclerView(users, requests, friendsRecycler);
                         }
-                    } else {}
-                    fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return false;
-                        }
-                        @Override
-                        public boolean onQueryTextChange(String query) {
-                            final List<User> filteredModelList = filter(users, query);
-                            mAdapter.replaceAll(filteredModelList);
-                            mBinding.recyclerFriends.scrollToPosition(0);
-                            return true;
-                        }
-                    });
-                });
+                    }
+                }
+            });
     }
 
     private void setRecyclerView(ArrayList<User> users, ArrayList<FriendRequest> requests, RecyclerView recyclerView) {
-        Log.d("FLOW", "setRecyclerView");
         mAdapter = new FriendRecyclerAdapter(users, requests, ALPHABETICAL_COMPARATOR, getActivity(), R.layout.friend_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);
         mAdapter.add(users);
     }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        Log.d("FLOW", "onCreate");
-//        super.onCreate(savedInstanceState);
-//    }
 }

@@ -32,7 +32,6 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
 //        super(view);
         super(binding.getRoot());
         View view = binding.getRoot();
-        Log.d("VIEWFRIEND", view+"");
         this.binding = binding;
 
         container = view.findViewById(R.id.container_friend_item);

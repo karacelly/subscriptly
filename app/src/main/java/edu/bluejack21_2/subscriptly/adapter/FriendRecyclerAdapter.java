@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
+import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
@@ -106,6 +107,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 'Reject Friend Request'
          */
 
+        Log.d("FriendRecyclerAdapter", "onBindViewHolder");
         FriendRequest request = null;
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != model.getUserID())
             request = UserHelper.getFriendRequest(requests, FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID());
