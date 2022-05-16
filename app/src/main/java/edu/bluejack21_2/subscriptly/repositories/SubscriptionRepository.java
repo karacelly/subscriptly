@@ -33,12 +33,13 @@ public class SubscriptionRepository {
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
     public static void insertSubscription(Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
+        Log.d("INSERT SUBSCRIPTION", subscription.getName());
         DocumentReference creator = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String, Object> subscriptionData = subscription.dataToMap();
         subscriptionRef.add(subscriptionData)
                 .addOnSuccessListener(documentReference -> {
                     for (User user :
-                            chosenFriends) {
+                            subscription.getMembers()) {
                         sendInvitation(creator.getId(), documentReference.getId(), user.getUserID(), sendInvitationListener -> {
                             if (!sendInvitationListener) {
                                 listener.onFinish(false);
@@ -361,19 +362,23 @@ public class SubscriptionRepository {
         associatedMembers.get()
                 .addOnSuccessListener(documentSnapshots -> {
                     int counter = 0;
-                    for (DocumentSnapshot snapshot :
-                            documentSnapshots) {
-                        counter++;
-                        int finalCounter = counter;
-                        snapshot.getDocumentReference("subscription").get().addOnSuccessListener(documentSnapshot -> {
-                            if (documentSnapshot.get("name").toString().equals(subscriptionName)) {
+                    if(documentSnapshots.isEmpty()) {
+                        listener.onFinish(true);
+                    } else {
+                        for (DocumentSnapshot snapshot :
+                                documentSnapshots) {
+                            counter++;
+                            int finalCounter = counter;
+                            snapshot.getDocumentReference("subscription").get().addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.get("name").toString().equals(subscriptionName)) {
+                                    listener.onFinish(false);
+                                } else if (finalCounter == documentSnapshots.size()) {
+                                    listener.onFinish(true);
+                                }
+                            }).addOnFailureListener(e -> {
                                 listener.onFinish(false);
-                            } else if (finalCounter == documentSnapshots.size()) {
-                                listener.onFinish(true);
-                            }
-                        }).addOnFailureListener(e -> {
-                            listener.onFinish(false);
-                        });
+                            });
+                        }
                     }
                 }).addOnFailureListener(e -> {
             listener.onFinish(false);

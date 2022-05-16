@@ -2,9 +2,11 @@ package edu.bluejack21_2.subscriptly;
 
 import static edu.bluejack21_2.subscriptly.utils.Currency.formatToRupiah;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -17,6 +19,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -36,6 +42,7 @@ import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
@@ -63,41 +70,57 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
 
     final Calendar myCalendar= Calendar.getInstance();
 
+    /*
+    Upload Variables
+     */
+    Boolean flag = true, hasChosenImage = false, isValidUpload = false, finishUpload = false;
+    String name, bill, duration, date;
+    Integer durationInt = 0;
+    Long billLong = Long.valueOf(0);
+
     private void updateLabel(){
         String myFormat="MM/dd/yy";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         subscriptionStartDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-//    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
-//            new ActivityResultContracts.StartActivityForResult(),
-//            new ActivityResultCallback<ActivityResult>() {
-//                @Override
-//                public void onActivityResult(ActivityResult result) {
-////                    if(result.getResultCode() == 3) {
-////
-////                    }
-//                    if (result.getResultCode() == Activity.RESULT_OK) {
-//                        Intent data = result.getData();
-//
-//                        if (data != null) {
-//                            Uri selectedImage = data.getData();
-//                            imageSubscription.setImageURI(selectedImage);
-//                            String fileName = ImageHelper.getImageFileName(context, selectedImage);
-//                            ImageRepository.InsertImage("subscription", fileName, selectedImage, listener -> {
-//                                if(listener != null) {
-//                                    imageURL = listener;
-//                                } else {
-//                                    Toast.makeText(AddSubscriptionActivity.this, "Failed Upload Image!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                        }
-//                    }
-//                }
-//            });
+    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if (data != null) {
+                            hasChosenImage = true;
+                            Uri selectedImage = data.getData();
+                            imageSubscription.setImageURI(selectedImage);
+                            String fileName = ImageHelper.getImageFileName(context, selectedImage);
+                            finishUpload = false;
+                            ImageRepository.InsertImage(GlobalVariable.FOLDER_SUBSCRIPTION, fileName, selectedImage, listener -> {
+                                if(listener != null) {
+                                    imageURL = listener;
+                                    finishUpload = true;
+                                    Log.d("BOOLEAN | isValidUpload", isValidUpload.toString());
+                                    Log.d("BOOLEAN | hasChosenImage", hasChosenImage.toString());
+                                    Log.d("BOOLEAN | finishUpload", finishUpload.toString());
+                                    if(isValidUpload) {
+                                        Log.d("AUTOMATIC UPLOAD", imageURL);
+                                        uploadData();
+                                    }
+                                } else {
+                                    Toast.makeText(AddSubscriptionActivity.this, R.string.error_upload_image, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                }
+            });
     private Toolbar toolbar;
 
     private void initComponents() {
+        isValidUpload = false;
         imageToggle = findViewById(R.id.action_pick_image);
         imageSubscription = findViewById(R.id.image_subscription);
 
@@ -164,9 +187,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
 
         imageToggle.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            ImageHelper.chooseImageAndUpload(this, imageSubscription, GlobalVariable.FOLDER_SUBSCRIPTION, listener -> {
-                imageURL = listener;
-            }).launch(intent);
+            pickImageActivityResultLauncher.launch(intent);
         });
 
         buttonAdd.setOnClickListener(v -> {
@@ -205,11 +226,12 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
         });
 
         buttonCreateSubscription.setOnClickListener(v -> {
-            Boolean flag = true;
-            String name = Field.getContent(subscriptionName.getText());
-            String bill = Field.getContent(subscriptionBill.getText());
-            String duration = Field.getContent(timeRange.getText());
-            String date = Field.getContent(subscriptionStartDate.getText());
+            flag = true;
+            isValidUpload = false;
+            name = Field.getContent(subscriptionName.getText());
+            bill = Field.getContent(subscriptionBill.getText());
+            duration = Field.getContent(timeRange.getText());
+            date = Field.getContent(subscriptionStartDate.getText());
             bill = bill.replaceAll("[Rp. ]", "");
 
             if(name.isEmpty()) {
@@ -217,7 +239,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                 flag = false;
             }
 
-            Long billLong = Long.valueOf(0);
+            billLong = Long.valueOf(0);
             if(bill.isEmpty()) {
                 subscriptionBill.setError(getString(R.string.error_empty_fields));
                 flag = false;
@@ -229,7 +251,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                 }
             }
 
-            Integer durationInt = 0;
+            durationInt = 0;
             if(duration.isEmpty()) {
                 timeRange.setError(getString(R.string.error_empty_fields));
                 flag = false;
@@ -246,29 +268,52 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                 flag = false;
             }
 
+            Log.d("BOOLEAN | isValidUpload", isValidUpload.toString());
+            Log.d("BOOLEAN | hasChosenImage", hasChosenImage.toString());
+            Log.d("BOOLEAN | finishUpload", finishUpload.toString());
             if(flag) {
-                Timestamp timestamp = new Timestamp(myCalendar.getTime());
-                Subscription subscription = new Subscription("", name, imageURL, billLong, durationInt, timestamp, SubscriptionRepository.chosenFriends);
-                SubscriptionRepository.isUniqueSubscriptionNameForCreator(FirebaseAuth.getInstance().getCurrentUser().getUid(), name, listener -> {
-                    if(listener) {
-                        SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
-                            if(subListener) {
-                                Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(AddSubscriptionActivity.this, "Failed Add Subscription", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                isValidUpload = true;
+                Log.d("BOOLEAN | isValidUpload Inside", isValidUpload.toString());
+                Log.d("BOOLEAN | hasChosenImage", hasChosenImage.toString());
+                Log.d("BOOLEAN | finishUpload", finishUpload.toString());
+                if(!hasChosenImage) {
+                    uploadData();
+                } else {
+                    if(finishUpload) {
+                        uploadData();
                     } else {
-                        Log.d("ADD SUBSCRIPTION", "Subscription name already exist in your list!");
-                        Toast.makeText(AddSubscriptionActivity.this, "Subscription name already exist in your list!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Subscription will be added once image finish uploading!", Toast.LENGTH_LONG).show();
                     }
-                });
+                }
             }
         });
     }
+
+    private void uploadData() {
+        Timestamp timestamp = new Timestamp(myCalendar.getTime());
+        Subscription subscription = new Subscription("", name, imageURL, billLong, durationInt, timestamp, SubscriptionRepository.chosenFriends);
+        Log.d("ADD SUBSCRIPTION", "OTW Validating Unique Name");
+        SubscriptionRepository.isUniqueSubscriptionNameForCreator(FirebaseAuth.getInstance().getCurrentUser().getUid(), name, listener -> {
+            if(listener) {
+                Log.d("ADD SUBSCRIPTION", "Subscription is unique!");
+                SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
+                    Log.d("ADD SUBSCRIPTION", "Result : " + subListener);
+                    if(subListener) {
+                        Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(AddSubscriptionActivity.this, "Failed Add Subscription", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Log.d("ADD SUBSCRIPTION", "Subscription name already exist in your list!");
+                Toast.makeText(AddSubscriptionActivity.this, "Subscription name already exist in your list!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     @Override
     public void onChange(ArrayList<User> data) {

@@ -100,8 +100,6 @@ public class SubscriptionsFragment extends Fragment {
         sortNewest = view.findViewById(R.id.action_sort_newest_to_oldest);
         sortOldest = view.findViewById(R.id.action_sort_oldest_to_newest);
 
-
-        fetchData();
         initListeners();
     }
 
@@ -135,11 +133,7 @@ public class SubscriptionsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(isFirst == true) {
-            isFirst = false;
-        } else {
-            fetchData();
-        }
+        fetchData();
     }
 
     private static List<Subscription> filter(List<Subscription> subscriptions, String query) {

@@ -22,6 +22,7 @@ import edu.bluejack21_2.subscriptly.adapter.ChooseFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
@@ -41,7 +42,7 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler, chosenUserRecycler;
     private Boolean isActivityReopened = false;
-    private static Boolean chosenUserIsShown = false;
+    private static Boolean chosenUserIsShown;
 
     private static List<User> filter(List<User> users, String query) {
         final String lowerCaseQuery = query.toLowerCase();
@@ -57,6 +58,7 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
     }
 
     private void initAnimation(){
+        chosenUserIsShown = false;
         containerChosenUser.setZ(-5);
         containerChosenUser.setVisibility(View.GONE);
         containerChosenUser.setAlpha(0.0f);
@@ -89,7 +91,8 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
 
     private void initComponents() {
         containerChosenUser = findViewById(R.id.container_chosen_user);
-        initAnimation();
+
+
 
         friendsRecycler = findViewById(R.id.recycler_friends);
         chosenUserRecycler = findViewById(R.id.recycler_users_chosen);
@@ -97,10 +100,14 @@ public class ChooseFriendActivity extends AppCompatActivity implements QueryChan
         fieldSearchFriend = findViewById(R.id.field_search_friend);
 
         doneChooseFriend = findViewById(R.id.action_done_choose_friend);
-        doneChooseFriend.setText("Prefer Alone");
-        doneChooseFriend.setOnClickListener(view -> {
-            onBackPressed();
-        });
+
+        if(SubscriptionRepository.chosenFriends.isEmpty()) {
+            initAnimation();
+            doneChooseFriend.setText("Prefer Alone");
+            doneChooseFriend.setOnClickListener(view -> {
+                onBackPressed();
+            });
+        }
 
         chosenUserAdapter = new ChosenUserRecyclerAdapter(this, this);
         setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
