@@ -122,16 +122,15 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 holder.rejectFriend.setVisibility(View.VISIBLE);
             }
         } else {
-            holder.addFriend.setVisibility(View.VISIBLE);
+            UserRepository.getLoggedInUser(user -> {
+                if (UserRepository.checkFriend(user, model.getUserID())) {
+                    holder.addFriend.setVisibility(View.GONE);
+                    holder.removeFriend.setVisibility(View.VISIBLE);
+                } else {
+                    holder.addFriend.setVisibility(View.VISIBLE);
+                }
+            });
         }
-
-        UserRepository.getLoggedInUser(user -> {
-            if (UserRepository.checkFriend(user, model.getUserID())) {
-                holder.addFriend.setVisibility(View.GONE);
-                holder.removeFriend.setVisibility(View.VISIBLE);
-            }
-        });
-
     }
 
     private void setListeners(FriendViewHolder holder, User model, FriendRequest request) {

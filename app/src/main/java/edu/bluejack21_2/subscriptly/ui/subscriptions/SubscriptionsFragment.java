@@ -29,6 +29,7 @@ import edu.bluejack21_2.subscriptly.adapter.InvitedSubscriptionRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.SubscriptionRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.databinding.FragmentFriendsBinding;
 import edu.bluejack21_2.subscriptly.databinding.FragmentSubscriptionsBinding;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.SubscriptionInvitation;
 import edu.bluejack21_2.subscriptly.models.User;
@@ -36,7 +37,7 @@ import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.RecyclerViewHelper;
 
-public class SubscriptionsFragment extends Fragment {
+public class SubscriptionsFragment extends Fragment implements QueryChangeListener<Boolean> {
 
     private static final Comparator<Subscription> ALPHABETICAL_COMPARATOR = new Comparator<Subscription>() {
         @Override
@@ -52,7 +53,7 @@ public class SubscriptionsFragment extends Fragment {
     private LinearLayout containerInvitation;
     private RecyclerView invitedRecycler, subscriptionRecycler;
     private ArrayList<Subscription> subscriptions;
-    private SubscriptionRecyclerAdapter adapter;
+    private SubscriptionRecyclerAdapter subscriptionRecyclerAdapter;
     private FragmentSubscriptionsBinding binding;
     private static Boolean isFirst = true;
 
@@ -106,27 +107,27 @@ public class SubscriptionsFragment extends Fragment {
     private void initListeners() {
 
         sortAZ.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getName));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getName));
         });
 
         sortZA.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getName).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getName).reversed());
         });
 
         sortHighLow.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getBill).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getBill).reversed());
         });
 
         sortLowHigh.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getBill));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getBill));
         });
 
         sortNewest.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
         });
 
         sortOldest.setOnClickListener(v -> {
-            adapter.setComparator(Comparator.comparing(Subscription::getStartAt));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt));
         });
     }
 
@@ -153,6 +154,7 @@ public class SubscriptionsFragment extends Fragment {
         containerInvitation.setVisibility(View.GONE);
         DocumentReference currentUserRef = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         ArrayList<SubscriptionInvitation> invitations = new ArrayList<>();
+        InvitedSubscriptionRecyclerAdapter invitedSubscriptionRecyclerAdapter = new InvitedSubscriptionRecyclerAdapter(getContext(), this, invitations, R.layout.subscriptions_subscription_item, this);
         SubscriptionRepository.subscriptionInvitationRef.whereEqualTo("invited", currentUserRef).get()
                 .addOnSuccessListener(invitationSnapshots -> {
                     if(!invitationSnapshots.isEmpty()) {
@@ -171,8 +173,9 @@ public class SubscriptionsFragment extends Fragment {
                                 subscription.get().addOnSuccessListener(subscriptionSnapshot -> {
                                     SubscriptionRepository.documentToSubscription(subscriptionSnapshot, sub -> {
                                         invitations.add(new SubscriptionInvitation(id, creatorModel, invitedModel, sub));
-                                        InvitedSubscriptionRecyclerAdapter adapter = new InvitedSubscriptionRecyclerAdapter(getContext(), this, invitations, R.layout.subscriptions_subscription_item);
-                                        RecyclerViewHelper.setRecyclerView(getContext(), adapter, LinearLayoutManager.VERTICAL, invitedRecycler);
+                                        invitedSubscriptionRecyclerAdapter.setInvitations(invitations);
+                                        invitedSubscriptionRecyclerAdapter.notifyDataSetChanged();
+                                        RecyclerViewHelper.setRecyclerView(getContext(), invitedSubscriptionRecyclerAdapter, LinearLayoutManager.VERTICAL, invitedRecycler);
 
                                     });
                                 }).addOnFailureListener(e -> {
@@ -198,8 +201,8 @@ public class SubscriptionsFragment extends Fragment {
 //                if(subscriptions.size() < subs.size())
                 subscriptions.addAll(subs);
                 Log.d("AFTER SUBSCRIPTION SIZE", subscriptions.size()+"");
-                adapter = new SubscriptionRecyclerAdapter(getContext(), subscriptions, R.layout.subscriptions_subscription_item, ALPHABETICAL_COMPARATOR);
-                RecyclerViewHelper.setRecyclerView(getContext(), adapter, LinearLayoutManager.VERTICAL, subscriptionRecycler);
+                subscriptionRecyclerAdapter = new SubscriptionRecyclerAdapter(getContext(), subscriptions, R.layout.subscriptions_subscription_item, ALPHABETICAL_COMPARATOR);
+                RecyclerViewHelper.setRecyclerView(getContext(), subscriptionRecyclerAdapter, LinearLayoutManager.VERTICAL, subscriptionRecycler);
 
                 fieldSearchSubscription.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -209,7 +212,7 @@ public class SubscriptionsFragment extends Fragment {
                     @Override
                     public boolean onQueryTextChange(String query) {
                         final List<Subscription> filteredModelList = filter(subscriptions, query);
-                        adapter.replaceAll(filteredModelList);
+                        subscriptionRecyclerAdapter.replaceAll(filteredModelList);
                         subscriptionRecycler.scrollToPosition(0);
                         Log.d("FIELD SEARCH SUBSCRIPTION | Binding", binding.toString());
                         Log.d("FIELD SEARCH SUBSCRIPTION | recycler Subscriptions",  binding.recyclerSubscriptions.toString());
@@ -221,4 +224,10 @@ public class SubscriptionsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onChange(Boolean data) {
+        if(data) {
+            fetchData();
+        }
+    }
 }

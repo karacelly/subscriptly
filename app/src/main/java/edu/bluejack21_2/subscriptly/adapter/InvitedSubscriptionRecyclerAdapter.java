@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
+import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.SubscriptionInvitation;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
@@ -24,16 +26,22 @@ import edu.bluejack21_2.subscriptly.utils.Currency;
 
 public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {
 
-    private final ArrayList<SubscriptionInvitation> invitations;
+    public void setInvitations(ArrayList<SubscriptionInvitation> invitations) {
+        this.invitations = invitations;
+    }
+
+    private ArrayList<SubscriptionInvitation> invitations;
     private final int template;
     private final Context context;
     private final Fragment fragment;
+    private final QueryChangeListener<Boolean> listener;
 
-    public InvitedSubscriptionRecyclerAdapter(Context context, Fragment fragment, ArrayList<SubscriptionInvitation> invitations, int template) {
+    public InvitedSubscriptionRecyclerAdapter(Context context, Fragment fragment, ArrayList<SubscriptionInvitation> invitations, int template, QueryChangeListener<Boolean> listener) {
         this.invitations = invitations;
         this.template = template;
         this.context = context;
         this.fragment = fragment;
+        this.listener = listener;
     }
 
     @Override
@@ -62,7 +70,8 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
                 if(done) {
                     invitations.remove(subscriptionInvitation);
                     notifyDataSetChanged();
-                    updateFragment();
+//                    updateFragment();
+                    listener.onChange(true);
                 } else {
                     Toast.makeText(view.getContext(), "Accept Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
@@ -74,7 +83,8 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
                 if(done) {
                     invitations.remove(subscriptionInvitation);
                     notifyDataSetChanged();
-                    updateFragment();
+//                    updateFragment();
+                    listener.onChange(true);
                 } else {
                     Toast.makeText(view.getContext(), "Reject Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
