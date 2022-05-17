@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="user"
-            type="edu.bluejack21_2.subscriptly.models.User" />
-        <variable
             name="subscription"
             type="edu.bluejack21_2.subscriptly.models.Subscription" />
     </data>
@@ -25,7 +22,7 @@
             app:cardCornerRadius="100dp">
 
             <ImageView
-                android:id="@+id/member_photo"
+                android:id="@+id/subs_photo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
@@ -35,6 +32,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -46,7 +44,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/outfit_bold"
                 android:text="@{subscription.name}"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_color"
                 android:textSize="15sp" />
 
             <TextView

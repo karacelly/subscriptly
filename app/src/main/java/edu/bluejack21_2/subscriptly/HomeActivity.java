@@ -2,7 +2,6 @@ package edu.bluejack21_2.subscriptly;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -22,9 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
-import edu.bluejack21_2.subscriptly.fragments.TopNavBarFragment;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
-import edu.bluejack21_2.subscriptly.ui.home.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigation;
@@ -120,6 +117,12 @@ public class HomeActivity extends AppCompatActivity {
 
                 popupMenu.getMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
                     Intent i = new Intent(HomeActivity.this, ProfileActivity.class);
+                    startActivity(i);
+                    return true;
+                });
+
+                popupMenu.getMenu().getItem(1).setOnMenuItemClickListener(menuItem -> {
+                    Intent i = new Intent(HomeActivity.this, MyTransactionsActivity.class);
                     startActivity(i);
                     return true;
                 });

@@ -1,30 +1,58 @@
 package edu.bluejack21_2.subscriptly.adapter;
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import edu.bluejack21_2.subscriptly.R;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class TransactionAdapter extends Fragment {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-    public TransactionAdapter() {
-        // Required empty public constructor
+import java.util.ArrayList;
+
+import edu.bluejack21_2.subscriptly.adapter.viewholder.TransactionViewHolder;
+import edu.bluejack21_2.subscriptly.databinding.AdapterTransactionBinding;
+import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
+import edu.bluejack21_2.subscriptly.models.TransactionHeader;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
+
+public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder> {
+    private final LayoutInflater mInflater;
+    private final Context context;
+    private ArrayList<Subscription> subscriptions = new ArrayList<>();
+    private ArrayList<TransactionDetail> details = new ArrayList<>();
+
+    public void setSubscriptions(ArrayList<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public void setDetails(ArrayList<TransactionDetail> details) {
+        this.details = details;
+    }
+
+    public TransactionAdapter(Context context, ArrayList<Subscription> subscriptions, ArrayList<TransactionDetail> details) {
+        this.mInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.subscriptions = subscriptions;
+        this.details = details;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final AdapterTransactionBinding binding = AdapterTransactionBinding.inflate(mInflater, parent, false);
+
+        return new TransactionViewHolder(binding);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.adapter_transaction, container, false);
+    public void onBindViewHolder(TransactionViewHolder holder, int position) {
+        holder.bind(subscriptions.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return details.size();
     }
 }
