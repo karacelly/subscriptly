@@ -39,6 +39,13 @@ public class Subscription {
         this.creator = creator;
         this.headers = headers;
         this.members = members;
+        for (TransactionHeader header:
+             headers) {
+            for (TransactionDetail detail:
+                    header.getDetails()) {
+                detail.setSubscription(this);
+            }
+        }
     }
 
     public Subscription(String subscriptionId, String name, String image, Long bill, Integer duration, Timestamp startAt, ArrayList<TransactionHeader> headers, ArrayList<User> members) {

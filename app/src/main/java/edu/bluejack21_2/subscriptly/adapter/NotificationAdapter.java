@@ -31,6 +31,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
         UserRepository.getLoggedInUser(user -> {
             if(user != null) {
                 notifications = user.getNotifications();
+                notifyDataSetChanged();
             }
         });
     }
