@@ -21,12 +21,21 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.adapter.NotificationAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class HomeActivity extends AppCompatActivity {
+    NotificationAdapter notificationAdapter;
     private BottomNavigationView mBottomNavigation;
     private ViewPager2 viewPager;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -34,7 +43,6 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView profilePicture;
     private ImageButton notifIcon;
     private RelativeLayout notifPopUp;
-
     private Boolean notifOpen = false;
 
     private void initComponents() {
@@ -49,6 +57,57 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(mViewPagerAdapter);
     }
 
+    private void fetchNotificationsData() {
+        ArrayList<TransactionDetail> transactionDetails = new ArrayList<>();
+        DocumentReference user = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.get()
+                .addOnSuccessListener(userSnapshot -> {
+                    if (userSnapshot.contains("notifications")) {
+                        ArrayList<DocumentReference> details = (ArrayList<DocumentReference>) userSnapshot.get("notifications");
+                        for (DocumentReference detail :
+                                details) {
+                            detail.get()
+                                    .addOnSuccessListener(detailSnapshot -> {
+                                        DocumentReference subscriptionRef = detail.getParent().getParent().getParent().getParent();
+                                        subscriptionRef.get().addOnSuccessListener(subscriptionSnapshot -> {
+                                            SubscriptionRepository.documentToSubscription(subscriptionSnapshot, subscription -> {
+                                                SubscriptionRepository.documentToTransactionDetail(detailSnapshot, transactionDetail -> {
+                                                    transactionDetail.setSubscription(subscription);
+                                                    transactionDetails.add(transactionDetail);
+                                                    notificationAdapter.setNotifications(transactionDetails);
+                                                    notificationAdapter.notifyDataSetChanged();
+                                                });
+                                            });
+                                        }).addOnFailureListener(e->{});
+                                    }).addOnFailureListener(e -> {
+                            });
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                });
+    }
+
+    private void setNotifications() {
+        notificationAdapter = new NotificationAdapter(this);
+        fetchNotificationsData();
+        RecyclerView rv = findViewById(R.id.notification_recycle_view);
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(notificationAdapter);
+
+        notifPopUp.setVisibility(View.GONE);
+
+        notifIcon.setOnClickListener(v -> {
+            notifOpen = !notifOpen;
+            if (notifOpen) {
+                notifPopUp.setVisibility(View.VISIBLE);
+                fetchNotificationsData();
+            } else {
+                notifPopUp.setVisibility(View.GONE);
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,21 +117,7 @@ public class HomeActivity extends AppCompatActivity {
 //        setSupportActionBar(myToolbar);
         initComponents();
         createMenu();
-
-        RecyclerView rv = findViewById(R.id.notification_recycle_view);
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new NotificationAdapter(this));
-
-        notifPopUp.setVisibility(View.GONE);
-
-        notifIcon.setOnClickListener(v -> {
-            notifOpen = !notifOpen;
-            if(notifOpen) {
-                notifPopUp.setVisibility(View.VISIBLE);
-            } else {
-                notifPopUp.setVisibility(View.GONE);
-            }
-        });
+        setNotifications();
 
         mBottomNavigation.setOnItemSelectedListener(item -> {
 //            Log.d("ViewPager BottomNavigation", item.toString());
@@ -111,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         return false;
     }
 
-    public void createMenu(){
+    public void createMenu() {
         profileIcon = findViewById(R.id.profile_icon);
 
         profileIcon.setOnClickListener(new View.OnClickListener() {

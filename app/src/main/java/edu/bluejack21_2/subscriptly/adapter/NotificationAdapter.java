@@ -25,6 +25,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
     private final LayoutInflater mInflater;
     private ArrayList<TransactionDetail> notifications = new ArrayList<>();
 
+    public void setNotifications(ArrayList<TransactionDetail> notifications) {
+        this.notifications = notifications;
+    }
+
     public NotificationAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);

@@ -29,7 +29,6 @@ import java.util.Map;
 
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
-import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class UserRepository {
@@ -41,8 +40,8 @@ public class UserRepository {
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    public static void getLoggedInUser(QueryFinishListener<User> listener){
-        if(LOGGED_IN_USER == null) {
+    public static void getLoggedInUser(QueryFinishListener<User> listener) {
+        if (LOGGED_IN_USER == null) {
             Log.d("getLoggedInUser", "getting....");
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -51,32 +50,32 @@ public class UserRepository {
                 LOGGED_IN_USER = user;
                 listener.onFinish(LOGGED_IN_USER);
             });
-        }else {
+        } else {
             listener.onFinish(LOGGED_IN_USER);
         }
     }
 
-    public static void logOutFirebaseUser(){
+    public static void logOutFirebaseUser() {
         firebaseAuth.signOut();
     }
 
-    public static void signUp(String name, String username, String email, String password, QueryFinishListener<Boolean> listener){
+    public static void signUp(String name, String username, String email, String password, QueryFinishListener<Boolean> listener) {
         String TAG = "Sign_Up";
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
 
                             fillUserInformation(name, username, flag -> {
-                                if(flag) {
+                                if (flag) {
                                     listener.onFinish(true);
-                                }else{
+                                } else {
                                     listener.onFinish(false);
                                 }
                             });
-                        }else{
+                        } else {
                             listener.onFinish(false);
                         }
                     }
@@ -90,7 +89,7 @@ public class UserRepository {
 
         firebaseUser.updateEmail(email)
                 .addOnCompleteListener(complete -> {
-                    if(complete.isSuccessful()) {
+                    if (complete.isSuccessful()) {
                         Log.d(TAG, "User email updated");
 
                         user.update(
@@ -102,7 +101,7 @@ public class UserRepository {
                         }).addOnFailureListener(e -> {
                             listener.onFinish(false);
                         });
-                    }else{
+                    } else {
                         listener.onFinish(false);
                         Log.d(TAG, "User email update failed!");
                     }
@@ -115,10 +114,10 @@ public class UserRepository {
 
         firebaseUser.updatePassword(password)
                 .addOnCompleteListener(complete -> {
-                    if(complete.isSuccessful()) {
+                    if (complete.isSuccessful()) {
                         listener.onFinish(true);
                         Log.d(TAG, "User password updated");
-                    }else{
+                    } else {
                         listener.onFinish(false);
                         Log.d(TAG, "User password update failed!");
                     }
@@ -130,48 +129,28 @@ public class UserRepository {
         String key = userDoc.getId();
         String name = userDoc.getString("name");
         String email = userDoc.getString("email");
-        String password = userDoc.getString("password");
         String username = userDoc.getString("username");
         String image = userDoc.getString("image");
         ArrayList<String> friends = new ArrayList<>();
-        ArrayList<TransactionDetail> notifications = new ArrayList<>();
         if (userDoc.contains("friends")) {
             for (DocumentReference ref :
                     (ArrayList<DocumentReference>) userDoc.get("friends")) {
                 friends.add(ref.getId());
             }
         }
-        if (userDoc.contains("notifications")) {
-            Log.d("documentToUser", "ada notif");
-            for (DocumentReference ref : (ArrayList<DocumentReference>) userDoc.get("notifications")) {
-                ref.get().addOnSuccessListener(result -> {
-                    SubscriptionRepository.documentToTransactionDetail(result, td -> {
-                        if(td != null) {
-                            Log.d("documentToUser", td.toString());
-                            notifications.add(td);
-                        }
-                    });
-                }).addOnFailureListener(failure -> {
-                    Log.d("documentToUser", "failure!");
-                });
-            }
-        }
-        return new User(key, name, username, email, password, image, friends, notifications);
+        return new User(key, name, username, email, image, friends);
     }
 
     public static void signIn(String email, String password, QueryFinishListener<Boolean> listener) {
         String TAG = "signIn";
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            listener.onFinish(true);
-                        }else{
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            listener.onFinish(true);
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+                        listener.onFinish(true);
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        listener.onFinish(true);
                     }
                 });
     }
@@ -197,10 +176,10 @@ public class UserRepository {
                         Log.d(tag, "onSuccess: Email: " + email);
                         Log.d(tag, "onSuccess: UID: " + uid);
 
-                        if(authResult.getAdditionalUserInfo().isNewUser()) {
+                        if (authResult.getAdditionalUserInfo().isNewUser()) {
                             newUser.onFinish(true);
                             Log.d(tag, "onSuccess: Account created..\n" + email);
-                        }else {
+                        } else {
                             Log.d(tag, "onSuccess: Existing user..\n" + email);
                             newUser.onFinish(false);
                         }
@@ -225,19 +204,11 @@ public class UserRepository {
         Map<String, Object> userData = user.dataNoPasswordToMap();
 
         userRef.document(firebaseUser.getUid()).set(userData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        LOGGED_IN_USER = user;
-                        listener.onFinish(true);
-                    }
+                .addOnSuccessListener(unused -> {
+                    LOGGED_IN_USER = user;
+                    listener.onFinish(true);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        listener.onFinish(false);
-                    }
-                });
+                .addOnFailureListener(e -> listener.onFinish(false));
     }
 
     public static void emailIsUnique(String email, QueryFinishListener<Boolean> listener) {
@@ -270,14 +241,14 @@ public class UserRepository {
         DocumentReference user = userRef.document(id);
         Log.d("getUser", "user: " + id);
         user.get().addOnSuccessListener(userSnapshot -> {
-                if (userSnapshot.exists()) {
-                    listener.onFinish(documentToUser(userSnapshot));
-                } else {
-                    listener.onFinish(null);
-                }
-            }).addOnFailureListener(e -> {
-                Log.d("getUser", e.getMessage());
+            if (userSnapshot.exists()) {
+                listener.onFinish(documentToUser(userSnapshot));
+            } else {
                 listener.onFinish(null);
+            }
+        }).addOnFailureListener(e -> {
+            Log.d("getUser", e.getMessage());
+            listener.onFinish(null);
         }).addOnCompleteListener(complete -> {
         });
     }
@@ -368,22 +339,18 @@ public class UserRepository {
         DocumentReference mainUser = userRef.document(userId);
         DocumentReference friend = userRef.document(newFriendId);
 
-        mainUser.update("friends", FieldValue.arrayUnion(friend)).addOnSuccessListener(task -> {
-            listener.onFinish(true);
-        }).addOnFailureListener(e -> {
-            listener.onFinish(false);
-        });
+        mainUser.update("friends", FieldValue.arrayUnion(friend))
+                .addOnSuccessListener(task -> listener.onFinish(true))
+                .addOnFailureListener(e -> listener.onFinish(false));
     }
 
     public static void removeConnection(String userId, String friendId, QueryFinishListener<Boolean> listener) {
         DocumentReference mainUser = userRef.document(userId);
         DocumentReference friend = userRef.document(friendId);
 
-        mainUser.update("friends", FieldValue.arrayRemove(friend)).addOnSuccessListener(task -> {
-            listener.onFinish(true);
-        }).addOnFailureListener(e -> {
-            listener.onFinish(false);
-        });
+        mainUser.update("friends", FieldValue.arrayRemove(friend))
+                .addOnSuccessListener(task -> listener.onFinish(true))
+                .addOnFailureListener(e -> listener.onFinish(false));
     }
 
     public static void addFriend(String firstUserId, String secondUserId, QueryFinishListener<Boolean> listener) {
@@ -420,21 +387,21 @@ public class UserRepository {
 
 
     public static Boolean checkFriend(User user, String friendUserId) {
-        if(user == null || user.getFriends() == null) return false;
+        if (user == null || user.getFriends() == null) return false;
         return user.getFriends().contains(friendUserId);
     }
 
     public static void userCheck(String userId, QueryFinishListener<User> listener) {
         DocumentReference user = userRef.document(userId);
 
-        user.get().addOnSuccessListener(userDocument -> {
-            if (userDocument.exists()) {
-                listener.onFinish(documentToUser(userDocument));
-            } else
-                listener.onFinish(null);
-        }).addOnFailureListener(e -> {
-            listener.onFinish(null);
-        });
+        user.get()
+                .addOnSuccessListener(userDocument -> {
+                    if (userDocument.exists()) {
+                        listener.onFinish(documentToUser(userDocument));
+                    } else
+                        listener.onFinish(null);
+                })
+                .addOnFailureListener(e -> listener.onFinish(null));
 
     }
 }

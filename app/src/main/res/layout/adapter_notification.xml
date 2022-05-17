@@ -21,7 +21,6 @@
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
             app:cardCornerRadius="100dp">
 
             <ImageView
@@ -43,11 +42,12 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:maxLines="2"
+                android:ellipsize="end"
                 android:layout_weight="1"
-                android:fontFamily="@font/outfit_medium"
+                android:fontFamily="@font/outfit"
                 android:text="@{user.name + ` has paid for ` + subscription.name + ` subscription`}"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/notification_time"

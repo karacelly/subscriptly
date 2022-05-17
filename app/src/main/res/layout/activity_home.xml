@@ -83,7 +83,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transparent"
         android:translationZ="5dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        >
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
