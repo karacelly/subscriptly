@@ -7,6 +7,7 @@ import java.util.Map;
 public class User {
     private String userID, name, username, email, password, image;
     private ArrayList<String> friends = new ArrayList<>();
+    private ArrayList<TransactionDetail> notifications = new ArrayList<>();
 
     public String getImage() {
         if(image == null) {
@@ -27,6 +28,17 @@ public class User {
         this.password = password;
         this.image = image;
         this.friends = friends;
+    }
+
+    public User(String userID, String name, String username, String email, String password, String image, ArrayList<String> friends, ArrayList<TransactionDetail> notifications) {
+        this.userID = userID;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.image = image;
+        this.friends = friends;
+        this.notifications = notifications;
     }
 
     public User(String userID, String name, String username, String email, String password) {
@@ -90,6 +102,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ArrayList<TransactionDetail> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(ArrayList<TransactionDetail> notifications) {
+        this.notifications = notifications;
     }
 
     public Map<String, Object> dataToMap() {

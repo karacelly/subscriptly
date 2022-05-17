@@ -15,7 +15,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,13 +26,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 
-import edu.bluejack21_2.subscriptly.MainActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.User;
-import edu.bluejack21_2.subscriptly.utils.Crypt;
 
 public class UserRepository {
 
@@ -137,13 +134,29 @@ public class UserRepository {
         String username = userDoc.getString("username");
         String image = userDoc.getString("image");
         ArrayList<String> friends = new ArrayList<>();
+        ArrayList<TransactionDetail> notifications = new ArrayList<>();
         if (userDoc.contains("friends")) {
             for (DocumentReference ref :
                     (ArrayList<DocumentReference>) userDoc.get("friends")) {
                 friends.add(ref.getId());
             }
         }
-        return new User(key, name, username, email, password, image, friends);
+        if (userDoc.contains("notifications")) {
+            Log.d("documentToUser", "ada notif");
+            for (DocumentReference ref : (ArrayList<DocumentReference>) userDoc.get("notifications")) {
+                ref.get().addOnSuccessListener(result -> {
+                    SubscriptionRepository.documentToTransactionDetail(result, td -> {
+                        if(td != null) {
+                            Log.d("documentToUser", td.toString());
+                            notifications.add(td);
+                        }
+                    });
+                }).addOnFailureListener(failure -> {
+                    Log.d("documentToUser", "failure!");
+                });
+            }
+        }
+        return new User(key, name, username, email, password, image, friends, notifications);
     }
 
     public static void signIn(String email, String password, QueryFinishListener<Boolean> listener) {

@@ -15,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import edu.bluejack21_2.subscriptly.adapter.NotificationAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
@@ -54,8 +57,12 @@ public class HomeActivity extends AppCompatActivity {
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);
         initComponents();
-
         createMenu();
+
+        RecyclerView rv = findViewById(R.id.notification_recycle_view);
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(new NotificationAdapter(this));
+
         notifPopUp.setVisibility(View.GONE);
 
         notifIcon.setOnClickListener(v -> {

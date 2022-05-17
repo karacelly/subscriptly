@@ -19,8 +19,8 @@ public class NotificationViewHolder  extends RecyclerView.ViewHolder {
         this.binding = binding;
     }
 
-    public void bind(TransactionDetail detail, Subscription subscription){
+    public void bind(TransactionDetail detail){
         binding.setUser(detail.getUser());
-        binding.setSubscription(subscription);
+        binding.setSubscription(detail.getSubscription());
     }
 }

@@ -277,6 +277,28 @@ public class SubscriptionRepository {
         });
     }
 
+    public static void getSubscription(String id, QueryFinishListener<Subscription> listener) {
+        DocumentReference subs = subscriptionRef.document(id);
+        subs.get().addOnSuccessListener(subsSnapshot -> {
+            if (subsSnapshot.exists()) {
+                Log.d("getSubscription", "exist...");
+                documentToSubscription(subsSnapshot, subscription -> {
+                    if(subscription != null)
+                        listener.onFinish(subscription);
+                    else listener.onFinish(null);
+                });
+            } else {
+                Log.d("getSubscription", "not exist...");
+                listener.onFinish(null);
+            }
+        }).addOnFailureListener(e -> {
+            Log.d("getSubscription", e.getMessage());
+            listener.onFinish(null);
+        }).addOnCompleteListener(complete -> {
+            Log.d("getSubscription", "complete: " + complete.toString());
+        });
+    }
+
     public static void documentToTransactionDetail(DocumentSnapshot transactionDetailDoc, QueryFinishListener<TransactionDetail> listener) {
         String id = transactionDetailDoc.getId();
         String image = transactionDetailDoc.getString("image");
@@ -287,6 +309,12 @@ public class SubscriptionRepository {
             if (userData != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(paymentDate.toDate());
+
+                DocumentReference subsRef = transactionDetailDoc.getDocumentReference("subscription");
+                getSubscription(subsRef.getId(), subscription -> {
+                    if(subscription != null)
+                        listener.onFinish(new TransactionDetail(id, image, userData, verified, calendar, subscription));
+                });
                 listener.onFinish(new TransactionDetail(id, image, userData, verified, calendar));
             } else {
                 listener.onFinish(null);
