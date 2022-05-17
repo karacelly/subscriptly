@@ -22,18 +22,15 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHolder> {
     private Context context;
     private final LayoutInflater mInflater;
-    private ArrayList<TransactionDetail> notifications;
+    private ArrayList<TransactionDetail> notifications = new ArrayList<>();
+
+    public void setNotifications(ArrayList<TransactionDetail> notifications) {
+        this.notifications = notifications;
+    }
 
     public NotificationAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
-
-        UserRepository.getLoggedInUser(user -> {
-            if(user != null) {
-                notifications = user.getNotifications();
-                notifyDataSetChanged();
-            }
-        });
     }
 
     @NonNull
