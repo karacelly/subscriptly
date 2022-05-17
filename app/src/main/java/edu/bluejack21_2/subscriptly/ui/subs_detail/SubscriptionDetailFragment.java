@@ -148,6 +148,10 @@ public class SubscriptionDetailFragment extends Fragment {
 
                 // Inflating popup menu from popup_menu.xml file
                 popupMenu.getMenuInflater().inflate(R.menu.subs_detail_menu, popupMenu.getMenu());
+                popupMenu.getMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
+
+                    return true;
+                });
                 // Showing the popup menu
                 popupMenu.show();
             }

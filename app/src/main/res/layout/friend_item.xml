@@ -13,7 +13,7 @@
         android:id="@+id/container_friend_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:gravity="center">
 
         <androidx.cardview.widget.CardView
@@ -143,7 +143,21 @@
                 android:focusable="false"
                 android:scaleX="1.4"
                 android:scaleY="1.4"
+                android:layout_marginRight="30dp"
                 android:button="@drawable/custom_round_checkbox"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/text_member_invited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="Invited"
+                android:layout_marginRight="30dp"
+                android:fontFamily="@font/outfit_extra_bold"
+                android:textColor="@color/primary_color"
+                android:textSize="15sp"
                 android:visibility="gone"
                 />
 
