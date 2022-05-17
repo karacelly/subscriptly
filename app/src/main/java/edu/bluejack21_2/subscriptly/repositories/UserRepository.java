@@ -42,7 +42,7 @@ public class UserRepository {
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public static void getLoggedInUser(QueryFinishListener<User> listener){
-//        if(LOGGED_IN_USER == null) {
+        if(LOGGED_IN_USER == null) {
             Log.d("getLoggedInUser", "getting....");
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -51,9 +51,9 @@ public class UserRepository {
                 LOGGED_IN_USER = user;
                 listener.onFinish(LOGGED_IN_USER);
             });
-//        }else {
-//            listener.onFinish(LOGGED_IN_USER);
-//        }
+        }else {
+            listener.onFinish(LOGGED_IN_USER);
+        }
     }
 
     public static void logOutFirebaseUser(){
@@ -267,23 +267,18 @@ public class UserRepository {
     }
 
     public static void getUser(String id, QueryFinishListener<User> listener) {
-        Log.d("getUser", "masuk...");
         DocumentReference user = userRef.document(id);
-        Log.d("getUser", "user: " + user);
         Log.d("getUser", "user: " + id);
         user.get().addOnSuccessListener(userSnapshot -> {
                 if (userSnapshot.exists()) {
-                    Log.d("getUser", "exist...");
                     listener.onFinish(documentToUser(userSnapshot));
                 } else {
-                    Log.d("getUser", "not exist...");
                     listener.onFinish(null);
                 }
             }).addOnFailureListener(e -> {
                 Log.d("getUser", e.getMessage());
                 listener.onFinish(null);
         }).addOnCompleteListener(complete -> {
-            Log.d("getUser", "complete: " + complete.toString());
         });
     }
 

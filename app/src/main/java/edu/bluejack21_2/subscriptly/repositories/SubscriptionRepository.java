@@ -9,7 +9,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -112,7 +111,7 @@ public class SubscriptionRepository {
 
         Query findInvitation = subscriptionInvitationRef.whereEqualTo("creator", creator).whereEqualTo("invited", invited).whereEqualTo("subscription", subscription).limit(1);
         findInvitation.get().addOnSuccessListener(invitationSnapshot -> {
-            if(invitationSnapshot.isEmpty()) {
+            if (invitationSnapshot.isEmpty()) {
                 listener.onFinish(false);
             } else {
                 listener.onFinish(true);
@@ -224,63 +223,63 @@ public class SubscriptionRepository {
         Timestamp startAt = subscriptionDoc.getTimestamp("start_at");
         ArrayList<TransactionHeader> headers = new ArrayList<>();
         subscriptionDoc.getReference().collection("transaction_headers").get()
-            .addOnSuccessListener(headerSnapshots -> {
-                memberRef.whereEqualTo("subscription", subscriptionDoc.getReference()).whereEqualTo("valid_to", null).get().addOnSuccessListener(memberSnapshots -> {
-                    if (memberSnapshots.isEmpty()) {
-                        listener.onFinish(null);
-                    } else {
-                        DocumentSnapshot member = memberSnapshots.getDocuments().get(0);
-                        DocumentReference creatorRef = member.getDocumentReference("creator");
-                        ArrayList<User> users = new ArrayList<>();
-                        ArrayList<DocumentReference> userRefs = (ArrayList<DocumentReference>) member.get("users");
-                        UserRepository.getUser(creatorRef.getId(), creator -> {
-                            if (userRefs.isEmpty()) {
-                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
-                            } else {
-                                for (DocumentReference userRef :
-                                        userRefs) {
-                                    UserRepository.getUser(userRef.getId(), userData -> {
-                                        if (userData != null) {
-                                            users.add(userData);
-                                            if (users.size() == userRefs.size()) {
-                                                for (DocumentSnapshot headerSnapshot :
-                                                        headerSnapshots.getDocuments()) {
-                                                    documentToTransactionHeader(headerSnapshot, header -> {
-                                                        if (header != null) {
-                                                            headers.add(header);
-                                                            if (headers.size() == headerSnapshots.size()) {
-                                                                listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
+                .addOnSuccessListener(headerSnapshots -> {
+                    memberRef.whereEqualTo("subscription", subscriptionDoc.getReference()).whereEqualTo("valid_to", null).get().addOnSuccessListener(memberSnapshots -> {
+                        if (memberSnapshots.isEmpty()) {
+                            listener.onFinish(null);
+                        } else {
+                            DocumentSnapshot member = memberSnapshots.getDocuments().get(0);
+                            DocumentReference creatorRef = member.getDocumentReference("creator");
+                            ArrayList<User> users = new ArrayList<>();
+                            ArrayList<DocumentReference> userRefs = (ArrayList<DocumentReference>) member.get("users");
+                            UserRepository.getUser(creatorRef.getId(), creator -> {
+                                if (userRefs.isEmpty()) {
+                                    listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
+                                } else {
+                                    for (DocumentReference userRef :
+                                            userRefs) {
+                                        UserRepository.getUser(userRef.getId(), userData -> {
+                                            if (userData != null) {
+                                                users.add(userData);
+                                                if (users.size() == userRefs.size()) {
+                                                    for (DocumentSnapshot headerSnapshot :
+                                                            headerSnapshots.getDocuments()) {
+                                                        documentToTransactionHeader(headerSnapshot, header -> {
+                                                            if (header != null) {
+                                                                headers.add(header);
+                                                                if (headers.size() == headerSnapshots.size()) {
+                                                                    listener.onFinish(new Subscription(id, name, image, bill, duration, startAt, creator, headers, users));
+                                                                }
+                                                            } else {
+                                                                listener.onFinish(null);
                                                             }
-                                                        } else {
-                                                            listener.onFinish(null);
-                                                        }
-                                                    });
+                                                        });
+                                                    }
                                                 }
+                                            } else {
+                                                listener.onFinish(null);
                                             }
-                                        } else {
-                                            listener.onFinish(null);
-                                        }
-                                    });
+                                        });
+                                    }
+
                                 }
 
-                            }
-
-                        });
-                    }
+                            });
+                        }
+                    }).addOnFailureListener(e -> {
+                        listener.onFinish(null);
+                    });
                 }).addOnFailureListener(e -> {
-                    listener.onFinish(null);
-                });
-            }).addOnFailureListener(e -> {
             listener.onFinish(null);
         });
     }
 
     public static DocumentSnapshot getSimilarSnapshot(List<DocumentSnapshot> snapshotsA, List<DocumentSnapshot> snapshotsB) {
-        for (DocumentSnapshot snapshotA:
-             snapshotsA) {
-            for (DocumentSnapshot snapshotB:
-                 snapshotsB) {
-                if(snapshotA.getId().equals(snapshotB.getId())) {
+        for (DocumentSnapshot snapshotA :
+                snapshotsA) {
+            for (DocumentSnapshot snapshotB :
+                    snapshotsB) {
+                if (snapshotA.getId().equals(snapshotB.getId())) {
                     return snapshotA;
                 }
             }
@@ -292,7 +291,7 @@ public class SubscriptionRepository {
         ArrayList<User> members = new ArrayList<>();
         Query newestMember = memberRef.whereEqualTo("valid_to", null).whereEqualTo("subscription", subscriptionRef.document(subscriptionId)).limit(1);
         newestMember.get().addOnSuccessListener(memberSnapshots -> {
-            if(memberSnapshots.isEmpty()) {
+            if (memberSnapshots.isEmpty()) {
                 listener.onFinish(members);
             } else {
                 DocumentSnapshot memberSnapshot = memberSnapshots.getDocuments().get(0);
@@ -308,20 +307,19 @@ public class SubscriptionRepository {
     public static void documentToMembers(DocumentSnapshot memberDoc, QueryFinishListener<ArrayList<User>> listener) {
         ArrayList<DocumentReference> memberRefs = (ArrayList<DocumentReference>) memberDoc.get("users");
         ArrayList<User> members = new ArrayList<>();
-        if(memberRefs.isEmpty()) listener.onFinish(members);
+        if (memberRefs.isEmpty()) listener.onFinish(members);
         else {
-            for (DocumentReference memberRef:
+            for (DocumentReference memberRef :
                     memberRefs) {
                 memberRef.get().addOnSuccessListener(doc -> {
                     members.add(UserRepository.documentToUser(memberDoc));
-                    if(members.size() == memberRefs.size()) {
+                    if (members.size() == memberRefs.size()) {
                         listener.onFinish(members);
                     }
                 });
             }
         }
     }
-
 
 
     public static void documentToTransactionHeader(DocumentSnapshot transactionHeaderDoc, QueryFinishListener<TransactionHeader> listener) {
@@ -332,7 +330,7 @@ public class SubscriptionRepository {
         DocumentReference subscription = transactionHeaderDoc.getReference().getParent().getParent();
 
         Query validMemberBottomRange = memberRef.whereLessThanOrEqualTo("valid_from", billingDate).whereEqualTo("subscription", subscription);
-        validMemberBottomRange.get().addOnSuccessListener(memberSnapshots->{
+        validMemberBottomRange.get().addOnSuccessListener(memberSnapshots -> {
             Query validMemberRange = memberRef.whereGreaterThanOrEqualTo("valid_to", billingDate).whereEqualTo("subscription", subscription);
             validMemberRange.get().addOnSuccessListener(validMemberSnapshots -> {
 //                Log.d("TransactionHeader", transactionHeaderDoc.getId()+"");
@@ -352,7 +350,7 @@ public class SubscriptionRepository {
 
 //                Log.d("SIMILAR MEMBER ID", similar+"\n\n");
 
-                if(similar == null) {
+                if (similar == null) {
                     getNewestMember(subscription.getId(), newestMembers -> {
                         getTransactionHeader(transactionHeaderDoc.getReference(), calendar, newestMembers, transactionHeader -> {
                             listener.onFinish(transactionHeader);
@@ -409,9 +407,7 @@ public class SubscriptionRepository {
             if (subsSnapshot.exists()) {
                 Log.d("getSubscription", "exist...");
                 documentToSubscription(subsSnapshot, subscription -> {
-                    if(subscription != null)
-                        listener.onFinish(subscription);
-                    else listener.onFinish(null);
+                    listener.onFinish(subscription);
                 });
             } else {
                 Log.d("getSubscription", "not exist...");
@@ -421,11 +417,12 @@ public class SubscriptionRepository {
             Log.d("getSubscription", e.getMessage());
             listener.onFinish(null);
         }).addOnCompleteListener(complete -> {
-            Log.d("getSubscription", "complete: " + complete.toString());
+            Log.d("getSubscription", "complete: " + complete);
         });
     }
 
     public static void documentToTransactionDetail(DocumentSnapshot transactionDetailDoc, QueryFinishListener<TransactionDetail> listener) {
+        Log.d("Subscription Repository", "document to Transaction Detail");
         String id = transactionDetailDoc.getId();
         String image = transactionDetailDoc.getString("image");
         Boolean verified = transactionDetailDoc.getBoolean("verified");
@@ -442,7 +439,7 @@ public class SubscriptionRepository {
         });
     }
 
-    private static Timestamp getNextMonthTimestamp(){
+    private static Timestamp getNextMonthTimestamp() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(Timestamp.now().toDate());
         calendar.add(Calendar.MONTH, 1);
@@ -525,7 +522,7 @@ public class SubscriptionRepository {
         associatedMembers.get()
                 .addOnSuccessListener(documentSnapshots -> {
                     int counter = 0;
-                    if(documentSnapshots.isEmpty()) {
+                    if (documentSnapshots.isEmpty()) {
                         listener.onFinish(true);
                     } else {
                         for (DocumentSnapshot snapshot :
