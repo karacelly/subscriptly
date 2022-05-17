@@ -500,7 +500,9 @@ public class SubscriptionRepository {
         receiptData.put("payment_date", Timestamp.now());
         receiptData.put("verified", false);
         receiptData.put("image", image);
-        receiptData.put("subscription", subscription);
+
+        DocumentReference subsRef = subscriptionRef.document(subscription.getSubscriptionId());
+        receiptData.put("subscription", subsRef);
         getTransactionDetailRef(subscription.getSubscriptionId(), transactionHeaderId).add(receiptData).addOnSuccessListener(document -> {
             listener.onFinish(true);
         }).addOnFailureListener(e -> {
