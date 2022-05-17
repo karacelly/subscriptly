@@ -1,7 +1,12 @@
 package edu.bluejack21_2.subscriptly;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -26,6 +31,9 @@ import com.google.firebase.firestore.DocumentReference;
 
 import org.w3c.dom.Document;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.adapter.NotificationAdapter;
@@ -33,6 +41,7 @@ import edu.bluejack21_2.subscriptly.adapter.ViewPagerAdapter;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.utils.BroadcastManager;
 
 public class HomeActivity extends AppCompatActivity {
     NotificationAdapter notificationAdapter;
@@ -105,13 +114,33 @@ public class HomeActivity extends AppCompatActivity {
             } else {
                 notifPopUp.setVisibility(View.GONE);
             }
+
+            ZonedDateTime nowZoned = ZonedDateTime.now();
+            Instant midnight = nowZoned.toLocalDate().atStartOfDay(nowZoned.getZone()).toInstant();
+            Duration duration = Duration.between(midnight, Instant.now());
+            long seconds = duration.getSeconds();
+            Log.d("Time", seconds + "");
         });
+    }
+
+    private void createPushNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name =  "SubscriptlyChannel" ;
+            String description = "Channel for Subscriptly";
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("subscriptly", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager= getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        createPushNotificationChannel();
 
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);

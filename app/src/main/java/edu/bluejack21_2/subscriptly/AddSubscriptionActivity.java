@@ -296,7 +296,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
         SubscriptionRepository.isUniqueSubscriptionNameForCreator(FirebaseAuth.getInstance().getCurrentUser().getUid(), name, listener -> {
             if(listener) {
                 Log.d("ADD SUBSCRIPTION", "Subscription is unique!");
-                SubscriptionRepository.insertSubscription(subscription, myCalendar, subListener -> {
+                SubscriptionRepository.insertSubscription(this, subscription, myCalendar, subListener -> {
                     Log.d("ADD SUBSCRIPTION", "Result : " + subListener);
                     if(subListener) {
                         Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();

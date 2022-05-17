@@ -1,5 +1,9 @@
 package edu.bluejack21_2.subscriptly.repositories;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
@@ -17,12 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.bluejack21_2.subscriptly.HomeActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.utils.BroadcastManager;
 
 public class SubscriptionRepository {
     public static Subscription ACTIVE_SUBSCRIPTION = null;
@@ -33,7 +39,7 @@ public class SubscriptionRepository {
 
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
-    public static void insertSubscription(Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
+    public static void insertSubscription(Context ctx, Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
         Log.d("INSERT SUBSCRIPTION", subscription.getName());
         DocumentReference creator = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String, Object> subscriptionData = subscription.dataToMap();
@@ -66,6 +72,16 @@ public class SubscriptionRepository {
                             }).addOnFailureListener(e -> {
                                 listener.onFinish(false);
                             });
+
+                            Intent intent = new Intent(ctx, BroadcastManager.class);
+                            intent.putExtra("name", subscription.getName());
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+
+                            AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ctx.ALARM_SERVICE);
+
+                            long time = calendar.getTimeInMillis();
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
                         }
                         listener.onFinish(true);
                     }).addOnFailureListener(e -> {
