@@ -77,10 +77,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("HOME FRAGMENT", "OnResume");
         fetchData();
     }
 
     private void fetchData() {
+        Log.d("HOME FRAGMENT", "FETCH DATA");
         ArrayList<TransactionHeader> uniqueMonths = new ArrayList<>();
         ArrayList<Subscription> subscriptions = new ArrayList<>();
         SubscriptionRepository.getUserSubscriptions(FirebaseAuth.getInstance().getCurrentUser().getUid(), subs -> {

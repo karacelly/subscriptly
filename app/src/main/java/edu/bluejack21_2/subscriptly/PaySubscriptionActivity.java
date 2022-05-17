@@ -124,7 +124,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         }
 
         if(!error) {
-            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), chosenHeader.getTransactionId(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imageURL, listener -> {
+            SubscriptionRepository.uploadReceipt(SubscriptionRepository.ACTIVE_SUBSCRIPTION, chosenHeader.getTransactionId(), FirebaseAuth.getInstance().getCurrentUser().getUid(), imageURL, listener -> {
                 if(listener) {
                     onBackPressed();
                 } else {

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +23,17 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHolder> {
     private Context context;
     private final LayoutInflater mInflater;
-    private ArrayList<TransactionDetail> notifications;
+    private ArrayList<TransactionDetail> notifications = new ArrayList<>();
 
     public NotificationAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
+        Log.d("NOTIFICATION ADAPTER", "CALLED");
         UserRepository.getLoggedInUser(user -> {
             if(user != null) {
                 notifications = user.getNotifications();
+                notifyDataSetChanged();
             }
         });
     }

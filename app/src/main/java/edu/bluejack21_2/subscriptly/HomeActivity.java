@@ -59,9 +59,9 @@ public class HomeActivity extends AppCompatActivity {
         initComponents();
         createMenu();
 
-        RecyclerView rv = findViewById(R.id.notification_recycle_view);
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new NotificationAdapter(this));
+//        RecyclerView rv = findViewById(R.id.notification_recycle_view);
+//        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//        rv.setAdapter(new NotificationAdapter(this));
 
         notifPopUp.setVisibility(View.GONE);
 

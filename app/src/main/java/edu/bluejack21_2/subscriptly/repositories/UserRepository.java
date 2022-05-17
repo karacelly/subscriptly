@@ -267,23 +267,18 @@ public class UserRepository {
     }
 
     public static void getUser(String id, QueryFinishListener<User> listener) {
-        Log.d("getUser", "masuk...");
         DocumentReference user = userRef.document(id);
-        Log.d("getUser", "user: " + user);
         Log.d("getUser", "user: " + id);
         user.get().addOnSuccessListener(userSnapshot -> {
                 if (userSnapshot.exists()) {
-                    Log.d("getUser", "exist...");
                     listener.onFinish(documentToUser(userSnapshot));
                 } else {
-                    Log.d("getUser", "not exist...");
                     listener.onFinish(null);
                 }
             }).addOnFailureListener(e -> {
                 Log.d("getUser", e.getMessage());
                 listener.onFinish(null);
         }).addOnCompleteListener(complete -> {
-            Log.d("getUser", "complete: " + complete.toString());
         });
     }
 
