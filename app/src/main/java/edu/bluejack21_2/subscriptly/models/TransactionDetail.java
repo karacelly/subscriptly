@@ -7,6 +7,7 @@ public class TransactionDetail {
     private User user;
     private Boolean verified;
     private Calendar paymentDate;
+    private Subscription subscription;
 
     public TransactionDetail(String transactionDetailId, String image, User user, Boolean verified, Calendar paymentDate) {
         this.transactionDetailId = transactionDetailId;
@@ -14,6 +15,27 @@ public class TransactionDetail {
         this.user = user;
         this.verified = verified;
         this.paymentDate = paymentDate;
+    }
+
+    public TransactionDetail(String transactionDetailId, String image, User user, Boolean verified, Calendar paymentDate, Subscription subscription) {
+        this.transactionDetailId = transactionDetailId;
+        this.image = image;
+        this.user = user;
+        this.verified = verified;
+        this.paymentDate = paymentDate;
+        this.subscription = subscription;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public Long getSubscriptionPrice() {
+        return subscription.getBill();
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     public Boolean getVerified() {

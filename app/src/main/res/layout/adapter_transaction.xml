@@ -16,15 +16,15 @@
         android:gravity="start">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="15dp"
             app:cardCornerRadius="100dp">
 
             <ImageView
                 android:id="@+id/subs_photo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/iu_profile" />
         </androidx.cardview.widget.CardView>
@@ -32,11 +32,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/notification_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -45,10 +44,10 @@
                 android:fontFamily="@font/outfit_bold"
                 android:text="@{subscription.name}"
                 android:textColor="@color/primary_color"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/notification_time"
+                android:id="@+id/payment_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"

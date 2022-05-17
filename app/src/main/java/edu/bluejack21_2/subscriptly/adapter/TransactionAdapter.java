@@ -15,27 +15,19 @@ import edu.bluejack21_2.subscriptly.adapter.viewholder.TransactionViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.AdapterTransactionBinding;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
-import edu.bluejack21_2.subscriptly.models.TransactionHeader;
-import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder> {
     private final LayoutInflater mInflater;
     private final Context context;
-    private ArrayList<Subscription> subscriptions = new ArrayList<>();
-    private ArrayList<TransactionDetail> details = new ArrayList<>();
-
-    public void setSubscriptions(ArrayList<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
+    private ArrayList<TransactionDetail> details;
 
     public void setDetails(ArrayList<TransactionDetail> details) {
         this.details = details;
     }
 
-    public TransactionAdapter(Context context, ArrayList<Subscription> subscriptions, ArrayList<TransactionDetail> details) {
+    public TransactionAdapter(Context context, ArrayList<TransactionDetail> details) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
-        this.subscriptions = subscriptions;
         this.details = details;
     }
 
@@ -48,7 +40,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
 
     @Override
     public void onBindViewHolder(TransactionViewHolder holder, int position) {
-        holder.bind(subscriptions.get(position));
+        holder.bind(details.get(position));
     }
 
     @Override
