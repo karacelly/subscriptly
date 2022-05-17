@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +22,7 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class FriendViewHolder extends RecyclerView.ViewHolder {
 
-    public LinearLayout container;
+    public ConstraintLayout container;
     public TextView friendName;
     public ImageView friendProfilePicture;
     public Button addFriend, cancelFriend, removeFriend, acceptFriend, rejectFriend;

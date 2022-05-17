@@ -40,10 +40,11 @@
 
                 <TextView
                     android:id="@+id/member_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_weight=".15"
+                    android:ellipsize="end"
                     android:fontFamily="@font/outfit_medium"
                     android:text="Username"
                     android:textColor="@color/black"
