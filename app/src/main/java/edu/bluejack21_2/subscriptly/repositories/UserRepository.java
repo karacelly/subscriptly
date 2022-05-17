@@ -42,7 +42,7 @@ public class UserRepository {
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public static void getLoggedInUser(QueryFinishListener<User> listener){
-//        if(LOGGED_IN_USER == null) {
+        if(LOGGED_IN_USER == null) {
             Log.d("getLoggedInUser", "getting....");
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -51,9 +51,9 @@ public class UserRepository {
                 LOGGED_IN_USER = user;
                 listener.onFinish(LOGGED_IN_USER);
             });
-//        }else {
-//            listener.onFinish(LOGGED_IN_USER);
-//        }
+        }else {
+            listener.onFinish(LOGGED_IN_USER);
+        }
     }
 
     public static void logOutFirebaseUser(){
