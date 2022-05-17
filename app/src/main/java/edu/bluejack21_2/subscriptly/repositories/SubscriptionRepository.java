@@ -9,11 +9,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
@@ -86,14 +88,27 @@ public class SubscriptionRepository {
         invitationData.put("invited", invited);
         invitationData.put("subscription", subscription);
 
-        Log.d("SEND INVITATION", "OTW SENDING");
         subscriptionInvitationRef.add(invitationData).addOnSuccessListener(invitationDocRef -> {
-            Log.d("SEND INVITATION", "SUKSES");
             listener.onFinish(true);
         }).addOnFailureListener(e -> {
-            Log.d("SEND INVITATION", "GAGAL");
-            Log.d("SEND INVITATION", e.toString());
             listener.onFinish(false);
+        });
+    }
+
+    public static void isInvited(String userId, String invitedId, String subscriptionId, QueryFinishListener<Boolean> listener) {
+        DocumentReference creator = UserRepository.userRef.document(userId);
+        DocumentReference invited = UserRepository.userRef.document(invitedId);
+        DocumentReference subscription = SubscriptionRepository.subscriptionRef.document(subscriptionId);
+
+        Query findInvitation = subscriptionInvitationRef.whereEqualTo("creator", creator).whereEqualTo("invited", invited).whereEqualTo("subscription", subscription).limit(1);
+        findInvitation.get().addOnSuccessListener(invitationSnapshot -> {
+            if(invitationSnapshot.isEmpty()) {
+                listener.onFinish(false);
+            } else {
+                listener.onFinish(true);
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFinish(null);
         });
     }
 
@@ -112,7 +127,7 @@ public class SubscriptionRepository {
         });
     }
 
-    public static Map<String, Object> memberToMap(String creatorId, String subscriptionId, ArrayList<DocumentReference> users) {
+    public static Map<String, Object> memberToMap(String creatorId, String subscriptionId, ArrayList<DocumentReference> users, Timestamp validFrom) {
         DocumentReference creator = UserRepository.userRef.document(creatorId);
         DocumentReference subscription = subscriptionRef.document(subscriptionId);
 
@@ -120,7 +135,7 @@ public class SubscriptionRepository {
         newMemberData.put("creator", creator);
         newMemberData.put("subscription", subscription);
         newMemberData.put("users", users);
-        newMemberData.put("valid_from", Timestamp.now());
+        newMemberData.put("valid_from", validFrom);
         newMemberData.put("valid_to", null);
 
         return newMemberData;
@@ -141,7 +156,7 @@ public class SubscriptionRepository {
                     }
                 }
 
-                Map<String, Object> newMemberData = memberToMap(creator.getId(), subscriptionId, users);
+                Map<String, Object> newMemberData = memberToMap(creator.getId(), subscriptionId, users, getNextMonthTimestamp());
 
                 oldMemberDocRef.update("valid_to", Timestamp.now()).addOnSuccessListener(updateMember -> {
                     memberRef.add(newMemberData).addOnSuccessListener(statusAdd -> {
@@ -248,15 +263,130 @@ public class SubscriptionRepository {
         });
     }
 
+    public static DocumentSnapshot getSimilarSnapshot(List<DocumentSnapshot> snapshotsA, List<DocumentSnapshot> snapshotsB) {
+        for (DocumentSnapshot snapshotA:
+             snapshotsA) {
+            for (DocumentSnapshot snapshotB:
+                 snapshotsB) {
+                if(snapshotA.getId().equals(snapshotB.getId())) {
+                    return snapshotA;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void getNewestMember(String subscriptionId, QueryFinishListener<ArrayList<User>> listener) {
+        ArrayList<User> members = new ArrayList<>();
+        Query newestMember = memberRef.whereEqualTo("valid_to", null).whereEqualTo("subscription", subscriptionRef.document(subscriptionId)).limit(1);
+        newestMember.get().addOnSuccessListener(memberSnapshots -> {
+            if(memberSnapshots.isEmpty()) {
+                listener.onFinish(members);
+            } else {
+                DocumentSnapshot memberSnapshot = memberSnapshots.getDocuments().get(0);
+                documentToMembers(memberSnapshot, members2 -> {
+                    listener.onFinish(members2);
+                });
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFinish(members);
+        });
+    }
+
+    public static void documentToMembers(DocumentSnapshot memberDoc, QueryFinishListener<ArrayList<User>> listener) {
+        ArrayList<DocumentReference> memberRefs = (ArrayList<DocumentReference>) memberDoc.get("users");
+        ArrayList<User> members = new ArrayList<>();
+        if(memberRefs.isEmpty()) listener.onFinish(members);
+        else {
+            for (DocumentReference memberRef:
+                    memberRefs) {
+                memberRef.get().addOnSuccessListener(doc -> {
+                    members.add(UserRepository.documentToUser(memberDoc));
+                    if(members.size() == memberRefs.size()) {
+                        listener.onFinish(members);
+                    }
+                });
+            }
+        }
+    }
+
+
+
     public static void documentToTransactionHeader(DocumentSnapshot transactionHeaderDoc, QueryFinishListener<TransactionHeader> listener) {
         String id = transactionHeaderDoc.getId();
         Timestamp billingDate = transactionHeaderDoc.getTimestamp("billing_date");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(billingDate.toDate());
+
+        ArrayList<User> activeMembers = new ArrayList<>();
+//        memberRef.where
+        /*
+            TransactionHeader
+            15 May 2022
+            15 Juni 2022
+
+            MemberOld
+            ValidFrom 15 January 2022
+            ValidTo 29 May 2022
+
+            MemberNew
+            ValidFrom 1 Juni 2022
+            ValidTo NULL
+         */
+        DocumentReference subscription = transactionHeaderDoc.getReference().getParent().getParent();
+
+        Query validMemberBottomRange = memberRef.whereLessThanOrEqualTo("valid_from", billingDate).whereEqualTo("subscription", subscription);
+        validMemberBottomRange.get().addOnSuccessListener(memberSnapshots->{
+            Query validMemberRange = memberRef.whereGreaterThanOrEqualTo("valid_to", billingDate).whereEqualTo("subscription", subscription);
+            validMemberRange.get().addOnSuccessListener(validMemberSnapshots -> {
+                Log.d("TransactionHeader", transactionHeaderDoc.getId()+"");
+
+                Log.d("BOTTOM RANGE SIZE", memberSnapshots.getDocuments().size()+"");
+                for (DocumentSnapshot snapshotA:
+                        memberSnapshots.getDocuments()) {
+                    Log.d("BOTTOM RANGE MEMBER ID", snapshotA.getId());
+                }
+
+                Log.d("UPPER RANGE SIZE", validMemberSnapshots.getDocuments().size()+"");
+                for (DocumentSnapshot snapshotB:
+                        validMemberSnapshots.getDocuments()) {
+                    Log.d("UPPER RANGE MEMBER ID", snapshotB.getId());
+                }
+                DocumentSnapshot similar = getSimilarSnapshot(memberSnapshots.getDocuments(), validMemberSnapshots.getDocuments());
+
+                Log.d("SIMILAR MEMBER ID", similar+"\n\n");
+
+                if(similar == null) {
+                    getNewestMember(subscription.getId(), newestMembers -> {
+                        getTransactionHeader(transactionHeaderDoc.getReference(), calendar, newestMembers, transactionHeader -> {
+                            listener.onFinish(transactionHeader);
+                        });
+                    });
+                } else {
+                    documentToMembers(similar, validMembers -> {
+                        getTransactionHeader(transactionHeaderDoc.getReference(), calendar, validMembers, transactionHeader -> {
+                            listener.onFinish(transactionHeader);
+                        });
+                    });
+                }
+            }).addOnFailureListener(e -> {
+                getNewestMember(subscription.getId(), newestMembers -> {
+                    getTransactionHeader(transactionHeaderDoc.getReference(), calendar, newestMembers, transactionHeader -> {
+                        listener.onFinish(transactionHeader);
+                    });
+                });
+            });
+        }).addOnFailureListener(e -> {
+            listener.onFinish(null);
+        });
+    }
+
+    public static void getTransactionHeader(DocumentReference transactionHeaderRef, Calendar calendar, ArrayList<User> activeMembers, QueryFinishListener<TransactionHeader> listener) {
         ArrayList<TransactionDetail> details = new ArrayList<>();
-        transactionHeaderDoc.getReference().collection("transaction_details").get().addOnSuccessListener(detailSnapshots -> {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(billingDate.toDate());
+        transactionHeaderRef.collection("transaction_details").get().addOnSuccessListener(detailSnapshots -> {
+
             if (detailSnapshots.isEmpty()) {
-                listener.onFinish(new TransactionHeader(id, calendar, details));
+                listener.onFinish(new TransactionHeader(transactionHeaderRef.getId(), calendar, details, activeMembers));
             } else {
                 for (DocumentSnapshot detailSnapshot :
                         detailSnapshots) {
@@ -264,7 +394,7 @@ public class SubscriptionRepository {
                         if (detail != null) {
                             details.add(detail);
                             if (details.size() == detailSnapshots.size()) {
-                                listener.onFinish(new TransactionHeader(id, calendar, details));
+                                listener.onFinish(new TransactionHeader(transactionHeaderRef.getId(), calendar, details, activeMembers));
                             }
                         } else {
                             listener.onFinish(null);
@@ -294,6 +424,17 @@ public class SubscriptionRepository {
         });
     }
 
+    private static Timestamp getNextMonthTimestamp(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Timestamp.now().toDate());
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DATE, 1);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return new Timestamp(calendar.getTime());
+    }
+
     public static void acceptInvitation(String invitationId, QueryFinishListener<Boolean> listener) {
         DocumentReference invitation = subscriptionInvitationRef.document(invitationId);
         invitation.get().addOnSuccessListener(documentSnapshot -> {
@@ -308,7 +449,7 @@ public class SubscriptionRepository {
                         ArrayList<DocumentReference> users = (ArrayList<DocumentReference>) memberSnapshot.get("users");
                         users.add(user);
 
-                        Map<String, Object> newMemberData = memberToMap(creator.getId(), subscription.getId(), users);
+                        Map<String, Object> newMemberData = memberToMap(creator.getId(), subscription.getId(), users, getNextMonthTimestamp());
 
                         memberDocRef.update("valid_to", Timestamp.now()).addOnSuccessListener(updateMember -> {
                             memberRef.add(newMemberData).addOnSuccessListener(statusAdd -> {

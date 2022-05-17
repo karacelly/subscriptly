@@ -142,6 +142,7 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
                     });
         });
 
+
     }
     private void setInviteListener(){
         Toast.makeText(this, "Setting Invite Listener", Toast.LENGTH_SHORT).show();

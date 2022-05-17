@@ -10,13 +10,14 @@
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_remove_red_foreground.xml" value="0.2765" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/drawable/ic_unchecked.xml" value="0.2765" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_home.xml" value="0.3104166666666667" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/activity_invite_friend.xml" value="0.18614130434782608" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_history_item.xml" value="0.1297071129707113" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/adapter_member_item.xml" value="0.18854166666666666" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_home.xml" value="0.3104166666666667" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscription_detail.xml" value="0.1693840579710145" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscription_detail_member.xml" value="0.1693840579710145" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/fragment_subscriptions.xml" value="0.22327898550724637" />
-        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/friend_item.xml" value="0.1693840579710145" />
+        <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/friend_item.xml" value="0.4" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_group_item.xml" value="0.3104166666666667" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/home_subscription_item.xml" value="0.1" />
         <entry key="..\:/ASLAB/TPA/Mobile/subscriptly/app/src/main/res/layout/subscriptions_subscription_item.xml" value="0.264" />
@@ -52,7 +53,6 @@
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_layout_activityy.xml" value="0.3625" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_my_transaction.xml" value="0.18020833333333333" />
-        <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_my_transactions.xml" value="0.26875" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_pay_subscription.xml" value="0.2" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/BINUS/Aslab/TPA_Android/app/src/main/res/layout/activity_search.xml" value="0.176" />

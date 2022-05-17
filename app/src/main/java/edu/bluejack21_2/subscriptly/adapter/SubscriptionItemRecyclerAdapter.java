@@ -59,9 +59,13 @@ public class SubscriptionItemRecyclerAdapter extends RecyclerView.Adapter<Subscr
     public void onBindViewHolder(@NonNull SubscriptionItemViewHolder holder, int position) {
         Subscription s = subscriptions.get(position);
         TransactionHeader transactionHeader = headers.get(position);
-        Integer memberCount = s.getMembers().size();
+        Integer memberCount = transactionHeader.getActiveMembers().size();
         holder.subscriptionName.setText(s.getName());
-        holder.subscriptionBill.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
+        if(memberCount <= 0) {
+            holder.subscriptionBill.setText("Error");
+        } else {
+            holder.subscriptionBill.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
+        }
         TransactionDetail transactionDetail = SubscriptionHelper.getUserPaidDetail(transactionHeader, FirebaseAuth.getInstance().getCurrentUser().getUid());
         if(transactionDetail == null) {
             holder.iconPaid.setImageResource(R.drawable.ic_remove_red_foreground);

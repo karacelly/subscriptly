@@ -5,20 +5,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import edu.bluejack21_2.subscriptly.ChooseFriendActivity;
-import edu.bluejack21_2.subscriptly.InviteFriendActivity;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
-import edu.bluejack21_2.subscriptly.databinding.*;
+import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
@@ -70,8 +70,8 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
 
     public ChooseFriendRecyclerAdapter(Comparator<User> comparator, Context context, ChosenUserRecyclerAdapter chosenUserRecyclerAdapter, QueryChangeListener<ArrayList<User>> queryChangeListener) {
         this.context = context;
-        mInflater = LayoutInflater.from(context);
-        mComparator = comparator;
+        this.mInflater = LayoutInflater.from(context);
+        this.mComparator = comparator;
         this.chosenUserRecyclerAdapter = chosenUserRecyclerAdapter;
         this.queryChangeListener = queryChangeListener;
     }
@@ -90,21 +90,38 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
         Glide.with(context).load(model.getImage()).into(holder.friendProfilePicture);
 
         holder.chooseFriendBox.setChecked(UserHelper.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
-        holder.container.setOnClickListener(view -> {
-            holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
-        });
 
-        holder.chooseFriendBox.setVisibility(View.VISIBLE);
-        holder.chooseFriendBox.setOnClickListener(view -> {
-            Boolean status = holder.chooseFriendBox.isChecked();
-            if (status) {
-                SubscriptionRepository.chosenFriends.add(model);
-            } else {
-                SubscriptionRepository.chosenFriends.remove(model);
+
+        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
+            if (invited == null)
+                Toast.makeText(context, "Error getting data", Toast.LENGTH_SHORT).show();
+            else if (invited == true) holder.invitedText.setVisibility(View.VISIBLE);
+            else {
+                holder.chooseFriendBox.setVisibility(View.VISIBLE);
+                holder.container.setOnClickListener(view -> {
+                    holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
+                    updateSelectedUser(holder, model);
+                });
+                holder.chooseFriendBox.setOnClickListener(view -> {
+                    updateSelectedUser(holder, model);
+                });
             }
-            chosenUserRecyclerAdapter.notifyDataSetChanged();
-            queryChangeListener.onChange(SubscriptionRepository.chosenFriends);
         });
+//        holder.chooseFriendBox.setVisibility(View.VISIBLE);
+//        holder.chooseFriendBox.setOnClickListener(view -> {
+//            updateSelectedUser(holder, model);
+//        });
+    }
+
+    private void updateSelectedUser(FriendViewHolder holder, User model) {
+        Boolean status = holder.chooseFriendBox.isChecked();
+        if (status) {
+            SubscriptionRepository.chosenFriends.add(model);
+        } else {
+            SubscriptionRepository.chosenFriends.remove(model);
+        }
+        chosenUserRecyclerAdapter.notifyDataSetChanged();
+        queryChangeListener.onChange(SubscriptionRepository.chosenFriends);
     }
 
     @Override

@@ -7,11 +7,27 @@ public class TransactionHeader {
     private String transactionId;
     private Calendar billingDate;
     private ArrayList<TransactionDetail> details;
+    private ArrayList<User> activeMembers = new ArrayList<>();
 
-    public TransactionHeader(String transactionId, Calendar billingDate, ArrayList<TransactionDetail> details) {
+    public TransactionHeader(String transactionId, Calendar billingDate, ArrayList<TransactionDetail> details, ArrayList<User> activeMembers) {
         this.transactionId = transactionId;
         this.billingDate = billingDate;
         this.details = details;
+        this.activeMembers = activeMembers;
+    }
+
+//    public TransactionHeader(String transactionId, Calendar billingDate, ArrayList<TransactionDetail> details) {
+//        this.transactionId = transactionId;
+//        this.billingDate = billingDate;
+//        this.details = details;
+//    }
+
+    public ArrayList<User> getActiveMembers() {
+        return activeMembers;
+    }
+
+    public void setActiveMembers(ArrayList<User> activeMembers) {
+        this.activeMembers = activeMembers;
     }
 
     public String getTransactionId() {

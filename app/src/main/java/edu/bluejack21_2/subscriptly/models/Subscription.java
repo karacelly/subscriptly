@@ -164,7 +164,7 @@ public class Subscription {
         ArrayList<DocumentReference> users = new ArrayList<>();
         users.add(UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid()));
         memberData.put("users", users);
-        memberData.put("valid_from", Timestamp.now());
+        memberData.put("valid_from", startAt);
         memberData.put("valid_to", null);
 
         return memberData;

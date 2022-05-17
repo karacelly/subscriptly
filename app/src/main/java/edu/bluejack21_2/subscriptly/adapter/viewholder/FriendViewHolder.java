@@ -23,7 +23,7 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 public class FriendViewHolder extends RecyclerView.ViewHolder {
 
     public ConstraintLayout container;
-    public TextView friendName;
+    public TextView friendName, invitedText;
     public ImageView friendProfilePicture;
     public Button addFriend, cancelFriend, removeFriend, acceptFriend, rejectFriend;
     public CheckBox chooseFriendBox;
@@ -38,6 +38,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
         container = view.findViewById(R.id.container_friend_item);
 
         friendName = view.findViewById(R.id.text_friend_name);
+        invitedText = view.findViewById(R.id.text_member_invited);
         friendProfilePicture = view.findViewById(R.id.image_friend);
 
         addFriend = view.findViewById(R.id.action_add_friend);
