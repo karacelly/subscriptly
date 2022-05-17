@@ -160,6 +160,7 @@ public class Subscription {
         subscriptionData.put("image", image);
         subscriptionData.put("month_duration", duration);
         subscriptionData.put("start_at", startAt);
+        subscriptionData.put("valid_to", null);
 
         return subscriptionData;
     }

@@ -1,5 +1,6 @@
 package edu.bluejack21_2.subscriptly.ui.subs_detail;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -24,9 +25,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import edu.bluejack21_2.subscriptly.HomeActivity;
 import edu.bluejack21_2.subscriptly.PaySubscriptionActivity;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
@@ -149,7 +152,33 @@ public class SubscriptionDetailFragment extends Fragment {
                 // Inflating popup menu from popup_menu.xml file
                 popupMenu.getMenuInflater().inflate(R.menu.subs_detail_menu, popupMenu.getMenu());
                 popupMenu.getMenu().getItem(0).setOnMenuItemClickListener(menuItem -> {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
+                    dialogBuilder.setMessage("Delete " + subscription.getName() + " subscription ?");
+                    dialogBuilder.setCancelable(true);
 
+                    dialogBuilder.setNeutralButton(
+                            "Cancel",
+                            (dialog, id)-> {
+                                dialog.dismiss();
+                            });
+
+                    dialogBuilder.setPositiveButton(
+                            "Yes",
+                            (dialog, id) -> {
+                                SubscriptionRepository.removeSubscription(subscription.getSubscriptionId(), done -> {
+                                    if(done) {
+                                        Intent back = new Intent(getActivity(), HomeActivity.class);
+                                        startActivity(back);
+                                        getActivity().finish();
+                                    } else {
+                                        Toast.makeText(getContext(), "Failed Delete Subscription", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                dialog.dismiss();
+
+                            });
+                    AlertDialog alert = dialogBuilder.create();
+                    alert.show();
                     return true;
                 });
                 // Showing the popup menu

@@ -70,31 +70,32 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<TransactionDetail> transactionDetails = new ArrayList<>();
         DocumentReference user = UserRepository.userRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         user.get()
-                .addOnSuccessListener(userSnapshot -> {
-                    if (userSnapshot.contains("notifications")) {
-                        ArrayList<DocumentReference> details = (ArrayList<DocumentReference>) userSnapshot.get("notifications");
-                        for (DocumentReference detail :
-                                details) {
-                            detail.get()
-                                    .addOnSuccessListener(detailSnapshot -> {
-                                        DocumentReference subscriptionRef = detail.getParent().getParent().getParent().getParent();
-                                        subscriptionRef.get().addOnSuccessListener(subscriptionSnapshot -> {
-                                            SubscriptionRepository.documentToSubscription(subscriptionSnapshot, subscription -> {
-                                                SubscriptionRepository.documentToTransactionDetail(detailSnapshot, transactionDetail -> {
-                                                    transactionDetail.setSubscription(subscription);
-                                                    transactionDetails.add(transactionDetail);
-                                                    notificationAdapter.setNotifications(transactionDetails);
-                                                    notificationAdapter.notifyDataSetChanged();
-                                                });
-                                            });
-                                        }).addOnFailureListener(e->{});
-                                    }).addOnFailureListener(e -> {
-                            });
-                        }
+            .addOnSuccessListener(userSnapshot -> {
+                if (userSnapshot.contains("notifications")) {
+                    ArrayList<DocumentReference> details = (ArrayList<DocumentReference>) userSnapshot.get("notifications");
+                    for (DocumentReference detail :
+                            details) {
+                        detail.get()
+                            .addOnSuccessListener(detailSnapshot -> {
+                                DocumentReference subscriptionRef = detail.getParent().getParent().getParent().getParent();
+                                subscriptionRef.get().addOnSuccessListener(subscriptionSnapshot -> {
+                                    SubscriptionRepository.documentToSubscription(subscriptionSnapshot, subscription -> {
+                                        SubscriptionRepository.documentToTransactionDetail(detailSnapshot, transactionDetail -> {
+                                            transactionDetail.setSubscription(subscription);
+                                            transactionDetails.add(transactionDetail);
+                                            notificationAdapter.setNotifications(transactionDetails);
+                                            notificationAdapter.notifyDataSetChanged();
+                                        });
+                                    });
+                                }).addOnFailureListener(e -> {
+                                });
+                            }).addOnFailureListener(e -> {
+                        });
                     }
-                })
-                .addOnFailureListener(e -> {
-                });
+                }
+            })
+            .addOnFailureListener(e -> {
+            });
     }
 
     private void setNotifications() {

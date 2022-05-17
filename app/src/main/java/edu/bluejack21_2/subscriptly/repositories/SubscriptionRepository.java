@@ -96,7 +96,17 @@ public class SubscriptionRepository {
     public static void removeSubscription(String subscriptionId, QueryFinishListener<Boolean> listener) {
         DocumentReference subscription = SubscriptionRepository.subscriptionRef.document(subscriptionId);
         subscription.update("valid_to", Timestamp.now()).addOnSuccessListener(data -> {
-            listener.onFinish(true);
+            memberRef.whereEqualTo("subscription", subscription).whereEqualTo("valid_to", null).limit(1).get()
+                    .addOnSuccessListener(memberSnapshots -> {
+                        if (!memberSnapshots.isEmpty()) {
+                            DocumentSnapshot memberSnapshot = memberSnapshots.getDocuments().get(0);
+                            memberSnapshot.getReference().update("valid_to", Timestamp.now())
+                                    .addOnSuccessListener(success -> listener.onFinish(true))
+                                    .addOnFailureListener(e -> listener.onFinish(false));
+                        } else {
+                            listener.onFinish(true);
+                        }
+                    }).addOnFailureListener(e -> listener.onFinish(false));
         }).addOnFailureListener(e -> {
             listener.onFinish(false);
         });

@@ -2,6 +2,7 @@ package edu.bluejack21_2.subscriptly.ui.subs_detail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -51,6 +54,12 @@ public class SubscriptionDetailMemberFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new MemberItemAdapter(getActivity(), subscription));
 
+        Log.d("UID | Firebase", FirebaseAuth.getInstance().getUid());
+        Log.d("UID | UserId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(subscription.getCreator().getUserID())) {
+            addMemberContainer.setVisibility(View.VISIBLE);
+        }
         addMemberContainer.setOnClickListener(v -> {
             Intent addMember = new Intent(v.getContext(), InviteFriendActivity.class);
             startActivity(addMember);

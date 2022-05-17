@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.databinding.AdapterMemberItemBinding;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class MemberItemViewHolder extends RecyclerView.ViewHolder {
     private final AdapterMemberItemBinding binding;
@@ -36,12 +38,15 @@ public class MemberItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(User user, Subscription subscription) {
         binding.setModel(user);
+        if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(subscription.getCreator().getUserID())) {
+            kickMember.setVisibility(View.GONE);
+        }
         if(user.getUserID().equals(subscription.getCreator().getUserID())) {
             kickMember.setVisibility(View.GONE);
         }
         kickMember.setOnClickListener(v -> {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
-            dialogBuilder.setMessage("Remove " + user.getName() + " from " + subscription.getName() + " subscription?");
+            dialogBuilder.setMessage("Remove " + user.getName() + " from " + subscription.getName() + " subscription ?");
             dialogBuilder.setCancelable(true);
 
             dialogBuilder.setNeutralButton(
