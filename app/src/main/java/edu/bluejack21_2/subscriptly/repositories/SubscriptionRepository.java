@@ -110,7 +110,6 @@ public class SubscriptionRepository {
         }).addOnFailureListener(e -> {
             listener.onFinish(false);
         });
-
     }
 
     public static void sendInvitation(String creatorId, String subscriptionId, String invitedId, QueryFinishListener<Boolean> listener) {

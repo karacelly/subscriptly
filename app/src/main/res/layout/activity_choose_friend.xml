@@ -7,6 +7,7 @@
     tools:context=".ChooseFriendActivity">
 
     <LinearLayout
+        android:id="@+id/container_user_exists"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey"
@@ -24,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/outfit_bold"
-                android:text="Choose Friends"
+                android:text="@string/title_choose_friend_activity"
                 android:gravity="left"
                 android:layout_weight="1"
                 android:textColor="@color/primary_color"
@@ -92,6 +93,7 @@
     </LinearLayout>
 
     <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/container_user_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -107,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
-            android:text="No friends yet"
+            android:text="@string/no_friends_message"
             android:textAlignment="center"
             android:textColor="@color/black"
 

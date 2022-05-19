@@ -46,7 +46,7 @@
                     android:layout_weight=".15"
                     android:ellipsize="end"
                     android:fontFamily="@font/outfit_medium"
-                    android:text="Username"
+                    android:text="@string/username_label"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>

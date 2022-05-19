@@ -92,4 +92,5 @@
     <string name="invite">Ajak</string>
     <string name="error_upload_image">Gagal Mengunggah Foto!</string>
     <string name="title_activity_my_transactions">Transaksi Saya</string>
+    <string name="kick_label">Tendang</string>
 </resources>

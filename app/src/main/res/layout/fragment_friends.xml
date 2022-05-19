@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
-            android:text="Search Friend"
+            android:text="@string/title_search_activity"
             android:textColor="@color/primary_color"
             android:textSize="20dp" />
 
@@ -68,29 +68,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-
-        <!--            <com.google.android.flexbox.FlexboxLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                app:flexDirection="column"-->
-        <!--                app:justifyContent="center">-->
-
-        <!--                <ImageView-->
-        <!--                    android:layout_width="match_parent"-->
-        <!--                    android:layout_height="300dp"-->
-        <!--                    android:src="@drawable/search" />-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="match_parent"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="@font/outfit_bold"-->
-        <!--                    android:text="No friends yet"-->
-        <!--                    android:textAlignment="center"-->
-        <!--                    android:textColor="@color/black"-->
-
-        <!--                    android:textSize="15dp" />-->
-        <!--            </com.google.android.flexbox.FlexboxLayout>-->
 
     </LinearLayout>
 </RelativeLayout>

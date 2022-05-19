@@ -90,4 +90,5 @@
     <string name="invite">Invite</string>
     <string name="error_upload_image">Failed Uploading Image!</string>
     <string name="title_activity_my_transactions">My Transactions</string>
+    <string name="kick_label">Kick</string>
 </resources>
