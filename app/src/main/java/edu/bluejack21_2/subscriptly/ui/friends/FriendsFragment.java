@@ -104,7 +104,6 @@ public class FriendsFragment extends Fragment {
         friendsRecycler = view.findViewById(R.id.recycler_friends);
         initializeRecycler();
 //        fetchData();
-
         fieldSearchFriend.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -149,7 +148,7 @@ public class FriendsFragment extends Fragment {
                     Toast.makeText(getContext(), "Failed Getting FriendRequest", Toast.LENGTH_SHORT);
                 });
 
-        UserRepository.getAllUser(OFFSET, LIMIT, fetchedUsers -> {
+        UserRepository.getAllUser(LIMIT, fetchedUsers -> {
             Log.d("Get All User | ", "FROM " + OFFSET + " UNTIL " + (OFFSET+LIMIT));
             Log.d("FETCHED USER | SIZE", fetchedUsers.size()+"");
             if(!fetchedUsers.isEmpty()) {
@@ -175,9 +174,14 @@ public class FriendsFragment extends Fragment {
         friendsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         friendsRecycler.setHasFixedSize(true);
         friendsRecycler.setAdapter(mAdapter);
+//        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) friendsRecycler.getLayoutManager();
+////                int totalItem = linearLayoutManager.getItemCount();
+//        int totalItem = users.size();
+//        int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+//        Log.d("Recycler STAT", "Last Visible: " + lastVisible + " | Total Item: " + totalItem + " | OFFSET: " + OFFSET);
+        fetchData();
 
         friendsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 //                super.onScrolled(recyclerView, dx, dy);
@@ -189,13 +193,11 @@ public class FriendsFragment extends Fragment {
 //                Log.d("RECYCLER STATS", "TOTAL ITEM: " + totalItem + " | LAST VISIBLE: " + lastVisible);
 
                 Log.d("Recycler STAT", "Last Visible: " + lastVisible + " | Total Item: " + totalItem + " | OFFSET: " + OFFSET);
-                if(lastVisible >= totalItem - 2 && OFFSET < totalItem) {
+                if(lastVisible >= totalItem - 2) {
 //                    Log.d("RECYCLER STATS", "ADA PERMINTAAN FETCHING");
                     if(!isFetchingData) {
                         Log.d("OFFSET LIMIT STAT", "OFFSET: " + OFFSET + " | LIMIT: " + LIMIT);
                         isFetchingData = true;
-                        OFFSET += LIMIT;
-//                        Log.d("IS FETCHING DATA", "FROM " + OFFSET + " UNTIL " + OFFSET+LIMIT);
                         fetchData();
                     }
                 }

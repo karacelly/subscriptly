@@ -40,6 +40,7 @@ public class UserRepository {
     public static User LOGGED_IN_USER = null;
     public static GoogleSignInClient GOOGLE_LOGGED = null;
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private static DocumentSnapshot lastFetchedSnapshot = null;
 
     public static void getLoggedInUser(QueryFinishListener<User> listener) {
         if (LOGGED_IN_USER == null) {
@@ -56,19 +57,38 @@ public class UserRepository {
         }
     }
 
-    public static void getAllUser(int offset, int limit, QueryFinishListener<ArrayList<User>> listener){
-        Log.d("User Repository | Get all user", "MASUK -> OFFSET: " + offset + " LIMIT: " + limit);
+    public static void getAllUser(int limit, QueryFinishListener<ArrayList<User>> listener){
         ArrayList<User> users = new ArrayList<>();
-        userRef.orderBy("name").startAt(offset).limit(limit).get()
-            .addOnSuccessListener(userSnapshots -> {
-                Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
-                for (DocumentSnapshot userSnapshot:
-                     userSnapshots) {
-                    users.add(documentToUser(userSnapshot));
-                }
-                listener.onFinish(users);
-            })
-            .addOnFailureListener(e -> listener.onFinish(users));
+
+        if(lastFetchedSnapshot == null) {
+            userRef.orderBy("name").limit(limit).get()
+                .addOnSuccessListener(userSnapshots -> {
+                    if(!userSnapshots.isEmpty()) {
+                        lastFetchedSnapshot = userSnapshots.getDocuments().get(userSnapshots.size() - 1);
+                    }
+                    Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
+                    for (DocumentSnapshot userSnapshot:
+                            userSnapshots) {
+                        users.add(documentToUser(userSnapshot));
+                    }
+                    listener.onFinish(users);
+                })
+                .addOnFailureListener(e -> listener.onFinish(users));
+        } else {
+            userRef.orderBy("name").startAfter(lastFetchedSnapshot).limit(limit).get()
+                .addOnSuccessListener(userSnapshots -> {
+                    if(!userSnapshots.isEmpty()) {
+                        lastFetchedSnapshot = userSnapshots.getDocuments().get(userSnapshots.size() - 1);
+                    }
+                    Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
+                    for (DocumentSnapshot userSnapshot:
+                            userSnapshots) {
+                        users.add(documentToUser(userSnapshot));
+                    }
+                    listener.onFinish(users);
+                })
+                .addOnFailureListener(e -> listener.onFinish(users));
+        }
     }
 
     public static void logOutFirebaseUser() {
