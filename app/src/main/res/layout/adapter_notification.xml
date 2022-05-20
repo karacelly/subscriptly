@@ -45,7 +45,6 @@
                 android:ellipsize="end"
                 android:layout_weight="1"
                 android:fontFamily="@font/outfit"
-                android:text="@{user.name + ` has paid for ` + subscription.name + ` subscription`}"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 

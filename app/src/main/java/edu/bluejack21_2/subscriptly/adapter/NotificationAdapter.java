@@ -33,7 +33,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
-        Log.d("NOTIFICATION ADAPTER", "CALLED");
         UserRepository.getLoggedInUser(user -> {
             if(user != null) {
                 notifications = user.getNotifications();
@@ -52,7 +51,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        holder.bind(notifications.get(position));
+        holder.bind(mInflater.getContext(), notifications.get(position));
     }
 
     @Override

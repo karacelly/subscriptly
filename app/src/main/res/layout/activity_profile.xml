@@ -8,9 +8,6 @@
     tools:context=".ProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="15dp"
@@ -21,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:titleTextColor="@color/primary_color"
-            app:title="@string/title_profile_activity"/>
+            app:title="@string/title_profile_activity"
+            app:titleTextColor="@color/primary_color" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -48,6 +45,7 @@
                 android:text="@string/title_edit_profile_activity"
                 android:textColor="#38B6FF"
                 android:textSize="12sp" />
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -69,7 +67,9 @@
                     android:layout_height="100dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/iu_profile" />
+
             </androidx.cardview.widget.CardView>
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -91,8 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Kesya Amanda"
                 android:textColor="#535353" />
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -113,8 +113,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="kesimanda"
                 android:textColor="#535353" />
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -135,8 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="kesya.aw@gmail.com"
                 android:textColor="#535353" />
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <Button
@@ -148,12 +148,6 @@
             android:text="@string/title_change_password_activity"
             android:textColor="@color/white" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/outfit_medium"
-            android:text="@string/setting_language"
-            android:textColor="@color/black" />
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
