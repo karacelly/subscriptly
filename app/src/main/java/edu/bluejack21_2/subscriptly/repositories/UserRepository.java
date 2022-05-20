@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +38,7 @@ public class UserRepository {
     public static final CollectionReference friendRequestRef = SubscriptlyDB.getDB().collection("friend_requests");
     public static final CollectionReference friendRef = SubscriptlyDB.getDB().collection("friends");
     public static User LOGGED_IN_USER = null;
-
+    public static GoogleSignInClient GOOGLE_LOGGED = null;
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public static void getLoggedInUser(QueryFinishListener<User> listener) {
@@ -53,6 +54,21 @@ public class UserRepository {
         } else {
             listener.onFinish(LOGGED_IN_USER);
         }
+    }
+
+    public static void getAllUser(int offset, int limit, QueryFinishListener<ArrayList<User>> listener){
+        Log.d("User Repository | Get all user", "MASUK -> OFFSET: " + offset + " LIMIT: " + limit);
+        ArrayList<User> users = new ArrayList<>();
+        userRef.orderBy("name").startAt(offset).limit(limit).get()
+            .addOnSuccessListener(userSnapshots -> {
+                Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
+                for (DocumentSnapshot userSnapshot:
+                     userSnapshots) {
+                    users.add(documentToUser(userSnapshot));
+                }
+                listener.onFinish(users);
+            })
+            .addOnFailureListener(e -> listener.onFinish(users));
     }
 
     public static void logOutFirebaseUser() {

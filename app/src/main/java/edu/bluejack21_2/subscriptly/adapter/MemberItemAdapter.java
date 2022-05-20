@@ -22,10 +22,11 @@ import java.util.Vector;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.MemberItemViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.AdapterMemberItemBinding;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 
-public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder> {
+public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder> implements QueryChangeListener<Boolean> {
     private Context ctx;
     private final LayoutInflater mInflater;
     private final Subscription subscription;
@@ -47,7 +48,7 @@ public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull MemberItemViewHolder holder, int position) {
         final User model = subscription.getMembers().get(position);
-        holder.bind(model, subscription);
+        holder.bind(model, subscription, this);
     }
 
     @Override
@@ -55,4 +56,10 @@ public class MemberItemAdapter extends RecyclerView.Adapter<MemberItemViewHolder
         return subscription.getMembers().size();
     }
 
+    @Override
+    public void onChange(Boolean data) {
+        if(data) {
+            notifyDataSetChanged();
+        }
+    }
 }

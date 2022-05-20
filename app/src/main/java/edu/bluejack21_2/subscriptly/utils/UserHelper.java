@@ -16,10 +16,10 @@ public class UserHelper {
     public static FriendRequest getFriendRequest(ArrayList<FriendRequest> requests, String currentUserId, String friendUserId) {
         for (FriendRequest fr:
              requests) {
-            Log.d("GETFRIENDREQUEST", currentUserId + ", " + fr.getSender() + ", " + fr.getReceiver());
-            Log.d("GETFRIENDREQUEST", checkSimilarity(currentUserId, fr.getSender(), fr.getReceiver()).toString());
-            Log.d("GETFRIENDREQUEST", friendUserId + ", " + fr.getSender() + ", " + fr.getReceiver());
-            Log.d("GETFRIENDREQUEST", checkSimilarity(friendUserId, fr.getSender(), fr.getReceiver()).toString());
+//            Log.d("GETFRIENDREQUEST", currentUserId + ", " + fr.getSender() + ", " + fr.getReceiver());
+//            Log.d("GETFRIENDREQUEST", checkSimilarity(currentUserId, fr.getSender(), fr.getReceiver()).toString());
+//            Log.d("GETFRIENDREQUEST", friendUserId + ", " + fr.getSender() + ", " + fr.getReceiver());
+//            Log.d("GETFRIENDREQUEST", checkSimilarity(friendUserId, fr.getSender(), fr.getReceiver()).toString());
             if(checkSimilarity(currentUserId, fr.getSender(), fr.getReceiver()) && checkSimilarity(friendUserId, fr.getSender(), fr.getReceiver()))
                 return fr;
 //            if(fr.getSender().equals(userId) || fr.getReceiver().equals(userId)) {

@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        UserRepository.GOOGLE_LOGGED = mGoogleSignInClient;
         checkUserSession();
         initComponents();
 

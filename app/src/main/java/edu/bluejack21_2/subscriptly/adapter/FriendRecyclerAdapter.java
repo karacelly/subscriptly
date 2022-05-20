@@ -28,59 +28,69 @@ import edu.bluejack21_2.subscriptly.utils.UserHelper;
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
     private final LayoutInflater mInflater;
-    private final Comparator<User> mComparator;
-    private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
-        @Override
-        public int compare(User a, User b) {
-            return mComparator.compare(a, b);
-        }
-
-        @Override
-        public void onInserted(int position, int count) {
-            notifyItemRangeInserted(position, count);
-        }
-
-        @Override
-        public void onRemoved(int position, int count) {
-            notifyItemRangeRemoved(position, count);
-        }
-
-        @Override
-        public void onMoved(int fromPosition, int toPosition) {
-            notifyItemMoved(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onChanged(int position, int count) {
-            notifyItemRangeChanged(position, count);
-        }
-
-        @Override
-        public boolean areContentsTheSame(User oldItem, User newItem) {
-            return oldItem.equals(newItem);
-        }
-
-        @Override
-        public boolean areItemsTheSame(User item1, User item2) {
-            return item1.getUserID() == item2.getUserID();
-        }
-    });
+//    private final Comparator<User> mComparator;
+//    private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
+//        @Override
+//        public int compare(User a, User b) {
+//            return mComparator.compare(a, b);
+//        }
+//
+//        @Override
+//        public void onInserted(int position, int count) {
+//            notifyItemRangeInserted(position, count);
+//        }
+//
+//        @Override
+//        public void onRemoved(int position, int count) {
+//            notifyItemRangeRemoved(position, count);
+//        }
+//
+//        @Override
+//        public void onMoved(int fromPosition, int toPosition) {
+//            notifyItemMoved(fromPosition, toPosition);
+//        }
+//
+//        @Override
+//        public void onChanged(int position, int count) {
+//            notifyItemRangeChanged(position, count);
+//        }
+//
+//        @Override
+//        public boolean areContentsTheSame(User oldItem, User newItem) {
+//            return oldItem.equals(newItem);
+//        }
+//
+//        @Override
+//        public boolean areItemsTheSame(User item1, User item2) {
+//            return item1.getUserID() == item2.getUserID();
+//        }
+//    });
     private final Context context;
-    private final ArrayList<User> users;
-    private final ArrayList<FriendRequest> requests;
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
+
+    private ArrayList<User> users;
+
+    public void setRequests(ArrayList<FriendRequest> requests) {
+        this.requests = requests;
+    }
+
+    private ArrayList<FriendRequest> requests;
     private final int template;
     private FriendViewHolder friendViewHolder;
 
     public FriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Comparator<User> comparator, Context context, int template) {
         this.context = context;
-        this.users = users;
-        this.requests = requests;
+        this.users = users == null ? new ArrayList<>() : users;
+        this.requests = requests == null ? new ArrayList<>() : requests;
         this.template = template;
         mInflater = LayoutInflater.from(context);
-        mComparator = comparator;
-        if (users != null) {
-            mSortedList.addAll(users);
-        }
+//        mComparator = comparator;
+//        if (users != null) {
+//            mSortedList.addAll(users);
+//        }
     }
 
     @Override
@@ -93,7 +103,8 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
 
     @Override
     public void onBindViewHolder(FriendViewHolder holder, int position) {
-        final User model = mSortedList.get(position);
+        final User model = users.get(position);
+//        final User model = mSortedList.get(position);
 
         Glide.with(context).load(model.getImage()).into(holder.friendProfilePicture);
         holder.bind(model);
@@ -183,7 +194,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
             });
         });
 
-        holder.removeFriend.setOnClickListener(v -> {
+        holder.removeFriend.setOnClickListener(v ->
             UserRepository.removeFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), listener -> {
                 if (listener) {
                     holder.removeFriend.setVisibility(View.GONE);
@@ -191,47 +202,48 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 } else {
 
                 }
-            });
-        });
+            })
+        );
     }
 
     @Override
     public int getItemCount() {
-        return mSortedList.size();
+        return users.size();
+//        return mSortedList.size();
     }
 
-    public void replaceAll(List<User> models) {
-        mSortedList.beginBatchedUpdates();
-        for (int i = mSortedList.size() - 1; i >= 0; i--) {
-            final User model = mSortedList.get(i);
-            if (!models.contains(model)) {
-                mSortedList.remove(model);
-            }
-        }
-        mSortedList.addAll(models);
-        mSortedList.endBatchedUpdates();
-    }
-
-    public void add(User model) {
-        mSortedList.add(model);
-    }
-
-    public void remove(User model) {
-        mSortedList.remove(model);
-    }
-
-    public void add(List<User> models) {
-        Log.d("FLOW", "AddMSortedList");
-        mSortedList.addAll(models);
-        Log.d("SortedList Size: ", mSortedList.size() + "");
-//        friendViewHolder.bind(mSortedList);
-    }
-
-    public void remove(List<User> models) {
-        mSortedList.beginBatchedUpdates();
-        for (User model : models) {
-            mSortedList.remove(model);
-        }
-        mSortedList.endBatchedUpdates();
-    }
+//    public void replaceAll(List<User> models) {
+//        mSortedList.beginBatchedUpdates();
+//        for (int i = mSortedList.size() - 1; i >= 0; i--) {
+//            final User model = mSortedList.get(i);
+//            if (!models.contains(model)) {
+//                mSortedList.remove(model);
+//            }
+//        }
+//        mSortedList.addAll(models);
+//        mSortedList.endBatchedUpdates();
+//    }
+//
+//    public void add(User model) {
+//        mSortedList.add(model);
+//    }
+//
+//    public void remove(User model) {
+//        mSortedList.remove(model);
+//    }
+//
+//    public void add(List<User> models) {
+//        Log.d("FLOW", "AddMSortedList");
+//        mSortedList.addAll(models);
+//        Log.d("SortedList Size: ", mSortedList.size() + "");
+////        friendViewHolder.bind(mSortedList);
+//    }
+//
+//    public void remove(List<User> models) {
+//        mSortedList.beginBatchedUpdates();
+//        for (User model : models) {
+//            mSortedList.remove(model);
+//        }
+//        mSortedList.endBatchedUpdates();
+//    }
 }

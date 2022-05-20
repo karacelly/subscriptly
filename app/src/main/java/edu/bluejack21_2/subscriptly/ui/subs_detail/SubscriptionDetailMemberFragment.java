@@ -54,10 +54,7 @@ public class SubscriptionDetailMemberFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new MemberItemAdapter(getActivity(), subscription));
 
-        Log.d("UID | Firebase", FirebaseAuth.getInstance().getUid());
-        Log.d("UID | UserId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(subscription.getCreator().getUserID())) {
+        if(FirebaseAuth.getInstance().getUid().equals(subscription.getCreator().getUserID())) {
             addMemberContainer.setVisibility(View.VISIBLE);
         }
         addMemberContainer.setOnClickListener(v -> {

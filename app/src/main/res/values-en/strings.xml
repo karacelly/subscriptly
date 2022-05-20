@@ -11,7 +11,6 @@
     <string name="title_subscriptions">Subscriptions</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_home">Home</string>
-    <string name="title_activity_test">Test</string>
     <string name="title_activity_layout_activityy">LayoutActivity</string>
     <string name="title_activity_bottom_navigation_test">BottomNavigationTest</string>
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.databinding.AdapterMemberItemBinding;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class MemberItemViewHolder extends RecyclerView.ViewHolder {
@@ -36,7 +39,7 @@ public class MemberItemViewHolder extends RecyclerView.ViewHolder {
         kickMember = view.findViewById(R.id.action_kick_member);
     }
 
-    public void bind(User user, Subscription subscription) {
+    public void bind(User user, Subscription subscription, QueryChangeListener<Boolean> listener) {
         binding.setModel(user);
         if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(subscription.getCreator().getUserID())) {
             kickMember.setVisibility(View.GONE);
@@ -59,7 +62,14 @@ public class MemberItemViewHolder extends RecyclerView.ViewHolder {
                     "Yes",
                     (dialog, id) -> {
                         dialog.dismiss();
-
+                        SubscriptionRepository.removeMember(user.getUserID(), subscription.getSubscriptionId(), successful -> {
+                            if(successful) {
+                                subscription.getMembers().remove(user);
+                                listener.onChange(true);
+                            } else {
+                                Toast.makeText(view.getContext(), "Failed Remove Member!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     });
             AlertDialog alert = dialogBuilder.create();
             alert.show();

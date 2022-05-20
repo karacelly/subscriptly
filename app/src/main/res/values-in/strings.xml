@@ -4,14 +4,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_friend">AddFriendActivity</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Beranda</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_feeds">Feeds</string>
     <string name="title_friends">Friends</string>
     <string name="title_subscriptions">Subscriptions</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Notifikasi</string>
     <string name="title_activity_home">Home</string>
-    <string name="title_activity_test">Test</string>
     <string name="title_activity_layout_activityy">LayoutActivity</string>
     <string name="title_activity_bottom_navigation_test">BottomNavigationTest</string>
 
@@ -22,18 +21,18 @@
     <string name="subscription_bill_label">Biaya Langganan Bulanan</string>
     <string name="price_example_placeholder">cth. 100000</string>
     <string name="add_member_label">Menambah Anggota</string>
-    <string name="time_range_label">Time Range</string>
+    <string name="time_range_label">Jangka Waktu</string>
     <string name="time_range_placeholder">dalam bulan (cth. 12)</string>
     <string name="subscription_start_placeholder">Tanggal Memulai Langganan</string>
 
     <!-- Change Password Activity -->
-    <string name="title_change_password_activity">Merubah Sandi</string>
-    <string name="current_password_label">Sandi Sekarang</string>
-    <string name="new_password_label">Sandi Baru</string>
+    <string name="title_change_password_activity">Merubah Kata Sandi</string>
+    <string name="current_password_label">Kata Sandi Sekarang</string>
+    <string name="new_password_label">Kata Sandi Baru</string>
     <string name="confirm_new_password_label">Konfirmasi Sandi Baru</string>
 
     <!-- Choose Friend Activity -->
-    <string name="title_choose_friend_activity">Choose Friend</string>
+    <string name="title_choose_friend_activity">Pilih Teman</string>
     <string name="done_button">Selesai</string>
 
     <!-- Profile Activity -->
@@ -42,14 +41,14 @@
 
     <!-- Edit Profile Activity -->
     <string name="title_edit_profile_activity">Edit Profile</string>
-    <string name="save_changes_button">Save Changes</string>
+    <string name="save_changes_button">Simpan</string>
 
     <!-- User Form -->
     <string name="name_label">Nama</string>
     <string name="username_label">Username</string>
     <string name="email_label">Email</string>
-    <string name="password_label">Sandi</string>
-    <string name="confirm_password_label">Konfirmasi Sandi</string>
+    <string name="password_label">Kata Sandi</string>
+    <string name="confirm_password_label">Konfirmasi Kata Sandi</string>
     <string name="name_placeholder">cth. Elon Musk</string>
     <string name="username_placeholder">cth. elonmusk</string>
     <string name="email_placeholder">harus unik</string>
@@ -63,9 +62,9 @@
     <string name="dont_have_account">Tidak memiliki akun?</string>
 
     <!-- Sign Up Activity -->
-    <string name="title_sign_up_activity">Sign Up</string>
-    <string name="sign_up_string">Create a New Account</string>
-    <string name="sign_up_substring">Create an account so you can manage your subscriptions</string>
+    <string name="title_sign_up_activity">Daftar</string>
+    <string name="sign_up_string">Membuat akun baru</string>
+    <string name="sign_up_substring">Buatlah akun untuk mengatur langganan mu</string>
     <string name="already_have_account">Sudah memiliki akun?</string>
 
     <string name="title_profile_activity">Profil Saya</string>
