@@ -17,14 +17,12 @@ import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.utils.DateHelper;
 
 public class HistoryItemViewHolder extends RecyclerView.ViewHolder {
-    private final RelativeLayout container;
-    private final CardView recyclerCardView;
-    private final LinearLayout historyHeader;
-    private final TextView monthTxt;
-    private final TextView paidTxt;
-    private final TextView unpaidTxt;
-    private final RecyclerView historyDetailRV;
-    private final View view;
+    public RelativeLayout container;
+    public CardView recyclerCardView;
+    public LinearLayout historyHeader;
+    public TextView monthTxt, paidTxt, unpaidTxt;
+    public RecyclerView historyDetailRV;
+    public View view;
     private boolean isOpen = false;
 
     public HistoryItemViewHolder(final View itemView) {

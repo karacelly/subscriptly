@@ -13,8 +13,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.OrderBy;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.bluejack21_2.subscriptly.HomeActivity;
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.Subscription;
@@ -79,7 +76,7 @@ public class SubscriptionRepository {
                             intent.putExtra("name", subscription.getName());
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_MUTABLE);
 
-                            AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ctx.ALARM_SERVICE);
+                            AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 
                             long time = calendar.getTimeInMillis();
 
@@ -121,6 +118,14 @@ public class SubscriptionRepository {
             }
         }).addOnFailureListener(e -> listener.onFinish(headers));
 
+    }
+
+    public static void verifyTransaction(String subscriptionId, String transactionHeaderId, String transactionDetailId, QueryFinishListener<Boolean> listener) {
+        getTransactionDetailRef(subscriptionId, transactionHeaderId)
+                .document(transactionDetailId)
+                .update("verified", true)
+                .addOnSuccessListener(unused -> listener.onFinish(true))
+                .addOnFailureListener(e -> listener.onFinish(false));
     }
 
 
@@ -264,8 +269,8 @@ public class SubscriptionRepository {
                         }
                     }
                 }).addOnFailureListener(e -> {
-                    listener.onFinish(null);
-                });
+            listener.onFinish(null);
+        });
     }
 
 
@@ -326,8 +331,8 @@ public class SubscriptionRepository {
                         listener.onFinish(null);
                     });
                 }).addOnFailureListener(e -> {
-                    listener.onFinish(null);
-                });
+            listener.onFinish(null);
+        });
     }
 
     public static DocumentSnapshot getSimilarSnapshot(List<DocumentSnapshot> snapshotsA, List<DocumentSnapshot> snapshotsB) {
@@ -368,7 +373,7 @@ public class SubscriptionRepository {
             for (DocumentReference memberRef :
                     memberRefs) {
                 memberRef.get().addOnSuccessListener(doc -> {
-                    members.add(UserRepository.documentToUser(memberDoc));
+                    members.add(UserRepository.documentToUser(doc));
                     if (members.size() == memberRefs.size()) {
                         listener.onFinish(members);
                     }
@@ -389,22 +394,7 @@ public class SubscriptionRepository {
         validMemberBottomRange.get().addOnSuccessListener(memberSnapshots -> {
             Query validMemberRange = memberRef.whereGreaterThanOrEqualTo("valid_to", billingDate).whereEqualTo("subscription", subscription);
             validMemberRange.get().addOnSuccessListener(validMemberSnapshots -> {
-//                Log.d("TransactionHeader", transactionHeaderDoc.getId()+"");
-//
-//                Log.d("BOTTOM RANGE SIZE", memberSnapshots.getDocuments().size()+"");
-//                for (DocumentSnapshot snapshotA:
-//                        memberSnapshots.getDocuments()) {
-//                    Log.d("BOTTOM RANGE MEMBER ID", snapshotA.getId());
-//                }
-//
-//                Log.d("UPPER RANGE SIZE", validMemberSnapshots.getDocuments().size()+"");
-//                for (DocumentSnapshot snapshotB:
-//                        validMemberSnapshots.getDocuments()) {
-//                    Log.d("UPPER RANGE MEMBER ID", snapshotB.getId());
-//                }
                 DocumentSnapshot similar = getSimilarSnapshot(memberSnapshots.getDocuments(), validMemberSnapshots.getDocuments());
-
-//                Log.d("SIMILAR MEMBER ID", similar+"\n\n");
 
                 if (similar == null) {
                     getNewestMember(subscription.getId(), newestMembers -> {
@@ -600,8 +590,8 @@ public class SubscriptionRepository {
                         }
                     }
                 }).addOnFailureListener(e -> {
-                    listener.onFinish(false);
-                });
+            listener.onFinish(false);
+        });
     }
 
     public static ArrayList<Subscription> getAllSubscriptions() {

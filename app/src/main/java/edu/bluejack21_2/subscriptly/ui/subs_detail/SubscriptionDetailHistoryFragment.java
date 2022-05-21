@@ -38,6 +38,10 @@ public class SubscriptionDetailHistoryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         adapter = new HistoryItemAdapter(getActivity(), subscription);
+        Log.d("SubscriptionDetailHistoryFragment | Subscription Header Size", subscription.getHeaders().size()+"");
+        if(subscription.getHeaders().size() > 0) {
+            Log.d("SubscriptionDetailHistoryFragment | Subscription Header Active Member Size", subscription.getHeaders().get(0).getActiveMembers().size()+"");
+        }
         RecyclerView rv = view.findViewById(R.id.recycler_history);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(adapter);

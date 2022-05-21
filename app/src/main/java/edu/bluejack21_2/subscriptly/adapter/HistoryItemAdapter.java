@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +53,8 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
 
     @Override
     public void onBindViewHolder(HistoryItemViewHolder holder, int position) {
-        final TransactionHeader model = transactions.get(position);
-        holder.bind(subscription, model);
+        TransactionHeader transactionHeader = transactions.get(position);
+        holder.bind(subscription, transactionHeader);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(
@@ -63,12 +64,12 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
                 LinearLayoutManager.VERTICAL,
                 false);
 
-        layoutManager.setInitialPrefetchItemCount(model.getActiveMembers().size());
+        layoutManager.setInitialPrefetchItemCount(transactionHeader.getActiveMembers().size());
 
-        HistoryDetailItemAdapter historyDetailItemAdapter = new HistoryDetailItemAdapter(mInflater.getContext(), subscription, model.getDetails());
-        holder.getHistoryDetailRV().setLayoutManager(layoutManager);
-        holder.getHistoryDetailRV().setAdapter(historyDetailItemAdapter);
-        holder.getHistoryDetailRV().setRecycledViewPool(viewPool);
+        HistoryDetailItemAdapter historyDetailItemAdapter = new HistoryDetailItemAdapter(mInflater.getContext(), transactionHeader);
+        holder.historyDetailRV.setLayoutManager(layoutManager);
+        holder.historyDetailRV.setAdapter(historyDetailItemAdapter);
+        holder.historyDetailRV.setRecycledViewPool(viewPool);
         setAnimation(holder.itemView, position);
     }
 
@@ -85,6 +86,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
 
     @Override
     public int getItemCount() {
+        Log.d("History Item Adapter | Transaction Size", transactions.size()+"");
         return transactions.size();
     }
 }
