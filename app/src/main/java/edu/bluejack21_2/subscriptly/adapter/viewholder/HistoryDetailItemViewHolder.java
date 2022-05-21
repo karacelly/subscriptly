@@ -1,10 +1,13 @@
 package edu.bluejack21_2.subscriptly.adapter.viewholder;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.models.TransactionDetail;
@@ -30,7 +33,9 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
             view.setBackgroundColor(view.getResources().getColor(R.color.light_red));
             paidStatusTxt.setVisibility(View.GONE);
             verifyButton.setVisibility(View.GONE);
-        }else {
+        } else if(!FirebaseAuth.getInstance().getUid().equals(td.getSubscription().getCreator().getUserID())) {
+            verifyButton.setVisibility(View.GONE);
+        } else {
             view.setBackgroundColor(view.getResources().getColor(R.color.light_blue));
 
             if(td.getVerified()) {
@@ -41,5 +46,10 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
                 verifyButton.setVisibility(View.VISIBLE);
             }
         }
+
+        verifyButton.setOnClickListener(v -> {
+
+            verifyButton.setVisibility(View.GONE);
+        });
     }
 }

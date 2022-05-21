@@ -24,6 +24,11 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
     private final LayoutInflater mInflater;
     private Subscription subscription;
     private ArrayList<TransactionHeader> transactions;
+
+    public void setTransactions(ArrayList<TransactionHeader> transactions) {
+        this.transactions = transactions;
+    }
+
     private int lastPosition = -1;
 
     private RecyclerView.RecycledViewPool
@@ -34,7 +39,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
     public HistoryItemAdapter(Context context, Subscription subscription) {
         this.context = context;
         this.subscription = subscription;
-        this.transactions = subscription.getHeaders();
+        this.transactions = transactions == null ? new ArrayList<>() : transactions;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -58,7 +63,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemViewHold
                 LinearLayoutManager.VERTICAL,
                 false);
 
-        layoutManager.setInitialPrefetchItemCount(subscription.getMembers().size());
+        layoutManager.setInitialPrefetchItemCount(model.getActiveMembers().size());
 
         HistoryDetailItemAdapter historyDetailItemAdapter = new HistoryDetailItemAdapter(mInflater.getContext(), subscription, model.getDetails());
         holder.getHistoryDetailRV().setLayoutManager(layoutManager);

@@ -33,18 +33,11 @@ import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class FriendsFragment extends Fragment {
 
-    private static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
-        @Override
-        public int compare(User a, User b) {
-            return a.getUsername().compareTo(b.getUsername());
-        }
-    };
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<FriendRequest> requests;
     private SearchView fieldSearchFriend;
     private RecyclerView friendsRecycler;
     private final int LIMIT = 8;
-    private static int OFFSET = 0;
     boolean isFetchingData = false;
 
     private FriendRecyclerAdapter mAdapter;
@@ -54,13 +47,11 @@ public class FriendsFragment extends Fragment {
     public FriendsFragment() {}
 
     public static FriendsFragment newInstance() {
-        Log.d("FLOW", "newInstance");
         FriendsFragment fragment = new FriendsFragment();
         return fragment;
     }
 
     private static List<User> filter(List<User> users, String query) {
-        Log.d("FLOW", "filter");
         final String lowerCaseQuery = query.toLowerCase();
 
         final List<User> filteredModelList = new ArrayList<>();
@@ -76,16 +67,12 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("FLOW", "onCreateView");
-
         mBinding = FragmentFriendsBinding.inflate(
                 inflater, container, false);
-        Log.d("BINDINGFriendsFragment", mBinding + "");
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
 
         return rootView;
-//        return mBinding.getRoot();
     }
 
     @Override
@@ -96,10 +83,14 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        users.clear();
+        UserRepository.lastFetchedSnapshot = null;
+        fetchData();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        UserRepository.lastFetchedSnapshot = null;
         fieldSearchFriend = view.findViewById(R.id.field_search_friend);
         friendsRecycler = view.findViewById(R.id.recycler_friends);
         initializeRecycler();
@@ -122,37 +113,14 @@ public class FriendsFragment extends Fragment {
     }
 
     private void fetchData() {
-        requests = new ArrayList<>();
-        UserRepository.friendRequestRef.get()
-                .addOnSuccessListener(task -> {
-                    for (DocumentSnapshot d :
-                            task.getDocuments()) {
-                        Log.d("REQUEST", d.getId());
-                        Toast.makeText(getContext(), d.getId(), Toast.LENGTH_SHORT);
-                        d.getDocumentReference("receiver").get().addOnSuccessListener(receiver -> {
-                            d.getDocumentReference("sender").get().addOnSuccessListener(sender -> {
-                                FriendRequest request = new FriendRequest(receiver.getId(), sender.getId());
-                                requests.add(request);
-                                mAdapter.setRequests(requests);
-                                mAdapter.notifyDataSetChanged();
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(getContext(), "Failed Sender", Toast.LENGTH_SHORT);
-                            });
-                        }).addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), "Failed Receiver", Toast.LENGTH_SHORT);
-                        });
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.d("REQUEST", "Failed Getting FriendRequest");
-                    Toast.makeText(getContext(), "Failed Getting FriendRequest", Toast.LENGTH_SHORT);
-                });
+//        requests = new ArrayList<>();
+        UserRepository.getRelatedRequest(FirebaseAuth.getInstance().getUid(), relatedRequests -> {
+            mAdapter.setRequests(relatedRequests);
+            mAdapter.notifyDataSetChanged();
+        });
 
         UserRepository.getAllUser(LIMIT, fetchedUsers -> {
-            Log.d("Get All User | ", "FROM " + OFFSET + " UNTIL " + (OFFSET+LIMIT));
-            Log.d("FETCHED USER | SIZE", fetchedUsers.size()+"");
             if(!fetchedUsers.isEmpty()) {
-                ArrayList<User> currentUser = new ArrayList<>();
                 for (User user:
                      fetchedUsers) {
                     Log.d("FETCHED DATA | USER", user.getUserID());
@@ -162,15 +130,13 @@ public class FriendsFragment extends Fragment {
                 }
                 mAdapter.setUsers(users);
                 mAdapter.notifyDataSetChanged();
-            } else {
             }
-//            mAdapter.replaceAll(users);
             isFetchingData = false;
         });
     }
 
     private void initializeRecycler() {
-        mAdapter = new FriendRecyclerAdapter(users, requests, ALPHABETICAL_COMPARATOR, getActivity(), R.layout.friend_item);
+        mAdapter = new FriendRecyclerAdapter(users, requests, getActivity(), R.layout.friend_item);
         friendsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         friendsRecycler.setHasFixedSize(true);
         friendsRecycler.setAdapter(mAdapter);
@@ -179,7 +145,7 @@ public class FriendsFragment extends Fragment {
 //        int totalItem = users.size();
 //        int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 //        Log.d("Recycler STAT", "Last Visible: " + lastVisible + " | Total Item: " + totalItem + " | OFFSET: " + OFFSET);
-        fetchData();
+//        fetchData();
 
         friendsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -192,11 +158,9 @@ public class FriendsFragment extends Fragment {
                 int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 //                Log.d("RECYCLER STATS", "TOTAL ITEM: " + totalItem + " | LAST VISIBLE: " + lastVisible);
 
-                Log.d("Recycler STAT", "Last Visible: " + lastVisible + " | Total Item: " + totalItem + " | OFFSET: " + OFFSET);
                 if(lastVisible >= totalItem - 2) {
 //                    Log.d("RECYCLER STATS", "ADA PERMINTAAN FETCHING");
                     if(!isFetchingData) {
-                        Log.d("OFFSET LIMIT STAT", "OFFSET: " + OFFSET + " | LIMIT: " + LIMIT);
                         isFetchingData = true;
                         fetchData();
                     }

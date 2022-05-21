@@ -30,6 +30,7 @@ import java.util.Map;
 
 import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
+import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
 
 public class UserRepository {
@@ -40,14 +41,13 @@ public class UserRepository {
     public static User LOGGED_IN_USER = null;
     public static GoogleSignInClient GOOGLE_LOGGED = null;
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private static DocumentSnapshot lastFetchedSnapshot = null;
+    public static DocumentSnapshot lastFetchedSnapshot = null;
 
     public static void getLoggedInUser(QueryFinishListener<User> listener) {
         if (LOGGED_IN_USER == null) {
             Log.d("getLoggedInUser", "getting....");
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-//            Log.d("getLoggedInUser", "id: " + firebaseUser.getUid());
             getUser(firebaseUser.getUid(), user -> {
                 LOGGED_IN_USER = user;
                 listener.onFinish(LOGGED_IN_USER);
@@ -57,31 +57,18 @@ public class UserRepository {
         }
     }
 
-    public static void getAllUser(int limit, QueryFinishListener<ArrayList<User>> listener){
+    public static void getAllUser(int limit, QueryFinishListener<ArrayList<User>> listener) {
         ArrayList<User> users = new ArrayList<>();
+        Query baseQuery = userRef.orderBy("name");
+        if (lastFetchedSnapshot != null) {
+            baseQuery = baseQuery.startAfter(lastFetchedSnapshot);
 
-        if(lastFetchedSnapshot == null) {
-            userRef.orderBy("name").limit(limit).get()
+            baseQuery.limit(limit).get()
                 .addOnSuccessListener(userSnapshots -> {
-                    if(!userSnapshots.isEmpty()) {
+                    if (!userSnapshots.isEmpty()) {
                         lastFetchedSnapshot = userSnapshots.getDocuments().get(userSnapshots.size() - 1);
                     }
-                    Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
-                    for (DocumentSnapshot userSnapshot:
-                            userSnapshots) {
-                        users.add(documentToUser(userSnapshot));
-                    }
-                    listener.onFinish(users);
-                })
-                .addOnFailureListener(e -> listener.onFinish(users));
-        } else {
-            userRef.orderBy("name").startAfter(lastFetchedSnapshot).limit(limit).get()
-                .addOnSuccessListener(userSnapshots -> {
-                    if(!userSnapshots.isEmpty()) {
-                        lastFetchedSnapshot = userSnapshots.getDocuments().get(userSnapshots.size() - 1);
-                    }
-                    Log.d("User Repository | Get all user | User Snapshot Size", userSnapshots.size()+"");
-                    for (DocumentSnapshot userSnapshot:
+                    for (DocumentSnapshot userSnapshot :
                             userSnapshots) {
                         users.add(documentToUser(userSnapshot));
                     }
@@ -89,6 +76,31 @@ public class UserRepository {
                 })
                 .addOnFailureListener(e -> listener.onFinish(users));
         }
+    }
+
+    public static void getRelatedRequest(String userId, QueryFinishListener<ArrayList<FriendRequest>> listener) {
+        ArrayList<FriendRequest> requests = new ArrayList<>();
+        DocumentReference user = userRef.document(userId);
+        friendRequestRef.whereEqualTo("sender", user).get()
+            .addOnSuccessListener(senderRequests -> {
+                friendRequestRef.whereEqualTo("receiver", user).get()
+                    .addOnSuccessListener(receiverRequests -> {
+                        for (DocumentSnapshot d :
+                                senderRequests.getDocuments()) {
+                            requests.add(new FriendRequest(d.getDocumentReference("receiver").getId(), d.getDocumentReference("sender").getId()));
+                        }
+                        for (DocumentSnapshot d :
+                                receiverRequests.getDocuments()) {
+                            requests.add(new FriendRequest(d.getDocumentReference("receiver").getId(), d.getDocumentReference("sender").getId()));
+                        }
+                        listener.onFinish(requests);
+                    }).addOnFailureListener(e -> {
+                        listener.onFinish(requests);
+                    });
+            })
+            .addOnFailureListener(e -> {
+                listener.onFinish(requests);
+            });
     }
 
     public static void logOutFirebaseUser() {

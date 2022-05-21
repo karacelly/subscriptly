@@ -8,7 +8,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_feeds">Feeds</string>
     <string name="title_friends">Friends</string>
-    <string name="title_subscriptions">Subscriptions</string>
+    <string name="title_subscriptions">Langganan</string>
     <string name="title_notifications">Notifikasi</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_layout_activityy">LayoutActivity</string>
@@ -40,7 +40,7 @@
 
 
     <!-- Edit Profile Activity -->
-    <string name="title_edit_profile_activity">Edit Profile</string>
+    <string name="title_edit_profile_activity">Ubah Profil</string>
     <string name="save_changes_button">Simpan</string>
 
     <!-- User Form -->
@@ -57,7 +57,7 @@
     <!-- Main Activity / Sign In -->
     <string name="title_main_activity">Masuk</string>
     <string name="welcome_back_string">Selamat Datang Kembali!👋</string>
-    <string name="welcome_back_substring">We are so happy to see you. Continue to login to manage your subscriptions.</string>
+    <string name="welcome_back_substring">Kami sangat senang melihat Anda. Lanjutkan masuk untuk mengelola langganan Anda.</string>
     <string name="sign_in_button">Masuk</string>
     <string name="dont_have_account">Tidak memiliki akun?</string>
 
@@ -93,4 +93,6 @@
     <string name="title_activity_my_transactions">Transaksi Saya</string>
     <string name="kick_label">Tendang</string>
     <string name="notification_text">%1$s sudah membayar langganan %2$s</string>
+    <string name="menu_profile">Profil</string>
+    <string name="menu_my_transaction">Transaksi Saya</string>
 </resources>

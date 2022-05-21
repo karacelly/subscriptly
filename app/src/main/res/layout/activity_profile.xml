@@ -148,11 +148,6 @@
             android:text="@string/title_change_password_activity"
             android:textColor="@color/white" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 

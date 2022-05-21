@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_profile"
-        android:title="Profile" />
+        android:title="@string/menu_profile" />
     <item
         android:id="@+id/menu_my_transaction"
-        android:title="My Transaction" />
+        android:title="@string/menu_my_transaction"/>
     <item
         android:id="@+id/menu_logout"
-        android:title="Logout" />
+        android:title="@string/menu_logout" />
 </menu>

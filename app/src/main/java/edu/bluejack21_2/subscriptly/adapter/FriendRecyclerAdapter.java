@@ -28,43 +28,6 @@ import edu.bluejack21_2.subscriptly.utils.UserHelper;
 public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
     private final LayoutInflater mInflater;
-//    private final Comparator<User> mComparator;
-//    private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
-//        @Override
-//        public int compare(User a, User b) {
-//            return mComparator.compare(a, b);
-//        }
-//
-//        @Override
-//        public void onInserted(int position, int count) {
-//            notifyItemRangeInserted(position, count);
-//        }
-//
-//        @Override
-//        public void onRemoved(int position, int count) {
-//            notifyItemRangeRemoved(position, count);
-//        }
-//
-//        @Override
-//        public void onMoved(int fromPosition, int toPosition) {
-//            notifyItemMoved(fromPosition, toPosition);
-//        }
-//
-//        @Override
-//        public void onChanged(int position, int count) {
-//            notifyItemRangeChanged(position, count);
-//        }
-//
-//        @Override
-//        public boolean areContentsTheSame(User oldItem, User newItem) {
-//            return oldItem.equals(newItem);
-//        }
-//
-//        @Override
-//        public boolean areItemsTheSame(User item1, User item2) {
-//            return item1.getUserID() == item2.getUserID();
-//        }
-//    });
     private final Context context;
 
     public void setUsers(ArrayList<User> users) {
@@ -81,7 +44,7 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
     private final int template;
     private FriendViewHolder friendViewHolder;
 
-    public FriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Comparator<User> comparator, Context context, int template) {
+    public FriendRecyclerAdapter(ArrayList<User> users, ArrayList<FriendRequest> requests, Context context, int template) {
         this.context = context;
         this.users = users == null ? new ArrayList<>() : users;
         this.requests = requests == null ? new ArrayList<>() : requests;

@@ -13,6 +13,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class SubscriptionRepository {
     public static CollectionReference subscriptionInvitationRef = SubscriptlyDB.getDB().collection("subscription_invitations");
     public static CollectionReference memberRef = SubscriptlyDB.getDB().collection("members");
     public static StorageReference subscriptionStorageRef = SubscriptlyDB.getStorageDB().child("subscriptions");
-
+    public static DocumentSnapshot lastTransactionHeader = null;
     public static ArrayList<User> chosenFriends = new ArrayList<>();
 
     public static void insertSubscription(Context ctx, Subscription subscription, Calendar calendar, QueryFinishListener<Boolean> listener) {
@@ -75,7 +77,7 @@ public class SubscriptionRepository {
 
                             Intent intent = new Intent(ctx, BroadcastManager.class);
                             intent.putExtra("name", subscription.getName());
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_MUTABLE);
 
                             AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ctx.ALARM_SERVICE);
 
@@ -92,6 +94,35 @@ public class SubscriptionRepository {
                     listener.onFinish(false);
                 });
     }
+
+    public static void paginateMonthlyTransaction(String subscriptionId, int limit, QueryFinishListener<ArrayList<TransactionHeader>> listener) {
+        ArrayList<TransactionHeader> headers = new ArrayList<>();
+        DocumentReference subscription = subscriptionRef.document(subscriptionId);
+        Query baseQuery = subscription.collection("transaction_headers").orderBy("billing_date", Query.Direction.DESCENDING);
+
+        if (lastTransactionHeader != null)
+            baseQuery = baseQuery.startAfter(lastTransactionHeader).limit(limit);
+
+        baseQuery = baseQuery.limit(limit);
+        baseQuery.get().addOnSuccessListener(headerSnapshots -> {
+            if (!headerSnapshots.isEmpty()) {
+                lastTransactionHeader = headerSnapshots.getDocuments().get(headerSnapshots.size() - 1);
+                for (DocumentSnapshot headerSnapshot :
+                        headerSnapshots) {
+                    documentToTransactionHeader(headerSnapshot, transactionHeader -> {
+                        headers.add(transactionHeader);
+                        if (headers.size() == headerSnapshots.size()) {
+                            listener.onFinish(headers);
+                        }
+                    });
+                }
+            } else {
+                listener.onFinish(headers);
+            }
+        }).addOnFailureListener(e -> listener.onFinish(headers));
+
+    }
+
 
     public static void removeSubscription(String subscriptionId, QueryFinishListener<Boolean> listener) {
         DocumentReference subscription = SubscriptionRepository.subscriptionRef.document(subscriptionId);
@@ -233,8 +264,8 @@ public class SubscriptionRepository {
                         }
                     }
                 }).addOnFailureListener(e -> {
-            listener.onFinish(null);
-        });
+                    listener.onFinish(null);
+                });
     }
 
 
@@ -295,8 +326,8 @@ public class SubscriptionRepository {
                         listener.onFinish(null);
                     });
                 }).addOnFailureListener(e -> {
-            listener.onFinish(null);
-        });
+                    listener.onFinish(null);
+                });
     }
 
     public static DocumentSnapshot getSimilarSnapshot(List<DocumentSnapshot> snapshotsA, List<DocumentSnapshot> snapshotsB) {
@@ -569,8 +600,8 @@ public class SubscriptionRepository {
                         }
                     }
                 }).addOnFailureListener(e -> {
-            listener.onFinish(false);
-        });
+                    listener.onFinish(false);
+                });
     }
 
     public static ArrayList<Subscription> getAllSubscriptions() {

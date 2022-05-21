@@ -18,7 +18,7 @@ public class User {
 
     public String getImage() {
         if(image == null) {
-            return "https://firebasestorage.googleapis.com/v0/b/subscriptly-3ccfb.appspot.com/o/profile%2FDefaultProfile.jpg?alt=media&token=0a6f7d26-e3ab-4a20-8ba5-14e8885821f6";
+            return "https://firebasestorage.googleapis.com/v0/b/subscriptly-3ccfb.appspot.com/o/profiles%2Fimage_2022-05-20_202109399.png?alt=media&token=d2063f3d-5d2a-407b-8f23-14e0692ab4de";
         }
         return image;
     }

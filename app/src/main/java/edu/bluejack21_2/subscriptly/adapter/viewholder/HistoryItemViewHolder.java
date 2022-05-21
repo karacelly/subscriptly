@@ -41,7 +41,7 @@ public class HistoryItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Subscription s, TransactionHeader th) {
-        int members = s.getMembers().size();
+        int members = th.getActiveMembers().size();
         int paid = th.getDetails().size();
         int unpaid = members - paid;
 
