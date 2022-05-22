@@ -93,4 +93,12 @@
     <string name="notification_text">%1$s has paid for %2$s subscription</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_my_transaction">My Transaction</string>
+    <string name="menu_logout">Logout</string>
+    <string name="title_your_subscriptions">Your Subscriptions</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_member">Members</string>
+    <string name="menu_history">History</string>
+    <string name="menu_media">Media</string>
+    <string name="upload_label">Upload Receipt</string>
 </resources>

@@ -18,6 +18,7 @@ import java.util.Comparator;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.HistoryItemAdapter;
 import edu.bluejack21_2.subscriptly.models.Subscription;
+import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.models.TransactionHeader;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 
@@ -71,6 +72,13 @@ public class SubscriptionDetailHistoryFragment extends Fragment {
             Log.d("TRANSACTION HEADER | Subscription Detail Fragment History | Size Fetched", transactionHeaders.size() + "");
             if (!transactionHeaders.isEmpty()) {
                 transactionHeaders.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
+                for (TransactionHeader header:
+                     transactionHeaders) {
+                    for (TransactionDetail detail:
+                         header.getDetails()) {
+                        detail.setSubscription(subscription);
+                    }
+                }
                 transactions.addAll(transactionHeaders);
                 adapter.setTransactions(transactions);
                 adapter.notifyDataSetChanged();

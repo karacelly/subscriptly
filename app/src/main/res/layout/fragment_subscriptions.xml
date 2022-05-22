@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_extra_bold"
-            android:text="Your Subscriptions"
+            android:text="@string/title_your_subscriptions"
             android:textColor="@color/primary_color"
             android:textSize="20sp" />
 

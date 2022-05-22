@@ -47,7 +47,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_margin="10dp"
-                        android:src="@drawable/iu_profile" />
+                        />
 
                     <TextView
                         android:id="@+id/subs_name"
@@ -57,7 +57,7 @@
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
-                        android:text="Nama Subscription"/>
+                        android:text=""/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -85,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Upload Receipt"
+                        android:text="@string/upload_label"
                         android:fontFamily="@font/outfit"
                         android:textColor="@color/white"
                         android:textSize="15sp"/>
@@ -111,7 +111,7 @@
                 android:paddingVertical="15dp"
                 android:paddingHorizontal="20dp"
                 android:fontFamily="@font/outfit_medium"
-                android:text="Members"/>
+                android:text="@string/menu_member"/>
 
             <TextView
                 android:id="@+id/text_menu_history"
@@ -120,7 +120,7 @@
                 android:paddingVertical="15dp"
                 android:paddingHorizontal="20dp"
                 android:fontFamily="@font/outfit_medium"
-                android:text="History"/>
+                android:text="@string/menu_history"/>
 
             <TextView
                 android:id="@+id/text_menu_media"
@@ -129,7 +129,7 @@
                 android:paddingVertical="15dp"
                 android:paddingHorizontal="20dp"
                 android:fontFamily="@font/outfit_medium"
-                android:text="Media"/>
+                android:text="@string/menu_media"/>
 
         </com.google.android.flexbox.FlexboxLayout>
 
