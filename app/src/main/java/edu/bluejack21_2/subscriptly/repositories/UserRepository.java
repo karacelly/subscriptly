@@ -197,8 +197,9 @@ public class UserRepository {
                         listener.onFinish(true);
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        listener.onFinish(true);
+                        listener.onFinish(false);
                     }
+
                 });
     }
 
