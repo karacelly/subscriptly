@@ -60,7 +60,7 @@ public class UserRepository {
     public static void getAllUser(int limit, QueryFinishListener<ArrayList<User>> listener) {
         ArrayList<User> users = new ArrayList<>();
         Query baseQuery = userRef.orderBy("name");
-        if (lastFetchedSnapshot != null) {
+        if (lastFetchedSnapshot != null)
             baseQuery = baseQuery.startAfter(lastFetchedSnapshot);
 
             baseQuery.limit(limit).get()
@@ -75,7 +75,6 @@ public class UserRepository {
                     listener.onFinish(users);
                 })
                 .addOnFailureListener(e -> listener.onFinish(users));
-        }
     }
 
     public static void getRelatedRequest(String userId, QueryFinishListener<ArrayList<FriendRequest>> listener) {

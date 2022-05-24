@@ -122,11 +122,11 @@ public class SubscriptionsFragment extends Fragment implements QueryChangeListen
         });
 
         sortNewest.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt));
         });
 
         sortOldest.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
         });
     }
 

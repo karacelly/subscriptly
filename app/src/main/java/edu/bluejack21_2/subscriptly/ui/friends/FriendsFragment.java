@@ -85,7 +85,7 @@ public class FriendsFragment extends Fragment {
         super.onResume();
         users.clear();
         UserRepository.lastFetchedSnapshot = null;
-        fetchData();
+//        fetchData();
     }
 
     @Override
@@ -113,6 +113,7 @@ public class FriendsFragment extends Fragment {
     }
 
     private void fetchData() {
+        Log.d("FriendsFragment", "FetchData");
 //        requests = new ArrayList<>();
         UserRepository.getRelatedRequest(FirebaseAuth.getInstance().getUid(), relatedRequests -> {
             mAdapter.setRequests(relatedRequests);
@@ -120,6 +121,7 @@ public class FriendsFragment extends Fragment {
         });
 
         UserRepository.getAllUser(LIMIT, fetchedUsers -> {
+            Log.d("FriendsFragment", "FetchData");
             if(!fetchedUsers.isEmpty()) {
                 for (User user:
                      fetchedUsers) {
@@ -145,7 +147,7 @@ public class FriendsFragment extends Fragment {
 //        int totalItem = users.size();
 //        int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 //        Log.d("Recycler STAT", "Last Visible: " + lastVisible + " | Total Item: " + totalItem + " | OFFSET: " + OFFSET);
-//        fetchData();
+        fetchData();
 
         friendsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

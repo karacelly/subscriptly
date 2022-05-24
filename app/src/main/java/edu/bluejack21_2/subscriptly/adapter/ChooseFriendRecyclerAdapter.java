@@ -92,11 +92,11 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
         holder.chooseFriendBox.setChecked(UserHelper.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
 
 
-        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
-            if (invited == null)
+//        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
+//            if (invited == null)
                 Toast.makeText(context, "Error getting data", Toast.LENGTH_SHORT).show();
-            else if (invited == true) holder.invitedText.setVisibility(View.VISIBLE);
-            else {
+//            else if (invited == true) holder.invitedText.setVisibility(View.VISIBLE);
+//            else {
                 holder.chooseFriendBox.setVisibility(View.VISIBLE);
                 holder.container.setOnClickListener(view -> {
                     holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
@@ -105,8 +105,8 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
                 holder.chooseFriendBox.setOnClickListener(view -> {
                     updateSelectedUser(holder, model);
                 });
-            }
-        });
+//            }
+//        });
 //        holder.chooseFriendBox.setVisibility(View.VISIBLE);
 //        holder.chooseFriendBox.setOnClickListener(view -> {
 //            updateSelectedUser(holder, model);
