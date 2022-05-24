@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.models.User;
@@ -23,6 +24,8 @@ import edu.bluejack21_2.subscriptly.utils.GlobalVariable;
 import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 
 public class EditProfileActivity extends AppCompatActivity {
+
+    private FlexboxLayout containerEmailField;
     private Toolbar toolbar;
     private EditText nameTxt, usernameTxt, emailTxt;
     private Button saveChanges;
@@ -73,6 +76,9 @@ public class EditProfileActivity extends AppCompatActivity {
 //            });
 
     public void initComponents() {
+
+        containerEmailField = findViewById(R.id.container_email_field);
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.getNavigationIcon().mutate().setTint(getResources().getColor(R.color.primary_color));
@@ -83,6 +89,12 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges = findViewById(R.id.action_save_changes);
         profilePictureCard = findViewById(R.id.profile_picture_card);
         profilePictureImage = findViewById(R.id.profile_picture);
+
+        if(UserRepository.GOOGLE_LOGGED != null) {
+            containerEmailField.setVisibility(View.GONE);
+        } else {
+            containerEmailField.setVisibility(View.VISIBLE);
+        }
 
         UserRepository.getLoggedInUser(result -> {
             Glide.with(getApplicationContext()).load(result.getImage()).into(profilePictureImage);
