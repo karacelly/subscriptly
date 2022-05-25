@@ -215,9 +215,12 @@ public class HomeActivity extends AppCompatActivity {
                     editor.clear();
                     editor.commit();
 
-                    if(UserRepository.GOOGLE_LOGGED != null) UserRepository.GOOGLE_LOGGED.signOut();
+                    if(UserRepository.GOOGLE_LOGGED != null) {
+                        UserRepository.GOOGLE_LOGGED.signOut();
+                    }
                     UserRepository.logOutFirebaseUser();
 
+                    UserRepository.GOOGLE_LOGGED = null;
                     UserRepository.LOGGED_IN_USER = null;
 
                     Intent i = new Intent(HomeActivity.this, MainActivity.class);

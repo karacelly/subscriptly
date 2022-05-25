@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
             UserRepository.signIn(email, password, listener -> {
                 if (listener) {
+                    UserRepository.GOOGLE_LOGGED = null;
                     Intent i = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(i);
                     finish();
