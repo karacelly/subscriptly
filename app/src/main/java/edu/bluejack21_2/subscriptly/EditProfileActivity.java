@@ -1,6 +1,8 @@
 package edu.bluejack21_2.subscriptly;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -9,6 +11,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -17,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.Field;
 import edu.bluejack21_2.subscriptly.utils.GlobalVariable;
@@ -44,33 +51,33 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-//    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
-//            new ActivityResultContracts.StartActivityForResult(),
-//            new ActivityResultCallback<ActivityResult>() {
-//                @Override
-//                public void onActivityResult(ActivityResult result) {
-////                if(result.getResultCode() == 3) {
-////
-////                }
-//                    if (result.getResultCode() == Activity.RESULT_OK) {
-//                        // There are no request codes
-//                        Intent data = result.getData();
+    ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+//                if(result.getResultCode() == 3) {
 //
-//                        if (data != null) {
-//                            Uri selectedImage = data.getData();
-//                            profilePictureImage.setImageURI(selectedImage);
-//                            String fileName = ImageHelper.getImageFileName(getApplicationContext(), selectedImage);
-//                            ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
-//                                if(listener == null) {
-//                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    finalFileName = listener;
-//                                }
-//                            });
-//                        }
-//                    }
 //                }
-//            });
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            profilePictureImage.setImageURI(selectedImage);
+                            String fileName = ImageHelper.getImageFileName(getApplicationContext(), selectedImage);
+                            ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
+                                if(listener == null) {
+                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    finalFileName = listener;
+                                }
+                            });
+                        }
+                    }
+                }
+            });
 
     public void initComponents() {
         toolbar = findViewById(R.id.toolbar);
@@ -96,9 +103,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
             profilePictureCard.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                ImageHelper.chooseImageAndUpload(this, profilePictureImage, GlobalVariable.FOLDER_PROFILE, listener -> {
-                    finalFileName = listener;
-                }).launch(intent);
+//                ImageHelper.chooseImageAndUpload(this, profilePictureImage, GlobalVariable.FOLDER_PROFILE, listener -> {
+//                    finalFileName = listener;
+//                }).launch(intent);
+                pickImageActivityResultLauncher.launch(intent);
             });
 
             saveChanges.setOnClickListener(view -> {
