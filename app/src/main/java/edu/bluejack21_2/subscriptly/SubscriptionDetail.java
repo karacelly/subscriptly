@@ -1,25 +1,12 @@
 package edu.bluejack21_2.subscriptly;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import java.util.ArrayList;
-
-import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
-import edu.bluejack21_2.subscriptly.models.Subscription;
-import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.ui.subs_detail.SubscriptionDetailFragment;
 
@@ -33,9 +20,10 @@ public class SubscriptionDetail extends AppCompatActivity {
         initComponents();
         setFragment();
 
-        toolbar.setNavigationOnClickListener(view -> {
-            onBackPressed();
-        });
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+        toolbar.getNavigationIcon().mutate().setTint(ContextCompat.getColor(getApplicationContext(), R.color.primary_color));
+
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 
     public void initComponents() {

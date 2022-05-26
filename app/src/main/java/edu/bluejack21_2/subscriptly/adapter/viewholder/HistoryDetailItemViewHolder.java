@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +43,7 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
         ImageHelper.LoadImage(view.getContext(), u.getImage(), memberImage);
 
         if(transactionDetail == null){
-            view.setBackgroundColor(view.getResources().getColor(R.color.light_red));
+            view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_red));
             paidStatusTxt.setVisibility(View.GONE);
             verifyButton.setVisibility(View.GONE);
         } else {
@@ -54,11 +55,11 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
             } else {
 
                 if(transactionDetail.getVerified()) {
-                    view.setBackgroundColor(view.getResources().getColor(R.color.light_blue));
+                    view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_blue));
                     paidStatusTxt.setVisibility(View.VISIBLE);
                     verifyButton.setVisibility(View.GONE);
                 }else{
-                    view.setBackgroundColor(view.getResources().getColor(R.color.light_yellow));
+                    view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_yellow));
                     paidStatusTxt.setText(view.getResources().getString(R.string.pending_txt));
 
                     if(isCreator) paidStatusTxt.setVisibility(View.GONE);
