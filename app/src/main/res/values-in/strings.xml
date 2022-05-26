@@ -101,4 +101,5 @@
     <string name="menu_history">Riwayat</string>
     <string name="menu_media">Lampiran</string>
     <string name="upload_label">Mengunggah Bukti Transfer</string>
+    <string name="pending_txt">Tertunda</string>
 </resources>
