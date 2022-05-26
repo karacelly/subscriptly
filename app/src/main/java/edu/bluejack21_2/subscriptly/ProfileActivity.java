@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.ImageRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
+import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 
 public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -63,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
             usernameTxt.setText(user.getUsername());
             emailTxt.setText(user.getEmail());
 
-            Glide.with(getApplicationContext()).load(user.getImage()).into(profilePicture);
+            ImageHelper.LoadImage(getApplicationContext(), user.getImage(), profilePicture);
         });
 
 

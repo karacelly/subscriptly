@@ -15,6 +15,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.util.UUID;
 
@@ -44,6 +46,10 @@ public class ImageHelper {
         }
 
         return extension;
+    }
+
+    public static void LoadImage(Context ctx, String url, ImageView image) {
+        Glide.with(ctx).load(url).into(image);
     }
 
     public static ActivityResultLauncher<Intent> chooseImageAndUpload(AppCompatActivity activity, ImageView targetView, String folderName, QueryFinishListener<String> listener) {
