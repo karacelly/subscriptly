@@ -40,13 +40,15 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
         } else if(!FirebaseAuth.getInstance().getUid().equals(transactionDetail.getSubscription().getCreator().getUserID())) {
             verifyButton.setVisibility(View.GONE);
         } else {
-            view.setBackgroundColor(view.getResources().getColor(R.color.light_blue));
 
             if(transactionDetail.getVerified()) {
+                view.setBackgroundColor(view.getResources().getColor(R.color.light_blue));
                 paidStatusTxt.setVisibility(View.VISIBLE);
                 verifyButton.setVisibility(View.GONE);
             }else{
-                paidStatusTxt.setVisibility(View.GONE);
+                view.setBackgroundColor(view.getResources().getColor(R.color.light_yellow));
+                paidStatusTxt.setText(view.getResources().getString(R.string.pending_txt));
+//                paidStatusTxt.setVisibility(View.GONE);
                 verifyButton.setVisibility(View.VISIBLE);
             }
         }

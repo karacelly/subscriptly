@@ -69,7 +69,6 @@ public class SubscriptionDetailHistoryFragment extends Fragment {
 
     private void fetchData() {
         SubscriptionRepository.paginateMonthlyTransaction(subscription.getSubscriptionId(), LIMIT, transactionHeaders -> {
-            Log.d("TRANSACTION HEADER | Subscription Detail Fragment History | Size Fetched", transactionHeaders.size() + "");
             if (!transactionHeaders.isEmpty()) {
                 transactionHeaders.sort(Comparator.comparing(TransactionHeader::getBillingDate).reversed());
                 for (TransactionHeader header:

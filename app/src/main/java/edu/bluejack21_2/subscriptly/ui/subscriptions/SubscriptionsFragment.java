@@ -107,26 +107,32 @@ public class SubscriptionsFragment extends Fragment implements QueryChangeListen
 
         sortAZ.setOnClickListener(v -> {
             subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getName));
+            subscriptionRecycler.scrollToPosition(0);
         });
 
         sortZA.setOnClickListener(v -> {
             subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getName).reversed());
+            subscriptionRecycler.scrollToPosition(0);
         });
 
         sortHighLow.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getBill).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getDistributedBill).reversed());
+            subscriptionRecycler.scrollToPosition(0);
         });
 
         sortLowHigh.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getBill));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getDistributedBill));
+            subscriptionRecycler.scrollToPosition(0);
         });
 
         sortNewest.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt));
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
+            subscriptionRecycler.scrollToPosition(0);
         });
 
         sortOldest.setOnClickListener(v -> {
-            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt).reversed());
+            subscriptionRecyclerAdapter.setComparator(Comparator.comparing(Subscription::getStartAt));
+            subscriptionRecycler.scrollToPosition(0);
         });
     }
 

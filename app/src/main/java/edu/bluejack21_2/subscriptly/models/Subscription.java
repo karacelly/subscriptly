@@ -129,6 +129,13 @@ public class Subscription {
         this.name = name;
     }
 
+    public Long getDistributedBill() {
+        if(members == null) {
+            return bill;
+        }
+        return members.size() > 0 ? bill / members.size() : bill;
+    }
+
     public Long getBill() {
         return bill;
     }

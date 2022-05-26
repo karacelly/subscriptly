@@ -100,4 +100,5 @@
     <string name="menu_history">History</string>
     <string name="menu_media">Media</string>
     <string name="upload_label">Upload Receipt</string>
+    <string name="pending_txt">Pending</string>
 </resources>
