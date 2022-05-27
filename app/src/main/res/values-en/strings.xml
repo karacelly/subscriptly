@@ -105,4 +105,5 @@
     <string name="sort_lowest_label">Lowest Price</string>
     <string name="sort_newest_label">Newest</string>
     <string name="sort_oldest_label">Oldest</string>
+    <string name="tab_add_friend">Add Friend</string>
 </resources>

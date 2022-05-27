@@ -37,4 +37,12 @@ public class UserHelper {
         return false;
     }
 
+    public static Boolean userIdAlreadyExist(ArrayList<String> userIds, String userID) {
+        for (String id:
+                userIds) {
+            if(id.equals(userID)) return true;
+        }
+        return false;
+    }
+
 }

@@ -34,40 +34,90 @@
             android:textColor="@color/primary_color"
             android:textSize="20dp" />
 
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginVertical="15dp"
+            app:alignItems="center"
+            android:padding="10dp"
+            android:background="@drawable/rounded_light_grey"
+            app:justifyContent="space_around">
+
+            <TextView
+                android:id="@+id/text_menu_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:fontFamily="@font/outfit_medium"
+                android:text="@string/title_friends"/>
+
+            <TextView
+                android:id="@+id/text_menu_pending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:fontFamily="@font/outfit_medium"
+                android:text="@string/pending_txt"/>
+
+            <TextView
+                android:id="@+id/text_menu_add_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:fontFamily="@font/outfit_medium"
+                android:text="@string/tab_add_friend"/>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="15dp"
-            android:orientation="vertical">
+            android:layout_marginVertical="15dp">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/field_search_friend"
-                app:iconifiedByDefault="false"
+            <FrameLayout
+                android:id="@+id/friend_fragment_placeholder"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/border_bg_white" />
+                android:layout_height="match_parent"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="15dp">
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_friends"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                </ScrollView>
-
-            </LinearLayout>
         </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginHorizontal="10dp"-->
+<!--            android:layout_marginVertical="15dp"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <androidx.appcompat.widget.SearchView-->
+<!--                android:id="@+id/field_search_friend"-->
+<!--                app:iconifiedByDefault="false"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:background="@drawable/border_bg_white" />-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginVertical="15dp">-->
+
+<!--                <ScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
+
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/recycler_friends"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
+
+<!--                    </androidx.recyclerview.widget.RecyclerView>-->
+
+<!--                </ScrollView>-->
+
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 </RelativeLayout>

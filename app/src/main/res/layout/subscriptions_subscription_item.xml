@@ -46,7 +46,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/outfit_extra_bold"
-                    android:text="Spotify"
                     android:textColor="@color/primary_color"
                     android:textSize="17sp" />
 
@@ -56,7 +55,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/outfit"
-                    android:text="4 people"
                     android:textColor="@color/primary_color"
                     android:textSize="12sp" />
             </LinearLayout>

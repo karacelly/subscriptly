@@ -7,7 +7,7 @@
     <string name="title_home">Beranda</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_feeds">Feeds</string>
-    <string name="title_friends">Friends</string>
+    <string name="title_friends">Teman</string>
     <string name="title_subscriptions">Langganan</string>
     <string name="title_notifications">Notifikasi</string>
     <string name="title_activity_home">Home</string>
@@ -45,7 +45,7 @@
 
     <!-- User Form -->
     <string name="name_label">Nama</string>
-    <string name="username_label">Username</string>
+    <string name="username_label">Nama Pengguna</string>
     <string name="email_label">Email</string>
     <string name="password_label">Kata Sandi</string>
     <string name="confirm_password_label">Konfirmasi Kata Sandi</string>
@@ -107,4 +107,5 @@
     <string name="sort_lowest_label">Harge Terendah</string>
     <string name="sort_newest_label">Terbaru</string>
     <string name="sort_oldest_label">Terlama</string>
+    <string name="tab_add_friend">Tambah Teman</string>
 </resources>

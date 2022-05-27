@@ -32,6 +32,7 @@ import edu.bluejack21_2.subscriptly.database.SubscriptlyDB;
 import edu.bluejack21_2.subscriptly.interfaces.QueryFinishListener;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
+import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
 public class UserRepository {
 
@@ -55,6 +56,55 @@ public class UserRepository {
         } else {
             listener.onFinish(LOGGED_IN_USER);
         }
+    }
+
+    public static void forceRefreshLoggedInUser(QueryFinishListener<Boolean> listener) {
+        getUser(FirebaseAuth.getInstance().getUid(), user -> {
+            if(user != null) {
+                LOGGED_IN_USER = user;
+                listener.onFinish(true);
+            } else {
+                listener.onFinish(false);
+            }
+        });
+    }
+
+    public static void getAllStranger(String currentUserId, QueryFinishListener<ArrayList<User>> listener) {
+        ArrayList<User> users = new ArrayList<>();
+        getUser(currentUserId, user ->
+            userRef.get()
+                .addOnSuccessListener(userSnapshots -> {
+                    ArrayList<String> userIds = new ArrayList<>();
+                    for (DocumentSnapshot userSnapshot:
+                         userSnapshots) {
+                        String id = userSnapshot.getReference().getId();
+                        if(!UserHelper.userIdAlreadyExist(user.getFriends(), id)) {
+                            userIds.add(id);
+                        }
+                    }
+                    ArrayList<String> strangerIds = new ArrayList<>();
+                    getRelatedRequest(currentUserId, friendRequests -> {
+                        for (String userId:
+                             userIds) {
+                            if(UserHelper.getFriendRequest(friendRequests, currentUserId, userId) == null) {
+                                strangerIds.add(userId);
+                            }
+                        }
+                        for (String strangerId:
+                             strangerIds) {
+                            getUser(strangerId, strangerUser -> {
+                                users.add(strangerUser);
+                                if(users.size() == strangerIds.size()) {
+                                    listener.onFinish(users);
+                                }
+                            });
+                        }
+                    });
+                })
+                .addOnFailureListener(e->listener.onFinish(users))
+
+        );
+
     }
 
     public static void getAllUser(int limit, QueryFinishListener<ArrayList<User>> listener) {

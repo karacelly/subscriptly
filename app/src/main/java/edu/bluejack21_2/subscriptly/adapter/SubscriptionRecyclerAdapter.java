@@ -102,7 +102,7 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionPrice.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
-        holder.subscriptionMemberCounts.setText(memberCount + context.getResources().getString(R.string.people_label));
+        holder.subscriptionMemberCounts.setText(memberCount + " " + context.getResources().getString(R.string.people_label));
 
         Glide.with(context).load(s.getImage()).into(holder.subscriptionImage);
         holder.subscriptionContainer.setOnClickListener(v -> {

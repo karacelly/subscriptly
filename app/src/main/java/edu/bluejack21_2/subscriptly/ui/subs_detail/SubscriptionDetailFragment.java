@@ -37,6 +37,7 @@ import edu.bluejack21_2.subscriptly.models.Subscription;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.ui.subscriptions.SubscriptionsFragment;
+import edu.bluejack21_2.subscriptly.utils.FontHelper;
 
 public class SubscriptionDetailFragment extends Fragment {
     private Subscription subscription;
@@ -44,7 +45,10 @@ public class SubscriptionDetailFragment extends Fragment {
     private ImageView subsPhoto;
     private TextView subsName, menuMembers, menuHistory, menuMedia;
 
-    private Typeface outfitMedium, outfitSemiBold, outfitBold;
+    private Typeface
+            outfitMedium = FontHelper.getOutfitMedium(getContext()),
+            outfitSemiBold = FontHelper.getOutfitSemiBold(getContext()),
+            outfitBold = FontHelper.getOutfitBold(getContext());
     private FrameLayout layout;
 
     public SubscriptionDetailFragment() { }
@@ -62,18 +66,18 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initFonts(view);
+//        initFonts(view);
         initComponents(view);
         setDataOnView(view);
         createMenu(view);
         setFragment(new SubscriptionDetailMemberFragment(subscription));
     }
 
-    private void initFonts(View v) {
-        outfitMedium = ResourcesCompat.getFont(v.getContext(), R.font.outfit_medium);
-        outfitSemiBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_semi_bold);
-        outfitBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_bold);
-    }
+//    private void initFonts(View v) {
+//        outfitMedium = ResourcesCompat.getFont(v.getContext(), R.font.outfit_medium);
+//        outfitSemiBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_semi_bold);
+//        outfitBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_bold);
+//    }
 
     public void initComponents(View v) {
         layout = v.findViewById(R.id.layout_fragment_detail);

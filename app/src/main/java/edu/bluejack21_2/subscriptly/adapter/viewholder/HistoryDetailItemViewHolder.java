@@ -50,21 +50,19 @@ public class HistoryDetailItemViewHolder extends RecyclerView.ViewHolder {
 
             boolean isCreator = FirebaseAuth.getInstance().getUid().equals(transactionDetail.getSubscription().getCreator().getUserID());
 
-            if(!isCreator) {
+            if(transactionDetail.getVerified()) {
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_blue));
+                paidStatusTxt.setVisibility(View.VISIBLE);
                 verifyButton.setVisibility(View.GONE);
-            } else {
+            }else{
+                view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_yellow));
+                paidStatusTxt.setText(view.getResources().getString(R.string.pending_txt));
 
-                if(transactionDetail.getVerified()) {
-                    view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_blue));
-                    paidStatusTxt.setVisibility(View.VISIBLE);
-                    verifyButton.setVisibility(View.GONE);
-                }else{
-                    view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.light_yellow));
-                    paidStatusTxt.setText(view.getResources().getString(R.string.pending_txt));
-
-                    if(isCreator) paidStatusTxt.setVisibility(View.GONE);
-
+                if(isCreator) {
                     verifyButton.setVisibility(View.VISIBLE);
+                    paidStatusTxt.setVisibility(View.GONE);
+                } else {
+                    verifyButton.setVisibility(View.GONE);
                 }
             }
         }
