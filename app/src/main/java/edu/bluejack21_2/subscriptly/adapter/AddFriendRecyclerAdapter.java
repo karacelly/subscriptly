@@ -71,8 +71,6 @@ public class AddFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHol
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(FirebaseAuth.getInstance().getUid(), model.getUserID(), data -> {
                 if (data) {
-//                    holder.addFriend.setVisibility(View.GONE);
-//                    holder.cancelFriend.setVisibility(View.VISIBLE);
                     users.remove(model);
                     notifyDataSetChanged();
 //                    Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);

@@ -84,40 +84,6 @@
                 android:layout_height="match_parent"/>
 
         </LinearLayout>
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginHorizontal="10dp"-->
-<!--            android:layout_marginVertical="15dp"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <androidx.appcompat.widget.SearchView-->
-<!--                android:id="@+id/field_search_friend"-->
-<!--                app:iconifiedByDefault="false"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:background="@drawable/border_bg_white" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginVertical="15dp">-->
-
-<!--                <ScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
-
-<!--                    <androidx.recyclerview.widget.RecyclerView-->
-<!--                        android:id="@+id/recycler_friends"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent">-->
-
-<!--                    </androidx.recyclerview.widget.RecyclerView>-->
-
-<!--                </ScrollView>-->
-
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
 
     </LinearLayout>
 </RelativeLayout>
