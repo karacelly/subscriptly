@@ -46,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
             nameTxt.setText(user.getName());
             usernameTxt.setText(user.getUsername());
             emailTxt.setText(user.getEmail());
+            ImageHelper.LoadImage(getApplicationContext(), user.getImage(), profilePicture);
         });
     }
 
@@ -67,15 +68,10 @@ public class ProfileActivity extends AppCompatActivity {
             ImageHelper.LoadImage(getApplicationContext(), user.getImage(), profilePicture);
         });
 
-
-
         editProfileBtn = findViewById(R.id.profile_edit_button);
-        editProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(ProfileActivity.this, EditProfileActivity.class);
-                startActivity(i);
-            }
+        editProfileBtn.setOnClickListener(v -> {
+            Intent i = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(i);
         });
 
         changePasswordBtn = findViewById(R.id.change_pass_btn);

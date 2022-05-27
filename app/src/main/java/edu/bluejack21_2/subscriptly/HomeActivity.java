@@ -42,6 +42,7 @@ import edu.bluejack21_2.subscriptly.models.TransactionDetail;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 import edu.bluejack21_2.subscriptly.utils.BroadcastManager;
+import edu.bluejack21_2.subscriptly.utils.ImageHelper;
 
 public class HomeActivity extends AppCompatActivity {
     NotificationAdapter notificationAdapter;
@@ -234,9 +235,13 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         profilePicture = findViewById(R.id.profile_picture);
-        UserRepository.getLoggedInUser(res -> {
-            Glide.with(HomeActivity.this).load(res.getImage()).into(profilePicture);
-        });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserRepository.getLoggedInUser(user -> {
+            ImageHelper.LoadImage(getApplicationContext(), user.getImage(), profilePicture);
+        });
     }
 }

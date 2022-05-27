@@ -104,7 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         UserRepository.getLoggedInUser(result -> {
-            Glide.with(getApplicationContext()).load(result.getImage()).into(profilePictureImage);
+            ImageHelper.LoadImage(getApplicationContext(), result.getImage(), profilePictureImage);
 
             nameTxt.setHint(result.getName());
             nameTxt.setText(result.getName());
