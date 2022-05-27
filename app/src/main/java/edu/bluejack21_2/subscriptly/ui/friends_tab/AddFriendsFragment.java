@@ -19,11 +19,12 @@ import java.util.List;
 import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.AddFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.PendingFriendRecyclerAdapter;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
-public class AddFriendsFragment extends Fragment {
+public class AddFriendsFragment extends Fragment implements QueryChangeListener<User> {
     private static ArrayList<User> users = new ArrayList<>();
     private final int LIMIT = 8;
     boolean isFetchingData = false;
@@ -49,7 +50,7 @@ public class AddFriendsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        adapter = new AddFriendRecyclerAdapter(getActivity());
+        adapter = new AddFriendRecyclerAdapter(getActivity(), this);
         recyclerView = view.findViewById(R.id.recycler_existing_friends);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -112,4 +113,8 @@ public class AddFriendsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_friends_tab_add_friend, container, false);
     }
 
+    @Override
+    public void onChange(User data) {
+        users.remove(data);
+    }
 }
