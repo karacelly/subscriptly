@@ -70,7 +70,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             Uri selectedImage = data.getData();
                             profilePictureImage.setImageURI(selectedImage);
                             String fileName = ImageHelper.getImageFileName(getApplicationContext(), selectedImage);
-                            ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
+                            ImageRepository.InsertImage(EditProfileActivity.this, "profile", fileName, selectedImage, listener -> {
                                 if(listener == null) {
 //                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
                                 } else {

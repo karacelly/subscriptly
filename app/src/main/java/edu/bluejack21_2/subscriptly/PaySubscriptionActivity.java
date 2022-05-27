@@ -58,7 +58,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
                             receiptImage.setImageURI(selectedImage);
                         }
                         String fileName = ImageHelper.getImageFileName(this, selectedImage);
-                        ImageRepository.InsertImage(GlobalVariable.FOLDER_RECEIPT, fileName, selectedImage, imageURL -> {
+                        ImageRepository.InsertImage(PaySubscriptionActivity.this, GlobalVariable.FOLDER_RECEIPT, fileName, selectedImage, imageURL -> {
                             this.imageURL = imageURL;
 //                            Toast.makeText(this, "Upload Image Failed!", Toast.LENGTH_SHORT).show();
                         });

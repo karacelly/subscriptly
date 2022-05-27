@@ -98,7 +98,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                             imageSubscription.setImageURI(selectedImage);
                             String fileName = ImageHelper.getImageFileName(context, selectedImage);
                             finishUpload = false;
-                            ImageRepository.InsertImage(GlobalVariable.FOLDER_SUBSCRIPTION, fileName, selectedImage, listener -> {
+                            ImageRepository.InsertImage(AddSubscriptionActivity.this, GlobalVariable.FOLDER_SUBSCRIPTION, fileName, selectedImage, listener -> {
                                 if(listener != null) {
                                     imageURL = listener;
                                     finishUpload = true;

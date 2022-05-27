@@ -25,6 +25,7 @@ import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
 
 public class FriendsExistingFragment extends Fragment {
+    
     private static ArrayList<User> friends = new ArrayList<>();
     private final int LIMIT = 8;
     boolean isFetchingData = false;

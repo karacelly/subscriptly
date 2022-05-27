@@ -69,7 +69,7 @@ public class ImageHelper {
                                 targetView.setImageURI(selectedImage);
                             }
                             String fileName = getImageFileName(activity.getApplicationContext(), selectedImage);
-                            ImageRepository.InsertImage(folderName, fileName, selectedImage, imageURL -> {
+                            ImageRepository.InsertImage(activity, folderName, fileName, selectedImage, imageURL -> {
                                 listener.onFinish(imageURL);
 //                                Toast.makeText(activity.getApplicationContext(), "Upload Image Failed!", Toast.LENGTH_SHORT).show();
                             });
