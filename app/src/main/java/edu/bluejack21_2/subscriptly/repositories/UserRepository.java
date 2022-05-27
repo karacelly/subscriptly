@@ -78,7 +78,7 @@ public class UserRepository {
                     for (DocumentSnapshot userSnapshot:
                          userSnapshots) {
                         String id = userSnapshot.getReference().getId();
-                        if(!UserHelper.userIdAlreadyExist(user.getFriends(), id)) {
+                        if(!FirebaseAuth.getInstance().getUid().equals(id) && !UserHelper.userIdAlreadyExist(user.getFriends(), id)) {
                             userIds.add(id);
                         }
                     }
