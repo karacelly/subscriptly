@@ -101,4 +101,9 @@
     <string name="menu_media">Media</string>
     <string name="upload_label">Upload Receipt</string>
     <string name="pending_txt">Pending</string>
+    <string name="people_label">people</string>
+    <string name="sort_highest_label">Highest Price</string>
+    <string name="sort_lowest_label">Lowest Price</string>
+    <string name="sort_newest_label">Newest</string>
+    <string name="sort_oldest_label">Oldest</string>
 </resources>

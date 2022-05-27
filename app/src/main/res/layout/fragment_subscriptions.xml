@@ -75,7 +75,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/border_bg_white"
                         android:fontFamily="@font/outfit_bold"
-                        android:text="Highest Price"
+                        android:text="@string/sort_highest_label"
                         android:textColor="@color/primary_color"
                         android:textSize="12sp" />
 
@@ -86,7 +86,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/border_bg_white"
                         android:fontFamily="@font/outfit_bold"
-                        android:text="Lowest Price"
+                        android:text="@string/sort_lowest_label"
                         android:textColor="@color/primary_color"
                         android:textSize="12sp" />
 
@@ -97,7 +97,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/border_bg_white"
                         android:fontFamily="@font/outfit_bold"
-                        android:text="Newest"
+                        android:text="@string/sort_newest_label"
                         android:textColor="@color/primary_color"
                         android:textSize="12sp" />
 
@@ -108,7 +108,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/border_bg_white"
                         android:fontFamily="@font/outfit_bold"
-                        android:text="Oldest"
+                        android:text="@string/sort_oldest_label"
                         android:textColor="@color/primary_color"
                         android:textSize="12sp" />
                 </LinearLayout>

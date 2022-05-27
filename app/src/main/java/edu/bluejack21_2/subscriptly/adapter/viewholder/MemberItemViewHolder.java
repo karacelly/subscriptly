@@ -40,7 +40,6 @@ public class MemberItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(User user, Subscription subscription, QueryChangeListener<Boolean> listener) {
-        binding.setModel(user);
         if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(subscription.getCreator().getUserID())) {
             kickMember.setVisibility(View.GONE);
         }

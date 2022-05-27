@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.SubscriptionDetail;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.SubscriptionViewHolder;
 import edu.bluejack21_2.subscriptly.models.Subscription;
@@ -101,7 +102,7 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         Integer memberCount = s.getMembers().size();
         holder.subscriptionName.setText(s.getName());
         holder.subscriptionPrice.setText(Currency.formatToRupiah(s.getBill().doubleValue() / memberCount));
-        holder.subscriptionMemberCounts.setText(memberCount + " people");
+        holder.subscriptionMemberCounts.setText(memberCount + context.getResources().getString(R.string.people_label));
 
         Glide.with(context).load(s.getImage()).into(holder.subscriptionImage);
         holder.subscriptionContainer.setOnClickListener(v -> {
