@@ -122,12 +122,12 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
         holder.acceptFriend.setOnClickListener(v -> {
             UserRepository.acceptFriendRequest(request.getSender(), request.getReceiver(), data -> {
                 if (data) {
-                    Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
+//                    Toast.makeText(context.getApplicationContext(), "Success Accept", Toast.LENGTH_SHORT);
                     holder.acceptFriend.setVisibility(View.GONE);
                     holder.rejectFriend.setVisibility(View.GONE);
                     holder.removeFriend.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
+//                    Toast.makeText(context.getApplicationContext(), "Failed Accept", Toast.LENGTH_SHORT);
                 }
             });
         });
@@ -138,9 +138,9 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                     holder.rejectFriend.setVisibility(View.GONE);
                     holder.acceptFriend.setVisibility(View.GONE);
                     holder.addFriend.setVisibility(View.VISIBLE);
-                    Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
+//                    Toast.makeText(context.getApplicationContext(), "Success Reject", Toast.LENGTH_SHORT);
                 } else {
-                    Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
+//                    Toast.makeText(context.getApplicationContext(), "Failed Reject", Toast.LENGTH_SHORT);
                 }
             });
         });
@@ -150,9 +150,9 @@ public class FriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder
                 if (data) {
                     holder.addFriend.setVisibility(View.GONE);
                     holder.cancelFriend.setVisibility(View.VISIBLE);
-                    Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
+//                    Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
                 } else {
-                    Toast.makeText(context, "Failed Add Friend", Toast.LENGTH_LONG);
+//                    Toast.makeText(context, "Failed Add Friend", Toast.LENGTH_LONG);
                 }
             });
         });

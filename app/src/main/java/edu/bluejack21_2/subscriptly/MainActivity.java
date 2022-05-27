@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Log.d("signIn", "Invalid Credentials!");
-                    Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
                 }
             });
         });

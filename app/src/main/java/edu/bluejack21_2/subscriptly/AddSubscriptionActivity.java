@@ -110,7 +110,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                                         uploadData();
                                     }
                                 } else {
-                                    Toast.makeText(AddSubscriptionActivity.this, R.string.error_upload_image, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(AddSubscriptionActivity.this, R.string.error_upload_image, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -282,7 +282,7 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                     if(finishUpload) {
                         uploadData();
                     } else {
-                        Toast.makeText(this, "Subscription will be added once image finish uploading!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(this, "Subscription will be added once image finish uploading!", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -299,17 +299,17 @@ public class AddSubscriptionActivity extends AppCompatActivity implements QueryC
                 SubscriptionRepository.insertSubscription(this, subscription, myCalendar, subListener -> {
                     Log.d("ADD SUBSCRIPTION", "Result : " + subListener);
                     if(subListener) {
-                        Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AddSubscriptionActivity.this, "Success Add Subscription", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(AddSubscriptionActivity.this, "Failed Add Subscription", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AddSubscriptionActivity.this, "Failed Add Subscription", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
                 Log.d("ADD SUBSCRIPTION", "Subscription name already exist in your list!");
-                Toast.makeText(AddSubscriptionActivity.this, "Subscription name already exist in your list!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddSubscriptionActivity.this, "Subscription name already exist in your list!", Toast.LENGTH_SHORT).show();
             }
         });
     }

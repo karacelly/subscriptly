@@ -65,28 +65,28 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         .addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 if(newPassword.length() < 8 || newPassword.length() > 30) {
-                                    Toast.makeText(getApplicationContext(), "Your password must be between 8 and 30 characters", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(), "Your password must be between 8 and 30 characters", Toast.LENGTH_SHORT).show();
                                 }else{
                                     if(newPassword.equals(confirmPassword)) {
                                         UserRepository.updateUserPassword(newPassword, listener -> {
                                             if(listener) {
-                                                Toast.makeText(getApplicationContext(), "Change password success!", Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(getApplicationContext(), "Change password success!", Toast.LENGTH_SHORT).show();
                                                 onBackPressed();
                                             }else{
                                                 Log.d(TAG, "Change password failed!");
-                                                Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     } else{
-                                        Toast.makeText(getApplicationContext(), "Confirm password must be the same with password", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getApplicationContext(), "Confirm password must be the same with password", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }else {
-                                Toast.makeText(getApplicationContext(), "Wrong current password!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Wrong current password!", Toast.LENGTH_SHORT).show();
                             }
                         });
             }else{
-                Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
             }
         });
     }

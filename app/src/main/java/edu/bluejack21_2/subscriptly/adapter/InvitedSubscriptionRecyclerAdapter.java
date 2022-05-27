@@ -73,7 +73,7 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
 //                    updateFragment();
                     listener.onChange(true);
                 } else {
-                    Toast.makeText(view.getContext(), "Accept Invitation Error!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(view.getContext(), "Accept Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -86,7 +86,7 @@ public class InvitedSubscriptionRecyclerAdapter extends RecyclerView.Adapter<Sub
 //                    updateFragment();
                     listener.onChange(true);
                 } else {
-                    Toast.makeText(view.getContext(), "Reject Invitation Error!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(view.getContext(), "Reject Invitation Error!", Toast.LENGTH_SHORT).show();
                 }
             });
         });

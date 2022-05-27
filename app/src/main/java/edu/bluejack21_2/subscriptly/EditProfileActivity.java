@@ -72,7 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             String fileName = ImageHelper.getImageFileName(getApplicationContext(), selectedImage);
                             ImageRepository.InsertImage("profile", fileName, selectedImage, listener -> {
                                 if(listener == null) {
-                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(), "Upload Image Failed! Try again!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     finalFileName = listener;
                                 }
@@ -139,14 +139,14 @@ public class EditProfileActivity extends AppCompatActivity {
                                                     result.setUsername(username);
                                                     result.setEmail(email);
                                                     result.setImage(file);
-                                                    Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                                     onBackPressed();
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                         } else {
-                                            Toast.makeText(getApplicationContext(), "Email is taken!", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(), "Email is taken!", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 } else {
@@ -156,15 +156,15 @@ public class EditProfileActivity extends AppCompatActivity {
                                             result.setUsername(username);
                                             result.setEmail(email);
                                             result.setImage(file);
-                                            Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                             onBackPressed();
                                         } else {
-                                            Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "Username is taken!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Username is taken!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else if (!email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
@@ -176,14 +176,14 @@ public class EditProfileActivity extends AppCompatActivity {
                                         result.setUsername(username);
                                         result.setEmail(email);
                                         result.setImage(file);
-                                        Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                         onBackPressed();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             } else {
-                                Toast.makeText(getApplicationContext(), "Email is taken!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Email is taken!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
@@ -193,15 +193,15 @@ public class EditProfileActivity extends AppCompatActivity {
                                 result.setUsername(username);
                                 result.setEmail(email);
                                 result.setImage(file);
-                                Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Update Profile is Successful", Toast.LENGTH_SHORT).show();
                                 onBackPressed();
                             } else {
-                                Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "System Error! Try again!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
                 }
             });
         });

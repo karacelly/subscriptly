@@ -58,12 +58,12 @@ public class HistoryDetailItemAdapter extends RecyclerView.Adapter<HistoryDetail
                 holder.verifyButton.setOnClickListener(v -> {
                     SubscriptionRepository.verifyTransaction(finalTransactionDetail.getSubscription().getSubscriptionId(), transactionHeader.getTransactionId(), finalTransactionDetail.getTransactionDetailId(), verification -> {
                         if(verification) {
-                            Toast.makeText(v.getContext(), "Verification Transaction Success!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(v.getContext(), "Verification Transaction Success!", Toast.LENGTH_SHORT).show();
                             finalTransactionDetail.setVerified(true);
                             notifyDataSetChanged();
         //                    holder.verifyButton.setVisibility(View.GONE);
                         }
-                        else Toast.makeText(v.getContext(), "Verification Transaction Failed!", Toast.LENGTH_SHORT).show();
+//                        else Toast.makeText(v.getContext(), "Verification Transaction Failed!", Toast.LENGTH_SHORT).show();
                     });
                 });
             }

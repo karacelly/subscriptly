@@ -94,7 +94,7 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
 
 //        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
 //            if (invited == null)
-                Toast.makeText(context, "Error getting data", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Error getting data", Toast.LENGTH_SHORT).show();
 //            else if (invited == true) holder.invitedText.setVisibility(View.VISIBLE);
 //            else {
                 holder.chooseFriendBox.setVisibility(View.VISIBLE);

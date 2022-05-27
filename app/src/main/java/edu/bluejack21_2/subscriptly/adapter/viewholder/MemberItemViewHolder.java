@@ -67,7 +67,7 @@ public class MemberItemViewHolder extends RecyclerView.ViewHolder {
                                 subscription.getMembers().remove(user);
                                 listener.onChange(true);
                             } else {
-                                Toast.makeText(view.getContext(), "Failed Remove Member!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(view.getContext(), "Failed Remove Member!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     });

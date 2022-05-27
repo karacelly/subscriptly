@@ -60,7 +60,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
                         String fileName = ImageHelper.getImageFileName(this, selectedImage);
                         ImageRepository.InsertImage(GlobalVariable.FOLDER_RECEIPT, fileName, selectedImage, imageURL -> {
                             this.imageURL = imageURL;
-                            Toast.makeText(this, "Upload Image Failed!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(this, "Upload Image Failed!", Toast.LENGTH_SHORT).show();
                         });
                     }
                 }
@@ -128,7 +128,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
         }
         if (imageURL == null) {
             error = true;
-            Toast.makeText(this, "Please upload the receipt!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Please upload the receipt!", Toast.LENGTH_SHORT).show();
         }
 
         if (!error) {
@@ -136,7 +136,7 @@ public class PaySubscriptionActivity extends AppCompatActivity {
                 if (listener) {
                     onBackPressed();
                 } else {
-                    Toast.makeText(this, R.string.error_upload, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, R.string.error_upload, Toast.LENGTH_SHORT).show();
                 }
             });
         }

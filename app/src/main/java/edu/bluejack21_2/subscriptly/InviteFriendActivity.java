@@ -145,9 +145,9 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
 
     }
     private void setInviteListener(){
-        Toast.makeText(this, "Setting Invite Listener", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Setting Invite Listener", Toast.LENGTH_SHORT).show();
         inviteFriend.setOnClickListener(view -> {
-        Toast.makeText(this, "Invite Listener is Clicked", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Invite Listener is Clicked", Toast.LENGTH_SHORT).show();
                     Log.d("INVITED USER | SIZE", SubscriptionRepository.chosenFriends.size()+"");
             if(!SubscriptionRepository.chosenFriends.isEmpty()) {
                 for (User user:
@@ -155,13 +155,13 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
                     Log.d("INVITED USER", user.getUserID());
                     SubscriptionRepository.sendInvitation(FirebaseAuth.getInstance().getCurrentUser().getUid(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), user.getUserID(), inviteListener -> {
                         if(inviteListener) {
-                            Toast.makeText(this, "Success Invite New Member", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(this, "Success Invite New Member", Toast.LENGTH_SHORT).show();
                             if(SubscriptionRepository.chosenFriends.get(SubscriptionRepository.chosenFriends.size()-1).equals(user)) {
                                 SubscriptionRepository.chosenFriends.clear();
                                 onBackPressed();
                             }
                         } else {
-                            Toast.makeText(this, "Invitation Failed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(this, "Invitation Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
 

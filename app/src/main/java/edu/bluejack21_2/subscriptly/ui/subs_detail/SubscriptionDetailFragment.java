@@ -171,7 +171,7 @@ public class SubscriptionDetailFragment extends Fragment {
                                         startActivity(back);
                                         getActivity().finish();
                                     } else {
-                                        Toast.makeText(getContext(), "Failed Delete Subscription", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getContext(), "Failed Delete Subscription", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 dialog.dismiss();

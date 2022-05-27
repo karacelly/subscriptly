@@ -236,7 +236,7 @@ public class UserRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ctx, "Login failed! " + e.getMessage(), Toast.LENGTH_SHORT);
+//                        Toast.makeText(ctx, "Login failed! " + e.getMessage(), Toast.LENGTH_SHORT);
                         Log.d(tag, "onFailure: Login failed " + e.getMessage());
                     }
                 });
