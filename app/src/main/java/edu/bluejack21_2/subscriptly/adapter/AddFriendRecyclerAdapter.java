@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
+import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.FriendRequest;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.UserRepository;
@@ -25,7 +26,7 @@ public class AddFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHol
     private final Context context;
 
     private ArrayList<User> users;
-    private ArrayList<FriendRequest> requests;
+    private QueryChangeListener<User> listener;
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;
@@ -34,10 +35,10 @@ public class AddFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHol
 
     private FriendViewHolder friendViewHolder;
 
-    public AddFriendRecyclerAdapter(Context context) {
+    public AddFriendRecyclerAdapter(Context context, QueryChangeListener<User> listener) {
         this.context = context;
         this.users = users == null ? new ArrayList<>() : users;
-        this.requests = requests == null ? new ArrayList<>() : requests;
+        this.listener = listener;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -71,9 +72,8 @@ public class AddFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHol
         holder.addFriend.setOnClickListener(v -> {
             UserRepository.sendFriendRequest(FirebaseAuth.getInstance().getUid(), model.getUserID(), data -> {
                 if (data) {
-//                    holder.addFriend.setVisibility(View.GONE);
-//                    holder.cancelFriend.setVisibility(View.VISIBLE);
                     users.remove(model);
+                    listener.onChange(model);
                     notifyDataSetChanged();
 //                    Toast.makeText(context, "Success Add Friend", Toast.LENGTH_LONG);
                 } else {

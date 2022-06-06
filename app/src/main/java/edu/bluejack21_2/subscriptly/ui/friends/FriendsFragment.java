@@ -46,7 +46,7 @@ public class FriendsFragment extends Fragment {
 
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<FriendRequest> requests;
-    private SearchView fieldSearchFriend;
+
     private RecyclerView friendsRecycler;
     private final int LIMIT = 8;
     boolean isFetchingData = false;
@@ -124,7 +124,7 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initFonts();
         UserRepository.lastFetchedSnapshot = null;
-        fieldSearchFriend = view.findViewById(R.id.field_search_friend);
+
         friendsRecycler = view.findViewById(R.id.recycler_friends);
 
         menuFriends = view.findViewById(R.id.text_menu_friends);
