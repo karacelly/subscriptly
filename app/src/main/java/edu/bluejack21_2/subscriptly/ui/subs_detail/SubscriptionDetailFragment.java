@@ -46,9 +46,9 @@ public class SubscriptionDetailFragment extends Fragment {
     private TextView subsName, menuMembers, menuHistory, menuMedia;
 
     private Typeface
-            outfitMedium = FontHelper.getOutfitMedium(getContext()),
-            outfitSemiBold = FontHelper.getOutfitSemiBold(getContext()),
-            outfitBold = FontHelper.getOutfitBold(getContext());
+            outfitMedium,
+            outfitSemiBold,
+            outfitBold;
     private FrameLayout layout;
 
     public SubscriptionDetailFragment() { }
@@ -73,16 +73,18 @@ public class SubscriptionDetailFragment extends Fragment {
         setFragment(new SubscriptionDetailMemberFragment(subscription));
     }
 
-//    private void initFonts(View v) {
-//        outfitMedium = ResourcesCompat.getFont(v.getContext(), R.font.outfit_medium);
-//        outfitSemiBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_semi_bold);
-//        outfitBold = ResourcesCompat.getFont(v.getContext(), R.font.outfit_bold);
-//    }
+    private void initFonts() {
+        outfitMedium = FontHelper.getOutfitMedium(getContext());
+        outfitSemiBold = FontHelper.getOutfitSemiBold(getContext());
+        outfitBold = FontHelper.getOutfitBold(getContext());
+    }
 
     public void initComponents(View v) {
         layout = v.findViewById(R.id.layout_fragment_detail);
         subsPhoto = v.findViewById(R.id.subs_photo);
         subsName = v.findViewById(R.id.subs_name);
+
+        initFonts();
 
         uploadReceiptButton = v.findViewById(R.id.action_upload_receipt);
         uploadReceiptButton.setOnClickListener(view -> {

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,6 +22,7 @@ import java.util.List;
 
 import edu.bluejack21_2.subscriptly.adapter.ChooseFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.adapter.ChosenUserRecyclerAdapter;
+import edu.bluejack21_2.subscriptly.adapter.InviteFriendRecyclerAdapter;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
 import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
@@ -33,7 +33,7 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
 
     private static final Comparator<User> ALPHABETICAL_COMPARATOR = Comparator.comparing(User::getName);
     private HorizontalScrollView containerChosenUser;
-    public static ChooseFriendRecyclerAdapter chooseFriendAdapter;
+    public static InviteFriendRecyclerAdapter inviteFriendAdapter;
     public static ChosenUserRecyclerAdapter chosenUserAdapter;
     private ArrayList<User> users;
     private TextView inviteFriend;
@@ -103,13 +103,13 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
         chosenUserAdapter = new ChosenUserRecyclerAdapter(this, this);
         setRecyclerView(chosenUserAdapter, LinearLayoutManager.HORIZONTAL, chosenUserRecycler);
 
-        chooseFriendAdapter = new ChooseFriendRecyclerAdapter(ALPHABETICAL_COMPARATOR, this, chosenUserAdapter, this);
-        chosenUserAdapter.setChooseFriendRecyclerAdapter(chooseFriendAdapter);
+        inviteFriendAdapter = new InviteFriendRecyclerAdapter(ALPHABETICAL_COMPARATOR, this, chosenUserAdapter, this);
+        chosenUserAdapter.setChooseFriendRecyclerAdapter(inviteFriendAdapter);
 
         if (users == null) users = new ArrayList<>();
         else {
-            chooseFriendAdapter.add(users);
-            setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+            inviteFriendAdapter.add(users);
+            setRecyclerView(inviteFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
         }
 
         UserRepository.getLoggedInUser(res -> {
@@ -119,8 +119,8 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (UserRepository.checkFriend(res, document.getId()) && !UserHelper.userAlreadyExist(users, document.getId()) && !UserHelper.userAlreadyExist(SubscriptionRepository.ACTIVE_SUBSCRIPTION.getMembers(), document.getId())) {
                                     users.add(UserRepository.documentToUser(document));
-                                    chooseFriendAdapter.add(users);
-                                    setRecyclerView(chooseFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
+                                    inviteFriendAdapter.add(users);
+                                    setRecyclerView(inviteFriendAdapter, LinearLayoutManager.VERTICAL, friendsRecycler);
                                 }
                             }
                         } else {
@@ -134,7 +134,7 @@ public class InviteFriendActivity extends AppCompatActivity implements QueryChan
                             @Override
                             public boolean onQueryTextChange(String query) {
                                 final List<User> filteredModelList = filter(users, query);
-                                chooseFriendAdapter.replaceAll(filteredModelList);
+                                inviteFriendAdapter.replaceAll(filteredModelList);
                                 friendsRecycler.scrollToPosition(0);
                                 return true;
                             }

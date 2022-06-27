@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.bluejack21_2.subscriptly.R;
 import edu.bluejack21_2.subscriptly.adapter.viewholder.FriendViewHolder;
 import edu.bluejack21_2.subscriptly.databinding.FriendItemBinding;
 import edu.bluejack21_2.subscriptly.interfaces.QueryChangeListener;
@@ -24,56 +25,57 @@ import edu.bluejack21_2.subscriptly.models.User;
 import edu.bluejack21_2.subscriptly.repositories.SubscriptionRepository;
 import edu.bluejack21_2.subscriptly.utils.UserHelper;
 
-public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
+public class InviteFriendRecyclerAdapter extends ChooseFriendRecyclerAdapter {
 
-    protected final ChosenUserRecyclerAdapter chosenUserRecyclerAdapter;
-    protected final LayoutInflater mInflater;
-    protected final Comparator<User> mComparator;
-    protected final QueryChangeListener<ArrayList<User>> queryChangeListener;
-    protected final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
-        @Override
-        public int compare(User a, User b) {
-            return mComparator.compare(a, b);
-        }
+//    private final ChosenUserRecyclerAdapter chosenUserRecyclerAdapter;
+//    private final LayoutInflater mInflater;
+//    private final Comparator<User> mComparator;
+//    private final QueryChangeListener<ArrayList<User>> queryChangeListener;
+//    private final SortedList<User> mSortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
+//        @Override
+//        public int compare(User a, User b) {
+//            return mComparator.compare(a, b);
+//        }
+//
+//        @Override
+//        public void onInserted(int position, int count) {
+//            notifyItemRangeInserted(position, count);
+//        }
+//
+//        @Override
+//        public void onRemoved(int position, int count) {
+//            notifyItemRangeRemoved(position, count);
+//        }
+//
+//        @Override
+//        public void onMoved(int fromPosition, int toPosition) {
+//            notifyItemMoved(fromPosition, toPosition);
+//        }
+//
+//        @Override
+//        public void onChanged(int position, int count) {
+//            notifyItemRangeChanged(position, count);
+//        }
+//
+//        @Override
+//        public boolean areContentsTheSame(User oldItem, User newItem) {
+//            return oldItem.equals(newItem);
+//        }
+//
+//        @Override
+//        public boolean areItemsTheSame(User item1, User item2) {
+//            return item1.getUserID() == item2.getUserID();
+//        }
+//    });
+//    private final Context context;
 
-        @Override
-        public void onInserted(int position, int count) {
-            notifyItemRangeInserted(position, count);
-        }
-
-        @Override
-        public void onRemoved(int position, int count) {
-            notifyItemRangeRemoved(position, count);
-        }
-
-        @Override
-        public void onMoved(int fromPosition, int toPosition) {
-            notifyItemMoved(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onChanged(int position, int count) {
-            notifyItemRangeChanged(position, count);
-        }
-
-        @Override
-        public boolean areContentsTheSame(User oldItem, User newItem) {
-            return oldItem.equals(newItem);
-        }
-
-        @Override
-        public boolean areItemsTheSame(User item1, User item2) {
-            return item1.getUserID() == item2.getUserID();
-        }
-    });
-    protected final Context context;
-
-    public ChooseFriendRecyclerAdapter(Comparator<User> comparator, Context context, ChosenUserRecyclerAdapter chosenUserRecyclerAdapter, QueryChangeListener<ArrayList<User>> queryChangeListener) {
-        this.context = context;
-        this.mInflater = LayoutInflater.from(context);
-        this.mComparator = comparator;
-        this.chosenUserRecyclerAdapter = chosenUserRecyclerAdapter;
-        this.queryChangeListener = queryChangeListener;
+    public InviteFriendRecyclerAdapter(Comparator<User> comparator, Context context, ChosenUserRecyclerAdapter chosenUserRecyclerAdapter, QueryChangeListener<ArrayList<User>> queryChangeListener) {
+        super(comparator, context, chosenUserRecyclerAdapter, queryChangeListener);
+//        this.context = context;
+//        this.mInflater = LayoutInflater.from(context);
+//        this.mComparator = comparator;
+//        this.chosenUserRecyclerAdapter = chosenUserRecyclerAdapter;
+//        this.queryChangeListener = queryChangeListener;
     }
 
     @Override
@@ -92,11 +94,14 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
         holder.chooseFriendBox.setChecked(UserHelper.userAlreadyExist(SubscriptionRepository.chosenFriends, model.getUserID()));
 
 
-//        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
-//            if (invited == null)
-//                Toast.makeText(context, "Error getting data", Toast.LENGTH_SHORT).show();
-//            else if (invited == true) holder.invitedText.setVisibility(View.VISIBLE);
-//            else {
+        SubscriptionRepository.isInvited(FirebaseAuth.getInstance().getCurrentUser().getUid(), model.getUserID(), SubscriptionRepository.ACTIVE_SUBSCRIPTION.getSubscriptionId(), invited -> {
+            if (invited == null)
+                Toast.makeText(context, R.string.error_fetch, Toast.LENGTH_SHORT).show();
+            else if (invited == true) {
+                holder.invitedText.setVisibility(View.VISIBLE);
+                holder.chooseFriendBox.setVisibility(View.GONE);
+            }
+            else {
                 holder.chooseFriendBox.setVisibility(View.VISIBLE);
                 holder.container.setOnClickListener(view -> {
                     holder.chooseFriendBox.setChecked(!holder.chooseFriendBox.isChecked());
@@ -105,12 +110,12 @@ public class ChooseFriendRecyclerAdapter extends RecyclerView.Adapter<FriendView
                 holder.chooseFriendBox.setOnClickListener(view -> {
                     updateSelectedUser(holder, model);
                 });
-//            }
-//        });
-//        holder.chooseFriendBox.setVisibility(View.VISIBLE);
-//        holder.chooseFriendBox.setOnClickListener(view -> {
-//            updateSelectedUser(holder, model);
-//        });
+            }
+        });
+        holder.chooseFriendBox.setVisibility(View.VISIBLE);
+        holder.chooseFriendBox.setOnClickListener(view -> {
+            updateSelectedUser(holder, model);
+        });
     }
 
     private void updateSelectedUser(FriendViewHolder holder, User model) {

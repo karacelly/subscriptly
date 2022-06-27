@@ -108,4 +108,5 @@
     <string name="sort_newest_label">Terbaru</string>
     <string name="sort_oldest_label">Terlama</string>
     <string name="tab_add_friend">Tambah Teman</string>
+    <string name="error_fetch">Gagal mendapatkan data</string>
 </resources>
