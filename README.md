@@ -35,6 +35,9 @@ An android application to manage personal or group subscription. This project is
 * Firebase
 * Android Studio 
 
+#### Figma Design
+https://www.figma.com/file/YS0b4j9wdbkavljy6ozfO5/Design-Prototype?node-id=0%3A1&t=Lf52MjSgHh38yLRy-1
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
