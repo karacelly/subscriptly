@@ -3,7 +3,6 @@
 [![Contributors][contributors-shield]][contributors-url] [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 
-<!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -23,7 +22,7 @@
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 An android application to manage personal or group subscription. This project is to fulfill one of progressive test for a laboratory assistant at Binus University. Created by [WO21-2](http://github.com/winstonkhoe) and [SY21-2](http://github.com/karacelly).
@@ -39,7 +38,6 @@ https://www.figma.com/file/YS0b4j9wdbkavljy6ozfO5/Design-Prototype?node-id=0%3A1
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
 ## Getting Started
 
 ### Prerequisites
@@ -49,10 +47,6 @@ Download and install Android Studio
 ### Installation
 
 Clone this repository and import into **Android Studio**
-
-```bash
-git clone git@github.com:karacelly/subscriptly.git
-```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
